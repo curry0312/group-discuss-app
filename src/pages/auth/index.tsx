@@ -2,7 +2,7 @@ import { SignInButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 
-const index = () => {
+const Auth = () => {
   const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   console.log(user);
@@ -27,4 +27,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Auth;

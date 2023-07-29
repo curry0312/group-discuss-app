@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 body {
+  color: white;
   overscroll-behavior: none;
 }
 

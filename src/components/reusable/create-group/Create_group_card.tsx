@@ -1,5 +1,14 @@
 import { Button } from "src/components/ui/button";
 import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "src/components/ui/form";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -9,22 +18,20 @@ import {
 } from "src/components/ui/card";
 import { Input } from "src/components/ui/input";
 import { Label } from "src/components/ui/label";
+import { Switch } from "~/components/ui/switch";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchema = z.object({
-  name: z.string().min(1,"Group name is required"),
+  name: z.string().min(1, "Group name is required"),
+  public: z.boolean(),
 });
 type FormSchemaType = z.infer<typeof formSchema>;
 
 const Create_group_card = ({}) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormSchemaType>({
+  const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
   });
 
@@ -35,33 +42,57 @@ const Create_group_card = ({}) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Create new group</CardTitle>
+        <CardTitle className="text-lg">Create a new group</CardTitle>
         <CardDescription className="text-md">
           Make a new group to chat with friends
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent>
-          <Label id="create_group">Name</Label>
-          <Input
-            {...register("name")}
-            id="create_group"
-            className="w-full"
-            placeholder="Name of your group"
-          />
-          {errors.name && (
-            <span className="mt-2 block text-xs text-red-800">
-              {errors.name?.message}
-            </span>
-          )}
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button variant="secondary" type="submit">
-            Create group
-          </Button>
-        </CardFooter>
-      </form>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="flex flex-col space-y-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Group Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter the group name..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="public"
+              render={({ field }) => (
+                <FormItem className="flex flex-col rounded-lg">
+                  <div>
+                    <FormLabel>Public</FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs">
+                    You can make your group public, so others can find it.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="destructive">Cancel</Button>
+            <Button variant="outline" type="submit">
+              Create group
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 };

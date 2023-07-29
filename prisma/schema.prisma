@@ -13,6 +13,8 @@ datasource db {
 
 model User {
     id           String    @id
+    friends      User[]    @relation("UserFollows")
+    friendsOf    User[]    @relation("UserFollows")
     posts        Post[]
     memberGroups Group[]   @relation("GroupMembers")
     comments     Comment[]

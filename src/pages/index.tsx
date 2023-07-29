@@ -1,13 +1,9 @@
 import { UserButton, useUser } from "@clerk/nextjs";
-import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Head from "next/head";
 import Create_group_card from "~/components/reusable/create-group/Create_group_card";
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
-import { Button } from "~/components/ui/button";
-import ChatIcon from "~/styles/icons/Chat";
-import HomeIcon from "~/styles/icons/Home";
-import PersonIcon from "~/styles/icons/Person";
+import Navbar from "~/components/global/Navbar";
 
 export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -26,33 +22,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col min-h-screen bg-gray-950">
-        <nav className="fixed w-full flex justify-between items-center p-4">
-          {/*nav route links*/}
-          <div>
-            <ul className="flex items-center gap-2">
-              <li>
-                <Link href="#">
-                 <HomeIcon/>
-                </Link>
-              </li>
-              <li>
-                <Link href="#">
-                  <PersonIcon />
-                </Link>
-              </li>
-              <li>
-                <Link href="#">
-                  <ChatIcon />
-                </Link>
-              </li>
-            </ul>
-          </div>
-          {/*user profile button*/}
-          <div>
-            <UserButton />
-          </div>
-        </nav>
-
+        <Navbar />
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[50%] lg:w-[30%]">
           <Create_group_card />
         </div>

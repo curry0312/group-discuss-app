@@ -26,8 +26,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 
-import type { FC } from "react";
-
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
   public: z.boolean(),
@@ -35,7 +33,7 @@ const formSchema = z.object({
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
-const Create_group_card: FC = ({}) => {
+const Create_group_card = () => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {

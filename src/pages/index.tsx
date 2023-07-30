@@ -5,12 +5,16 @@ import Create_group_card from "~/components/reusable/create-group/Create_group_c
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import Navbar from "~/components/global/Navbar";
 import { api } from "~/utils/api";
+import RenderingGroups from "~/components/Home/RenderingGroups";
+import { Input } from "~/components/ui/input";
+import GroupUserIcon from "~/styles/icons/GroupUser";
+import { useState } from "react";
 
 export default function Home() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
 
-  //!CHECK IF USER IS NEW OR NOT
+  //CHECK IF USER IS NEW OR NOT
   api.user.checkUser.useQuery();
 
   if (isLoaded && !isSignedIn) {
@@ -27,10 +31,24 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-950">
         <Navbar />
-        <div className="fixed left-1/2 top-1/2 w-[90%] -translate-x-1/2 -translate-y-1/2 md:w-[50%] lg:w-[30%]">
-          <Create_group_card />
+        <div className="flex pt-24">
+          <button className="flex flex-1 items-center justify-center text-white hover:bg-gray-800">
+            <GroupUserIcon />
+            <span className="font-Rubik">Create group</span>
+          </button>
+          <div className="flex-1">
+            <Input
+              type="email"
+              placeholder="Search..."
+              className="h-full w-full bg-slate-900 text-white"
+            />
+          </div>
         </div>
+        <RenderingGroups />
       </main>
+      <div className="fixed left-1/2 top-1/2 w-[90%] -translate-x-1/2 -translate-y-1/2 md:w-[50%] lg:w-[30%]">
+        <Create_group_card />
+      </div>
     </>
   );
 }

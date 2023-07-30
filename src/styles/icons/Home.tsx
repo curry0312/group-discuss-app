@@ -6,7 +6,7 @@ const HomeIcon = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="h-12 w-12 p-2 hover:bg-gray-700 rounded-full"
+      className="h-12 w-12 p-2 text-white hover:bg-gray-700 rounded-full"
     >
       <path
         strokeLinecap="round"

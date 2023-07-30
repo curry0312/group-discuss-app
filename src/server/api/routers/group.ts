@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, privatedProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const groupRouter = createTRPCRouter({
-  createGroup: publicProcedure
+  createGroup: privatedProcedure
     .input(
       z.object({ name: z.string(), ownerId: z.string(), public: z.boolean() })
     )
@@ -10,7 +10,7 @@ export const groupRouter = createTRPCRouter({
       const newGroup = await ctx.prisma.group.create({
         data: {
           name: input.name,
-          ownerId: input.ownerId,
+          ownerId: ctx.currentUserId,
           public: input.public,
         },
       });

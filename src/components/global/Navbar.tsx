@@ -21,7 +21,7 @@ const Navbar = () => {
               <Tooltip>
                 <TooltipTrigger>
                   <Link href="/">
-                    <HomeIcon />
+                    <HomeIcon/>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>

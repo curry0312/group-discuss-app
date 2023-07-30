@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -17,34 +18,47 @@ import {
   CardTitle,
 } from "src/components/ui/card";
 import { Input } from "src/components/ui/input";
-import { Switch } from "~/components/ui/switch";
+import { Switch } from "src/components/ui/switch";
+import { useToast } from "src/components/ui/use-toast";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 
+import type { FC } from "react";
+
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
   public: z.boolean(),
 });
+
 type FormSchemaType = z.infer<typeof formSchema>;
 
-
-
-const Create_group_card = ({}) => {
+const Create_group_card: FC = ({}) => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
-    defaultValues:{
+    defaultValues: {
       name: "",
       public: false,
-    }
+    },
   });
-  const groupCreateGenerator = api.group.createGroup.useMutation()
+  const { toast } = useToast();
+  const groupCreateGenerator = api.group.createGroup.useMutation();
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
-    groupCreateGenerator.mutate({...data, ownerId: "1"})
+    groupCreateGenerator.mutate(
+      { ...data, ownerId: "1" },
+      {
+        onSuccess: (newGroup) => {
+          console.log(newGroup);
+          toast({
+            description: "Group created successfully!",
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -95,7 +109,19 @@ const Create_group_card = ({}) => {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="destructive">Cancel</Button>
-            <Button variant="outline" type="submit">
+            <Button
+              variant="outline"
+              type="submit"
+              disabled={groupCreateGenerator.isLoading}
+              onClick={() => {
+                toast({
+                  description: "Creating...",
+                });
+              }}
+            >
+              {!!groupCreateGenerator.isLoading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Create group
             </Button>
           </CardFooter>

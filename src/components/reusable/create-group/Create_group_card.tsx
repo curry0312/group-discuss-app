@@ -17,12 +17,12 @@ import {
   CardTitle,
 } from "src/components/ui/card";
 import { Input } from "src/components/ui/input";
-import { Label } from "src/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "~/utils/api";
 
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
@@ -33,10 +33,16 @@ type FormSchemaType = z.infer<typeof formSchema>;
 const Create_group_card = ({}) => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
+    defaultValues:{
+      name: "",
+      public: false,
+    }
   });
+  const groupCreateGenerator = api.group.createGroup.useMutation()
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
+    groupCreateGenerator.mutate({...data, ownerId: "1"})
   };
 
   return (

@@ -20,7 +20,7 @@ const Navbar = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Link href="#">
+                  <Link href="/">
                     <HomeIcon />
                   </Link>
                 </TooltipTrigger>
@@ -34,7 +34,7 @@ const Navbar = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Link href="#">
+                  <Link href="/">
                     <PersonIcon />
                   </Link>
                 </TooltipTrigger>
@@ -48,7 +48,7 @@ const Navbar = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Link href="#">
+                  <Link href="/">
                     <ChatIcon />
                   </Link>
                 </TooltipTrigger>

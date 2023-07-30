@@ -53,6 +53,7 @@ const Create_group_card: FC = ({}) => {
       {
         onSuccess: (newGroup) => {
           console.log(newGroup);
+          form.reset();
           toast({
             description: "Group created successfully!",
           });

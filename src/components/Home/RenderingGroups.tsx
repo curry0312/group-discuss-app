@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 const RenderingGroups = () => {
   dayjs.extend(relativeTime);
@@ -11,7 +12,10 @@ const RenderingGroups = () => {
     return (
       <div className="flex flex-col gap-3 px-4 py-2">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="flex gap-3 items-center font-Rubik text-white">
+          <div
+            key={i}
+            className="flex items-center gap-3 font-Rubik text-white"
+          >
             <div className="basis-1/5">
               <Skeleton className="h-20 w-20 rounded-full bg-slate-800" />
             </div>
@@ -32,18 +36,22 @@ const RenderingGroups = () => {
         return (
           <div
             key={group.id}
-            className="flex gap-3 items-center font-Rubik text-white"
+            className="flex items-center gap-3 font-Rubik text-white"
           >
             <div className="basis-1/5">
               <div className="flex items-center justify-center">
-                <Image
-                  src={group.image}
-                  width={80}
-                  height={80}
-                  alt={`${group.name}-group-image`}
-                  className="rounded-full"
-                  priority
-                />
+                <div className="w-[82px] rounded-full">
+                  <AspectRatio ratio={1 / 1}>
+                    <Image
+                      src={group.image}
+                      alt="group-image"
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="rounded-full object-cover"
+                    />
+                  </AspectRatio>
+                </div>
               </div>
             </div>
             <div className="basis-4/5">

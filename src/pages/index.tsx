@@ -40,7 +40,7 @@ export default function Home() {
             <Input
               type="email"
               placeholder="Search..."
-              className="h-full w-full bg-slate-900 text-white"
+              className="h-[90%] w-[90%] bg-slate-900 text-white"
             />
           </div>
         </div>

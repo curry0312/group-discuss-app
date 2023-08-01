@@ -4,7 +4,7 @@ import { createTRPCRouter, privatedProcedure, publicProcedure } from "~/server/a
 export const groupRouter = createTRPCRouter({
   createGroup: privatedProcedure
     .input(
-      z.object({ name: z.string(), ownerId: z.string(), public: z.boolean() })
+      z.object({ name: z.string(), public: z.boolean(), image:z.string() })
     )
     .mutation(async ({ ctx, input }) => {
       const newGroup = await ctx.prisma.group.create({
@@ -12,6 +12,7 @@ export const groupRouter = createTRPCRouter({
           name: input.name,
           ownerId: ctx.currentUserId,
           public: input.public,
+          image: input.image
         },
       });
       return newGroup;

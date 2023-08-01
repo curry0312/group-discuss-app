@@ -27,6 +27,7 @@ model Group {
     id        String   @id @default(cuid())
     name      String
     public    Boolean
+    image     String
     owner     User     @relation(fields: [ownerId], references: [id])
     ownerId   String
     members   User[]   @relation("GroupMembers")

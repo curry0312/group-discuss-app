@@ -25,10 +25,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
+import { Label } from "~/components/ui/label";
+import Line from "../seperate-item/Line";
 
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
   public: z.boolean(),
+  image: z.string(),
 });
 
 type FormSchemaType = z.infer<typeof formSchema>;
@@ -39,6 +42,7 @@ const Create_group_card = () => {
     defaultValues: {
       name: "",
       public: false,
+      image: "",
     },
   });
   const { toast } = useToast();
@@ -47,7 +51,7 @@ const Create_group_card = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
     groupCreateGenerator.mutate(
-      { ...data, ownerId: "1" },
+      { ...data },
       {
         onSuccess: (newGroup) => {
           console.log(newGroup);
@@ -63,14 +67,16 @@ const Create_group_card = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Create a new group</CardTitle>
-        <CardDescription className="text-md">
+        <CardTitle className="text-xl font-extrabold">
+          Create a new group
+        </CardTitle>
+        <CardDescription className="text-sm">
           Make a new group to chat with friends
         </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="flex flex-col space-y-2">
+          <CardContent className="flex flex-col space-y-5">
             <FormField
               control={form.control}
               name="name"
@@ -84,6 +90,7 @@ const Create_group_card = () => {
                 </FormItem>
               )}
             />
+            <Line />
             <FormField
               control={form.control}
               name="public"
@@ -100,6 +107,27 @@ const Create_group_card = () => {
                   </FormControl>
                   <FormDescription className="text-xs">
                     You can make your group public, so others can find it.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Line />
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem className="flex flex-col rounded-lg">
+                  <div>
+                    <FormLabel>Group image</FormLabel>
+                  </div>
+                  <FormControl>
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <Input id="picture" type="file" {...field} />
+                    </div>
+                  </FormControl>
+                  <FormDescription className="text-xs">
+                    You can upload your group image, so others can identify it.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

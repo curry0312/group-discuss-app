@@ -7,7 +7,7 @@ import { AspectRatio } from "../ui/aspect-ratio";
 
 const RenderingGroups = () => {
   dayjs.extend(relativeTime);
-  const { data, isLoading } = api.group.getAllGroups.useQuery();
+  const { data, isLoading } = api.group.getAllUserGroups.useQuery();
   if (isLoading)
     return (
       <div className="flex flex-col gap-3 px-4 py-2">

@@ -14,6 +14,7 @@ export const userRouter = createTRPCRouter({
         id: ctx.currentUserId,
       },
     });
+    console.log(user)
     //*Otherwise, make a new user in our database.
     if (!user) {
       const newUser = await ctx.prisma.user.create({

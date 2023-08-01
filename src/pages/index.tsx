@@ -6,7 +6,6 @@ import GroupUserIcon from "~/styles/icons/GroupUser";
 import Head from "next/head";
 
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
-import Navbar from "~/components/global/Navbar";
 import RenderingGroups from "~/components/Home/RenderingGroups";
 import { Input } from "~/components/ui/input";
 import Create_group_card_page from "~/components/reusable/group/Create_group_card_page";
@@ -15,7 +14,6 @@ import { useCreateGroupStore } from "~/store/useCreateGroupStore";
 export default function Home() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-
   const { isCreateGroupOpen, onOpen } = useCreateGroupStore();
 
   //CHECK IF USER IS NEW OR NOT

@@ -17,7 +17,10 @@ export const groupRouter = createTRPCRouter({
       });
       return newGroup;
     }),
-    getAllGroups: publicProcedure.query(async ({ ctx }) => {
-      return await ctx.prisma.group.findMany({take: 10});
+    getAllUserGroups: privatedProcedure.query(async ({ ctx }) => {
+      return await ctx.prisma.group.findMany({
+        where:{ownerId: ctx.currentUserId},
+        take: 10
+      });
     })
 });

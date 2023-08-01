@@ -21,7 +21,7 @@ const RenderingGroups = () => {
             </div>
             <div className="basis-4/5">
               <div className="flex flex-col gap-1">
-                <Skeleton className="h-4 w-[250px] bg-slate-800" />
+                <Skeleton className="h-8 w-[250px] bg-slate-800" />
                 <Skeleton className="h-4 w-[200px] bg-slate-800" />
               </div>
             </div>
@@ -34,13 +34,10 @@ const RenderingGroups = () => {
     <div className="flex flex-col gap-3 px-4 py-2">
       {data.map((group) => {
         return (
-          <div
-            key={group.id}
-            className="flex items-center gap-3 font-Rubik text-white"
-          >
+          <div key={group.id} className="flex gap-1 font-Rubik text-white">
             <div className="basis-1/5">
               <div className="flex items-center justify-center">
-                <div className="w-[82px] rounded-full">
+                <div className="w-[76px] rounded-full">
                   <AspectRatio ratio={1 / 1}>
                     <Image
                       src={group.image}
@@ -54,12 +51,9 @@ const RenderingGroups = () => {
                 </div>
               </div>
             </div>
-            <div className="basis-4/5">
-              <div className="flex flex-col gap-1">
-                <p>{group.name}</p>
-                <p>{group.public}</p>
-                <p>created {dayjs(group.createdAt).toNow()}</p>
-              </div>
+            <div className="basis-4/5 flex flex-col justify-center">
+              <p className="text-xl">{group.name}</p>
+              <p>created {dayjs(group.createdAt).toNow()}</p>
             </div>
           </div>
         );

@@ -25,6 +25,11 @@ export const userRouter = createTRPCRouter({
     return user;
   }),
 
+  getAllUsers: publicProcedure.query(async ({ ctx }) => {
+    const allUsers = await ctx.prisma.user.findMany();
+    return allUsers
+  }),
+
   createUser: publicProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {

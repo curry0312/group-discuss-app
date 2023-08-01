@@ -9,13 +9,17 @@ const RenderingGroups = () => {
   const { data, isLoading } = api.group.getAllGroups.useQuery();
   if (isLoading)
     return (
-      <div className="flex flex-col gap-3 p-2 md:grid md:grid-cols-4">
-        {Array.from(Array(5)).map((_, i) => (
-          <div key={i} className="flex items-center space-x-4">
-            <Skeleton className="h-12 w-12 rounded-full bg-slate-800" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-[250px] bg-slate-800" />
-              <Skeleton className="h-4 w-[200px] bg-slate-800" />
+      <div className="flex flex-col gap-3 px-4 py-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex gap-3 items-center font-Rubik text-white">
+            <div className="basis-1/5">
+              <Skeleton className="h-20 w-20 rounded-full bg-slate-800" />
+            </div>
+            <div className="basis-4/5">
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-4 w-[250px] bg-slate-800" />
+                <Skeleton className="h-4 w-[200px] bg-slate-800" />
+              </div>
             </div>
           </div>
         ))}
@@ -28,9 +32,9 @@ const RenderingGroups = () => {
         return (
           <div
             key={group.id}
-            className="flex items-center font-Rubik text-white"
+            className="flex gap-3 items-center font-Rubik text-white"
           >
-            <div className="basis-1/3">
+            <div className="basis-1/5">
               <div className="flex items-center justify-center">
                 <Image
                   src={group.image}
@@ -42,12 +46,11 @@ const RenderingGroups = () => {
                 />
               </div>
             </div>
-            <div className="basis-2/3">
+            <div className="basis-4/5">
               <div className="flex flex-col gap-1">
                 <p>{group.name}</p>
-                <p>{group.ownerId}</p>
                 <p>{group.public}</p>
-                <p>{dayjs(group.createdAt).toNow()}</p>
+                <p>created {dayjs(group.createdAt).toNow()}</p>
               </div>
             </div>
           </div>

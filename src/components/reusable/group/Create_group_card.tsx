@@ -55,9 +55,11 @@ const Create_group_card = () => {
   const { toast } = useToast();
   const groupCreateGenerator = api.group.createGroup.useMutation();
 
-  const [previewImage, setPreviewImage] = useState<any>("");
+  const [previewImage, setPreviewImage] = useState<any>("https://github.com/shadcn.png");
 
   const { onClose } = useCreateGroupStore();
+
+  const ctx = api.useContext();
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
@@ -70,6 +72,7 @@ const Create_group_card = () => {
           toast({
             description: "Group created successfully!",
           });
+          ctx.group.getAllGroups.invalidate(); //refresh the rendering post section
           onClose()
         },
       }

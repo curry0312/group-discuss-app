@@ -34,7 +34,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-950">
-        <Navbar />
         <div className="flex pt-24">
           <button
             className="flex flex-1 items-center justify-center text-white hover:bg-gray-800"

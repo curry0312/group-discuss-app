@@ -25,8 +25,14 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
-import { Label } from "~/components/ui/label";
 import Line from "../seperate-item/Line";
+import Image from "next/image";
+import { useState } from "react";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
+
+// You need to import our styles for the button to look right. Best to import in the root /_app.tsx but this is fine
+import "@uploadthing/react/styles.css";
+import { UploadButton } from "~/utils/uploadthing";
 
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
@@ -48,10 +54,23 @@ const Create_group_card = () => {
   const { toast } = useToast();
   const groupCreateGenerator = api.group.createGroup.useMutation();
 
+  //Image
+  const [previewImage, setPreviewImage] = useState<any>("");
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setPreviewImage(reader.result);
+      console.log(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
     groupCreateGenerator.mutate(
-      { ...data },
+      { ...data, image: previewImage },
       {
         onSuccess: (newGroup) => {
           console.log(newGroup);
@@ -118,17 +137,52 @@ const Create_group_card = () => {
               name="image"
               render={({ field }) => (
                 <FormItem className="flex flex-col rounded-lg">
-                  <div>
-                    <FormLabel>Group image</FormLabel>
-                  </div>
+                  <FormLabel className="w-auto">Group Image</FormLabel>
                   <FormControl>
-                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                      <Input id="picture" type="file" {...field} />
+                    <div className="w-full flex justify-center">
+                      <div className="w-[200px] rounded-full">
+                        <AspectRatio ratio={1 / 1}>
+                          <Image
+                            src={previewImage || "https://github.com/shadcn.png"}
+                            alt="group-image"
+                            fill
+                            priority
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="rounded-full object-cover"
+                          />
+                        </AspectRatio>
+                    </div>
+
+                      {/* <Input
+                        id="image"
+                        type="file"
+                        {...field}
+                        onChange={handleImageChange}
+                        accept="image/*"
+                        className="hidden"
+                      /> */}
                     </div>
                   </FormControl>
-                  <FormDescription className="text-xs">
-                    You can upload your group image, so others can identify it.
+                  <FormDescription className="text-xs text-center">
+                    Upload your group image
                   </FormDescription>
+                  <UploadButton
+                    endpoint="imageUploader"
+                    onClientUploadComplete={(res) => {
+                      // Do something with the response
+                      console.log("Files: ", res);
+                      toast({
+                        description: "Image uploaded successfully!",
+                      });
+                      if (res) {
+                        setPreviewImage(res[0]?.fileUrl);
+                      }
+                    }}
+                    onUploadError={(error: Error) => {
+                      // Do something with the error.
+                      alert(`ERROR! ${error.message}`);
+                    }}
+                  />
                   <FormMessage />
                 </FormItem>
               )}

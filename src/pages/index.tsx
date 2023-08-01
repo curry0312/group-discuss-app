@@ -1,14 +1,14 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
-import Create_group_card from "~/components/reusable/create-group/Create_group_card";
+import Create_group_card from "~/components/reusable/group/Create_group_card";
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import Navbar from "~/components/global/Navbar";
 import { api } from "~/utils/api";
 import RenderingGroups from "~/components/Home/RenderingGroups";
 import { Input } from "~/components/ui/input";
 import GroupUserIcon from "~/styles/icons/GroupUser";
-import { useState } from "react";
+
 
 export default function Home() {
   const { isLoaded, isSignedIn } = useUser();
@@ -36,7 +36,7 @@ export default function Home() {
             <GroupUserIcon />
             <span className="font-Rubik">Create group</span>
           </button>
-          <div className="flex-1">
+          <div className="flex-1 flex justify-center items-center">
             <Input
               type="email"
               placeholder="Search..."
@@ -46,9 +46,9 @@ export default function Home() {
         </div>
         <RenderingGroups />
       </main>
-      <div className="fixed left-1/2 top-1/2 w-[90%] -translate-x-1/2 -translate-y-1/2 md:w-[50%] lg:w-[30%]">
+      {/* <div className="fixed left-1/2 top-1/2 w-[90%] -translate-x-1/2 -translate-y-1/2 md:w-[50%] lg:w-[30%]">
         <Create_group_card />
-      </div>
+      </div> */}
     </>
   );
 }

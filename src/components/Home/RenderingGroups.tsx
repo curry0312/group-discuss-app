@@ -38,6 +38,7 @@ const RenderingGroups = () => {
                   height={80}
                   alt={`${group.name}-group-image`}
                   className="rounded-full"
+                  priority
                 />
               </div>
             </div>

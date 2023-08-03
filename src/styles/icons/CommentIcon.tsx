@@ -1,10 +1,15 @@
-const CommentIcon = () => {
+import { twMerge } from 'tailwind-merge'
+
+type CommentIconPropsType = {
+  className?: string
+}
+const CommentIcon = ({className=""}: CommentIconPropsType) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="h-6 w-6"
+      className={twMerge(`h-6 w-6 cursor-pointer hover:text-blue-500`,className)}
     >
       <path
         fillRule="evenodd"

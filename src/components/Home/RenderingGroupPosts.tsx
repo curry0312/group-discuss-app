@@ -10,7 +10,7 @@ const RenderingGroupPosts = () => {
   });
   if(isLoading) return (
     <div>
-      {Array.from(Array(5))?.map((_,i) => (
+      {Array.from(Array(8))?.map((_,i) => (
         <GroupPost_skeleton key={i} />
       ))}
     </div>       

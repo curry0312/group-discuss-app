@@ -4,7 +4,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
 
@@ -15,7 +14,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
   return (
-    <div className="flex gap-3 p-2">
+    <div className="flex gap-3 p-2 hover:bg-gray-500">
       <div>
         <Link href={"/"}>
           <Image
@@ -39,7 +38,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
         <div>
           <p className="text-md">{post.content}</p>
         </div>
-        <div className="">
+        <div>
           <Image
             src={"https://github.com/shadcn.png"}
             alt="post-image"

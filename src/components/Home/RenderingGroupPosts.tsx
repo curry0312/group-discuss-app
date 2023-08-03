@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import GroupPost from "../reusable/group/GroupPost";
-import GroupPost_skeleton from "../reusable/group/GroupPost_skeleton";
+import GroupPost from "../reusable/post/GroupPost";
+import GroupPost_skeleton from "../reusable/post/GroupPost_skeleton";
 
 const RenderingGroupPosts = () => {
   const router = useRouter();

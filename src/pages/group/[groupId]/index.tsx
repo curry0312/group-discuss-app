@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-import RenderingGroupPosts from "~/components/home/RenderingGroupPosts";
+import RenderingGroupPosts from "~/components/Home/RenderingGroupPosts";
 
 const formSchema = z.object({
   content: z.string().min(1, "You can't post empty content!"),

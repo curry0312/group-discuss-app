@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
+import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type GroupPostProps = {
@@ -70,6 +71,9 @@ const GroupPost = ({ post }: GroupPostProps) => {
         <div className="flex items-center gap-2">
           <h1 className="font-bold">Curry0312</h1>
           <span>{dayjs(post.createdAt).fromNow()}</span>
+          <button className="ml-auto">
+            <MoreIcon />
+          </button>
         </div>
         <div className="flex flex-col" onClick={() => push(`/post/${post.id}`)}>
           <div>

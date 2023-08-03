@@ -17,7 +17,7 @@ import PersonIcon from "~/styles/icons/Person";
 import { Button } from "../ui/button";
 
 const Navbar = () => {
-  const {user} = useUser()
+  const { user } = useUser();
   const a = usePathname();
   const [pathname, setPathname] = useState("/");
   useEffect(() => {
@@ -81,7 +81,6 @@ const Navbar = () => {
           <AvatarImage src={user?.imageUrl} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-
         <SignOutButton>
           <Button>Sign out</Button>
         </SignOutButton>

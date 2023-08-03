@@ -3,6 +3,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 
 type groupTypesProps = {
     group: Group;
@@ -11,10 +12,10 @@ type groupTypesProps = {
   const Group = ({ group }: groupTypesProps) => {
     dayjs.extend(relativeTime);
     return (
-      <div key={group.id} className="flex gap-1 font-Rubik text-white">
+      <Link href={`/group/${group.id}`} key={group.id} className="flex gap-1 font-Rubik text-white hover:bg-gray-800">
         <div className="basis-1/5">
-          <div className="flex items-center justify-center">
-            <div className="w-[76px] rounded-full">
+          <div className="flex items-center justify-center p-2">
+            <div className="w-[64px] rounded-full">
               <AspectRatio ratio={1 / 1}>
                 <Image
                   src={group.image}
@@ -32,7 +33,7 @@ type groupTypesProps = {
           <p className="text-xl">{group.name}</p>
           <p>created {dayjs(group.createdAt).toNow()}</p>
         </div>
-      </div>
+      </Link>
     );
   };
   

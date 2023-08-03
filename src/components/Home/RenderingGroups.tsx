@@ -13,7 +13,7 @@ const RenderingGroups = () => {
       </div>
     );
   return (
-    <div className="flex flex-col gap-3 px-4 py-2">
+    <div className="flex flex-col">
       {data!.map((group) => {
         return <Group key={group.id} group={group} />;
       })}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Navbar from "~/components/global/Navbar";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
@@ -6,8 +7,8 @@ import { api } from "~/utils/api";
 const Friends = () => {
   const { data, isLoading } = api.user.getAllUsers.useQuery();
   return (
-    <main className="min-h-screen bg-gray-950 pt-24">
-      <div className="">
+    <div className="min-h-screen bg-gray-950">
+      <div className="pt-24">
         <div className="flex flex-1 items-center justify-center p-2">
           <Input
             type="email"
@@ -44,7 +45,7 @@ const Friends = () => {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

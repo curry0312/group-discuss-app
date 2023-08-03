@@ -13,7 +13,7 @@ type groupTypesProps = {
     dayjs.extend(relativeTime);
     return (
       <Link href={`/group/${group.id}`} key={group.id} className="flex gap-1 font-Rubik text-white hover:bg-gray-800">
-        <div className="basis-1/5">
+        <div className="basis-1/4">
           <div className="flex items-center justify-center p-2">
             <div className="w-[64px] rounded-full">
               <AspectRatio ratio={1 / 1}>
@@ -29,7 +29,7 @@ type groupTypesProps = {
             </div>
           </div>
         </div>
-        <div className="flex basis-4/5 flex-col justify-center">
+        <div className="flex basis-3/4 flex-col justify-center">
           <p className="text-xl">{group.name}</p>
           <p>created {dayjs(group.createdAt).toNow()}</p>
         </div>

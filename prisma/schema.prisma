@@ -47,8 +47,8 @@ model Post {
     likes    Like[]
     group    Group     @relation(fields: [groupId], references: [id])
     groupId  String
-    createAt DateTime  @default(now())
-    updateAt DateTime  @updatedAt
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 
     @@index([authorId])
     @@index([groupId])
@@ -62,8 +62,8 @@ model Comment {
     postId String
     likes  Like[]
 
-    createAt DateTime @default(now())
-    updateAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([postId])
     @@index([userId])
@@ -78,8 +78,8 @@ model Like {
     comment   Comment? @relation(fields: [commentId], references: [id])
     commentId String?
 
-    createAt DateTime @default(now())
-    updateAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([postId])
     @@index([commentId])

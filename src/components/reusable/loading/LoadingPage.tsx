@@ -2,7 +2,7 @@ import LoadingSpinner from "./LoadingSpinner"
 
 const LoadingPage = () => {
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-gray-950">
+    <div className="fixed inset-0 flex justify-center items-center bg-gray-950 z-50">
       <LoadingSpinner />
     </div>
   )

@@ -1,31 +1,43 @@
+import { Post } from "@prisma/client";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
 
-const GroupPost = () => {
+type GroupPostProps = {
+  post: Post;
+};
+const GroupPost = ({ post }: GroupPostProps) => {
+  dayjs.extend(relativeTime);
+  const { push } = useRouter();
   return (
     <div className="flex gap-3 p-2">
       <div>
         <Link href={"/"}>
-          <Image src="https://github.com/shadcn.png" alt="user-image" width={50} height={50} className="object-cover rounded-full"/>
+          <Image
+            src="https://github.com/shadcn.png"
+            alt="user-image"
+            width={50}
+            height={50}
+            className="rounded-full object-cover"
+          />
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2">
+      <div
+        className="flex flex-1 flex-col gap-2"
+        onClick={() => push(`/post/${post.id}`)}
+      >
         <div className="flex items-center gap-2">
           <h1 className="font-bold">Curry0312</h1>
-          <span>15m</span>
+          <span>{dayjs(post.createdAt).toNow()}</span>
         </div>
         <div>
-          <p className="text-md">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-            necessitatibus eligendi aspernatur. Veritatis, nulla culpa! Officiis
-            at illum ea nostrum deleniti illo dolorum hic id, laudantium
-            dignissimos aut, dicta laboriosam!
-          </p>
+          <p className="text-md">{post.content}</p>
         </div>
         <div className="">
           <Image

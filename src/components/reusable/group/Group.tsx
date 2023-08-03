@@ -31,7 +31,7 @@ type groupTypesProps = {
         </div>
         <div className="flex basis-3/4 flex-col justify-center">
           <p className="text-xl">{group.name}</p>
-          <p>created {dayjs(group.createdAt).toNow()}</p>
+          <p>created {dayjs(group.createdAt).fromNow()}</p>
         </div>
       </Link>
     );

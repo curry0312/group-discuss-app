@@ -9,12 +9,11 @@ import HeartIcon from "~/styles/icons/HeartIcon";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import Line from "~/components/reusable/seperate-item/Line";
-import { useState } from "react";
 
 const PostPage = () => {
   dayjs.extend(relativeTime);
   const router = useRouter();
-  
+
   const ctx = api.useContext();
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();

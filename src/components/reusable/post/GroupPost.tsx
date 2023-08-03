@@ -1,9 +1,18 @@
-import { Post } from "@prisma/client";
+import type { Post } from "@prisma/client";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "src/components/ui/dropdown-menu";
+
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
 import MoreIcon from "~/styles/icons/MoreIcon";
@@ -53,7 +62,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
     }
   }
   return (
-    <div className="flex gap-3 p-2 hover:bg-gray-500 cursor-pointer">
+    <div className="flex cursor-pointer gap-3 p-2">
       <div>
         <Link href={"/"}>
           <Image
@@ -71,9 +80,15 @@ const GroupPost = ({ post }: GroupPostProps) => {
         <div className="flex items-center gap-2">
           <h1 className="font-bold">Curry0312</h1>
           <span>{dayjs(post.createdAt).fromNow()}</span>
-          <button className="ml-auto">
-            <MoreIcon />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="ml-auto mr-2"> <MoreIcon /></DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Delete post</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="flex flex-col" onClick={() => push(`/post/${post.id}`)}>
           <div>

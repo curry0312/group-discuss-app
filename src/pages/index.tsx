@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import Head from "next/head";
 
-import GroupUserIcon from "~/styles/icons/GroupUser";
+import GroupUserIcon from "~/styles/icons/GroupUserIcon";
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import RenderingGroups from "~/components/Home/RenderingGroups";
 import { Input } from "~/components/ui/input";

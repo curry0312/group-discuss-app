@@ -1,5 +1,5 @@
-"use client";
-import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
+"use client"
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,23 +9,25 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "src/components/ui/tooltip";
-import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
+import { Avatar, AvatarImage } from "src/components/ui/avatar";
 
-import ChatIcon from "~/styles/icons/Chat";
-import HomeIcon from "~/styles/icons/Home";
-import PersonIcon from "~/styles/icons/Person";
+import ChatIcon from "~/styles/icons/ChatIcon";
+import HomeIcon from "~/styles/icons/HomeIcon";
+import PersonIcon from "~/styles/icons/PersonIcon";
 import { Button } from "../ui/button";
+import LoadingPage from "../reusable/loading/LoadingPage";
 
 const Navbar = () => {
-  const { user } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
   const a = usePathname();
   const [pathname, setPathname] = useState("/");
   useEffect(() => {
     setPathname(a);
   }, [a]);
-  console.log(a);
+  console.log("currentPath",a);
+  if(!isLoaded) return <LoadingPage />;
   return (
-    <nav className="fixed flex w-full items-center justify-between border-b border-stone-900 p-4">
+    <nav className={"fixed flex w-full items-center justify-between border-b border-stone-900 bg-black bg-opacity-50 backdrop-blur p-4"}>
       {/*nav route links*/}
       <div>
         <ul className="flex items-center gap-2">
@@ -79,7 +81,6 @@ const Navbar = () => {
       <div className="flex flex-row-reverse gap-2">
         <Avatar>
           <AvatarImage src={user?.imageUrl} />
-          <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <SignOutButton>
           <Button>Sign out</Button>

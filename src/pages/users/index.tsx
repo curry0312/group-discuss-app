@@ -23,12 +23,12 @@ const Friends = () => {
             className="w-[90%] bg-slate-900 text-white"
             onChange={setSearchUsersText}
             value={searchUsersText}
-            defaultValue={searchUsersText || ""}
+            // defaultValue={searchUsersText || ""}
           />
         </div>
         <div className="flex flex-col">
           {searchUsersText.length > 0 ? (
-            filteredUsers?.map((user) => <User user={user} />)
+            filteredUsers?.map((user) => <User key={user.id} user={user} />)
           ) : (
             <div className="mt-5 text-center">
               <p className="font-Rubik text-gray-400">

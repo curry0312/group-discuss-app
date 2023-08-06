@@ -14,6 +14,8 @@ import type {
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
+import { Button } from "~/components/ui/button";
+import { useAuth } from "@clerk/nextjs";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
@@ -22,8 +24,9 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data, isLoading } = api.user.getUser.useQuery({
     id: userId,
   });
+  const userInfo = useAuth();
 
-  if (isLoading) return <LoadingPage />;
+  if (isLoading && !userInfo.isLoaded) return <LoadingPage />;
   if (!data) return <div>404 data not found</div>;
   return (
     <main className="min-h-screen bg-gray-950 p-3 pt-24 text-white">
@@ -33,7 +36,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </Link>
       </div>
       <div className="flex flex-col items-start gap-3 py-2">
-        <div>
+        <div className="flex w-full items-end justify-between">
           <Link href={"/profile/userId"}>
             <Image
               src={data.image}
@@ -43,6 +46,15 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               className="rounded-full object-cover"
             />
           </Link>
+          {userId === userInfo.userId ? (
+            <>
+              <Button>Edit profile</Button>
+            </>
+          ) : (
+            <>
+              <Button>Add friend</Button>
+            </>
+          )}
         </div>
         <div className="flex items-center justify-center">
           <h1 className="text-2xl font-bold">{data.name}</h1>

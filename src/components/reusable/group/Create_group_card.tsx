@@ -26,7 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 
 // You need to import our styles for the button to look right. Best to import in the root /_app.tsx but this is fine
@@ -42,7 +42,7 @@ const formSchema = z.object({
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
-const Create_group_card = () => {
+const Create_group_card: FC = () => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,7 +54,9 @@ const Create_group_card = () => {
   const { toast } = useToast();
   const groupCreateGenerator = api.group.createGroup.useMutation();
 
-  const [previewImage, setPreviewImage] = useState<any>("https://github.com/shadcn.png");
+  const [previewImage, setPreviewImage] = useState<any>(
+    "https://github.com/shadcn.png"
+  );
 
   const { onClose } = useCreateGroupStore();
 
@@ -72,7 +74,7 @@ const Create_group_card = () => {
             description: "Group created successfully!",
           });
           ctx.group.getAllUserGroups.invalidate(); //refresh the rendering post section
-          onClose()
+          onClose();
         },
       }
     );
@@ -125,7 +127,7 @@ const Create_group_card = () => {
                 </FormItem>
               )}
             />
-         
+
             <FormField
               control={form.control}
               name="image"
@@ -176,7 +178,9 @@ const Create_group_card = () => {
             />
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant="destructive" onClick={()=>onClose()}>Cancel</Button>
+            <Button variant="destructive" onClick={() => onClose()}>
+              Cancel
+            </Button>
             <Button
               variant="outline"
               type="submit"

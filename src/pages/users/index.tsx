@@ -26,8 +26,13 @@ const Friends = () => {
           />
         </div>
         <div className="flex flex-col">
-          {filteredText.length > 0 &&
-            filteredUsers?.map((user) => <User user={user} />)}
+          {filteredText.length > 0 ? (
+            filteredUsers?.map((user) => <User user={user} />)
+          ) : (
+            <div className="text-center mt-5">
+              <p className="text-gray-400 font-Rubik">Try searching for people</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

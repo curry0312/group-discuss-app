@@ -1,14 +1,11 @@
+import { User } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import ArrowRightUpIcon from "~/styles/icons/ArrowRightUpIcon";
 
 type UserProps = {
-  user: {
-    id: string;
-    name: string;
-    image: string
-  };
+  user: User
 };
 
 const User = ({ user }: UserProps) => {

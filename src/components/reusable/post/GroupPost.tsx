@@ -3,6 +3,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FC } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
-import type { PostWithLikes } from "type";
+import type { PostWithLikesAndAuthor } from "type";
 
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
@@ -20,10 +21,10 @@ import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type GroupPostProps = {
-  post: PostWithLikes;
+  post: PostWithLikesAndAuthor;
 };
 
-const GroupPost = ({ post }: GroupPostProps) => {
+const GroupPost: FC<GroupPostProps> = ({ post }) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
   const ctx = api.useContext();
@@ -65,7 +66,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
       <div>
         <Link href={"/"}>
           <Image
-            src="https://github.com/shadcn.png"
+            src={post.author.image}
             alt="user-image"
             width={50}
             height={50}
@@ -80,7 +81,10 @@ const GroupPost = ({ post }: GroupPostProps) => {
           <h1 className="font-bold">Curry0312</h1>
           <span>{dayjs(post.createdAt).fromNow()}</span>
           <DropdownMenu>
-            <DropdownMenuTrigger className="ml-auto mr-2"> <MoreIcon /></DropdownMenuTrigger>
+            <DropdownMenuTrigger className="ml-auto mr-2">
+              {" "}
+              <MoreIcon />
+            </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem>Delete post</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>

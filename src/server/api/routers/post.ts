@@ -22,8 +22,9 @@ export const postRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        include:{
-          likes: true
+        include: {
+          author: true,
+          likes: true,
         },
       });
     }),
@@ -35,8 +36,9 @@ export const postRouter = createTRPCRouter({
         where: {
           groupId: input.groupId,
         },
-        include:{
-          likes: true
+        include: {
+          author: true,
+          likes: true,
         },
         orderBy: [{ createdAt: "desc" }],
       });

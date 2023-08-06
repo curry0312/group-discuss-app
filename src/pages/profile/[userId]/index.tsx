@@ -48,11 +48,11 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </Link>
           {userId === userInfo.userId ? (
             <>
-              <Button>Edit profile</Button>
+              <Button variant={"outline"}>Edit profile</Button>
             </>
           ) : (
             <>
-              <Button>Add friend</Button>
+              <Button variant={"secondary"}>Add friend</Button>
             </>
           )}
         </div>

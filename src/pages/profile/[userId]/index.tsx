@@ -15,16 +15,34 @@ import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
 import { Button } from "~/components/ui/button";
-import { useAuth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
   const { userId } = props;
+  const userInfo = useUser();
 
   const { data, isLoading } = api.user.getUser.useQuery({
     id: userId,
   });
-  const userInfo = useAuth();
+
+  const addUnCheckedFriend = api.user.addUnCheckedFriend.useMutation();
+
+  function handleAddUnCheckedFriend() {
+    addUnCheckedFriend.mutate(
+      {
+        id: userId,
+      },
+      {
+        onSuccess: (e) => {
+          console.log(`sent friend invitation to ${data?.name}`);
+          console.log(
+            `${data?.name} have an unChecked friend name's ${userInfo.user?.lastName}`
+          );
+        },
+      }
+    );
+  }
 
   if (isLoading && !userInfo.isLoaded) return <LoadingPage />;
   if (!data) return <div>404 data not found</div>;
@@ -46,13 +64,18 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               className="rounded-full object-cover"
             />
           </Link>
-          {userId === userInfo.userId ? (
+          {userId === userInfo.user?.id ? (
             <>
-              <Button variant={"outline"}>Edit profile</Button>
+              <Button variant={"outline"} className="bg-gray-800">Edit profile</Button>
             </>
           ) : (
             <>
-              <Button variant={"secondary"}>Add friend</Button>
+              <Button
+                variant={"secondary"}
+                onClick={() => handleAddUnCheckedFriend()}
+              >
+                Add friend
+              </Button>
             </>
           )}
         </div>

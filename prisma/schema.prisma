@@ -12,17 +12,19 @@ datasource db {
 }
 
 model User {
-    id           String    @id
-    name         String
-    image        String
-    friends      User[]    @relation("UserFollows")
-    friendsOf    User[]    @relation("UserFollows")
-    posts        Post[]
-    memberGroups Group[]   @relation("GroupMembers")
-    comments     Comment[]
-    likes        Like[]
-    ownerGroups  Group[]
-    createdAt    DateTime  @default(now())
+    id                 String    @id
+    name               String
+    image              String
+    friends            User[]    @relation("UserFriends")
+    friendsOf          User[]    @relation("UserFriends")
+    unCheckedFriends   User[]    @relation("UserUnCheckedFriends")
+    unCheckedFriendsOf User[]    @relation("UserUnCheckedFriends")
+    posts              Post[]
+    memberGroups       Group[]   @relation("GroupMembers")
+    comments           Comment[]
+    likes              Like[]
+    ownerGroups        Group[]
+    createdAt          DateTime  @default(now())
 }
 
 model Group {
@@ -41,14 +43,14 @@ model Group {
 }
 
 model Post {
-    id       String    @id @default(uuid())
-    content  String
-    author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-    authorId String
-    comments Comment[]
-    likes    Like[]
-    group    Group     @relation(fields: [groupId], references: [id])
-    groupId  String
+    id        String    @id @default(uuid())
+    content   String
+    author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId  String
+    comments  Comment[]
+    likes     Like[]
+    group     Group     @relation(fields: [groupId], references: [id])
+    groupId   String
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
 

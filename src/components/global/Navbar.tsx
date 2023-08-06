@@ -15,18 +15,25 @@ import HomeIcon from "~/styles/icons/HomeIcon";
 import PersonIcon from "~/styles/icons/PersonIcon";
 import { Button } from "../ui/button";
 import LoadingPage from "../reusable/loading/LoadingPage";
+import NotificationIcon from "~/styles/icons/NotificationIcon";
+import { useOpenNotification } from "~/store/useOpenNotification";
 
 const Navbar = () => {
   const { user, isLoaded, isSignedIn } = useUser();
   const a = usePathname();
   const [pathname, setPathname] = useState("/");
+  const { setIsNotificationOpen } = useOpenNotification();
   useEffect(() => {
     setPathname(a);
   }, [a]);
-  console.log("currentPath",a);
-  if(!isLoaded) return <LoadingPage />;
+  console.log("currentPath", a);
+  if (!isLoaded) return <LoadingPage />;
   return (
-    <nav className={"fixed flex w-full items-center justify-between bg-black bg-opacity-50 backdrop-blur p-4"}>
+    <nav
+      className={
+        "fixed flex w-full items-center justify-between bg-black bg-opacity-50 p-4 backdrop-blur"
+      }
+    >
       {/*nav route links*/}
       <div>
         <ul className="flex items-center gap-2">
@@ -77,10 +84,13 @@ const Navbar = () => {
         </ul>
       </div>
       {/*user profile button*/}
-      <div className="flex flex-row-reverse gap-2">
+      <div className="flex flex-row-reverse items-center gap-2">
         <Avatar>
           <AvatarImage src={user?.imageUrl} />
         </Avatar>
+        <div onClick={() => setIsNotificationOpen()}>
+          <NotificationIcon />
+        </div>
         <SignOutButton>
           <Button>Sign out</Button>
         </SignOutButton>

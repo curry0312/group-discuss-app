@@ -11,7 +11,7 @@ const Auth = () => {
     return null;
   }
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-950">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-950 z-[999]">
       <div className="flex flex-col justify-center items-center gap-2">
         <p className="font-Rubik text-xl text-white">
           Welcome to group-discuss-app

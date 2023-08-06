@@ -49,6 +49,9 @@ export const userRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        include: {
+          unCheckedFriends: true,
+        },
       });
     }),
 
@@ -56,4 +59,91 @@ export const userRouter = createTRPCRouter({
     const allUsers = await ctx.prisma.user.findMany();
     return allUsers;
   }),
+
+  getAllUnCheckedFriends: privatedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.user.findMany({
+      where: {
+        id: ctx.currentUserId,
+      },
+      select: {
+        unCheckedFriends: true,
+      },
+    });
+  }),
+
+  getAllFriends: privatedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.user.findMany({
+      where: {
+        id: ctx.currentUserId,
+      },
+      select: {
+        friends: true,
+      },
+    });
+  }),
+
+  addUnCheckedFriend: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          unCheckedFriends: {
+            connect: {
+              id: ctx.currentUserId,
+            },
+          },
+        },
+      });
+    }),
+  deleteUnCheckedFriend: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          unCheckedFriends: {
+            disconnect: {
+              id: ctx.currentUserId,
+            },
+          },
+        },
+      });
+    }),
+  addFriend: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          friends: {
+            connect: {
+              id: ctx.currentUserId,
+            },
+          },
+        },
+      });
+    }),
+  deleteFriend: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          friends: {
+            disconnect: {
+              id: ctx.currentUserId,
+            },
+          },
+        },
+      });
+    }),
 });

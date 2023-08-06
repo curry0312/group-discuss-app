@@ -45,12 +45,12 @@ const Navbar = () => {
             </TooltipProvider>
           </li>
           <li
-            className={pathname === "/friends" ? "border-b-2 border-white" : ""}
+            className={pathname === "/users" ? "border-b-2 border-white" : ""}
           >
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Link href="/friends">
+                  <Link href="/users">
                     <PersonIcon />
                   </Link>
                 </TooltipTrigger>

@@ -25,7 +25,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
-import Line from "../seperate-item/Line";
 import Image from "next/image";
 import { useState } from "react";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
@@ -105,7 +104,6 @@ const Create_group_card = () => {
                 </FormItem>
               )}
             />
-            <Line />
             <FormField
               control={form.control}
               name="public"
@@ -127,7 +125,7 @@ const Create_group_card = () => {
                 </FormItem>
               )}
             />
-            <Line />
+         
             <FormField
               control={form.control}
               name="image"

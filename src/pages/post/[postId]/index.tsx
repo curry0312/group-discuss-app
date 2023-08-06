@@ -17,11 +17,10 @@ import type {
 } from "next";
 
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
-import Line from "~/components/reusable/seperate-item/Line";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
-  const { postId, trpcState } = props;
+  const { postId } = props;
 
   const ctx = api.useContext();
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
@@ -72,7 +71,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </Link>
         <span className="text-xl font-bold">Post</span>
       </div>
-      <div className="flex gap-3 p-2">
+      <div className="flex gap-3 py-2">
         <div>
           <Link href={"/profile/userId"}>
             <Image
@@ -133,7 +132,6 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </button>
         </div>
       </div>
-      <Line />
     </main>
   );
 };

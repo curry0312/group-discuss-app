@@ -10,7 +10,7 @@ type GroupTypesProps = {
   group: Group;
 };
 
-const Group: FC<GroupTypesProps> = ({ group }) => {
+const Group = ({ group }: GroupTypesProps) => {
   dayjs.extend(relativeTime);
   return (
     <Link

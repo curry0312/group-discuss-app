@@ -1,14 +1,15 @@
-import { useState } from "react";
 import User from "~/components/reusable/user/User";
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
+import { useSearchUsersText } from "~/store/useSearchUsersText";
 
 const Friends = () => {
   const { data, isLoading } = api.user.getAllUsers.useQuery();
-  const [filteredText, setFilteredText] = useState<string>("");
+  // const [filteredText, setFilteredText] = useState<string>("");
+  const { searchUsersText, setSearchUsersText } = useSearchUsersText();
 
   const filteredUsers = data?.filter((user) => {
-    if (user.name.toLowerCase().includes(filteredText?.toLowerCase()))
+    if (user.name.toLowerCase().includes(searchUsersText?.toLowerCase()))
       return true;
     return false;
   });
@@ -20,17 +21,19 @@ const Friends = () => {
             type="email"
             placeholder="Search users..."
             className="w-[90%] bg-slate-900 text-white"
-            onChange={(e) => {
-              setFilteredText(e.target.value);
-            }}
+            onChange={setSearchUsersText}
+            value={searchUsersText}
+            defaultValue={searchUsersText || ""}
           />
         </div>
         <div className="flex flex-col">
-          {filteredText.length > 0 ? (
+          {searchUsersText.length > 0 ? (
             filteredUsers?.map((user) => <User user={user} />)
           ) : (
-            <div className="text-center mt-5">
-              <p className="text-gray-400 font-Rubik">Try searching for people</p>
+            <div className="mt-5 text-center">
+              <p className="font-Rubik text-gray-400">
+                Try searching for people
+              </p>
             </div>
           )}
         </div>

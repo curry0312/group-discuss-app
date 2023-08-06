@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import ArrowRightUpIcon from "~/styles/icons/ArrowRightUpIcon";
@@ -10,8 +11,9 @@ type UserProps = {
 
 const User = ({ user }: UserProps) => {
   return (
-    <div
+    <Link
       key={user.id}
+      href={`/profile/${user.id}`}
       className="flex items-center gap-3 font-Rubik text-white px-5 py-3 hover:bg-slate-900"
     >
       <div className="basis-1/5">
@@ -36,7 +38,7 @@ const User = ({ user }: UserProps) => {
       <div>
         <ArrowRightUpIcon />
       </div>
-    </div>
+    </Link>
   );
 };
 

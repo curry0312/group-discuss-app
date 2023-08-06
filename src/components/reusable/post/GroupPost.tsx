@@ -24,7 +24,7 @@ type GroupPostProps = {
   post: PostWithLikesAndAuthor;
 };
 
-const GroupPost: FC<GroupPostProps> = ({ post }) => {
+const GroupPost = ({ post }: GroupPostProps) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
   const ctx = api.useContext();

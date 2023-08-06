@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-interface BearState {
+interface CreateGroupStoreState {
   isCreateGroupOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
-export const useCreateGroupStore = create<BearState>()(
+export const useCreateGroupStore = create<CreateGroupStoreState>()(
   devtools(
     persist(
       (set) => ({

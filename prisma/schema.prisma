@@ -22,6 +22,7 @@ model User {
     comments     Comment[]
     likes        Like[]
     ownerGroups  Group[]
+    createdAt    DateTime  @default(now())
 }
 
 model Group {

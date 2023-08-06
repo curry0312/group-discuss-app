@@ -26,7 +26,7 @@ const Navbar = () => {
   console.log("currentPath",a);
   if(!isLoaded) return <LoadingPage />;
   return (
-    <nav className={"fixed flex w-full items-center justify-between border-b border-stone-900 bg-black bg-opacity-50 backdrop-blur p-4"}>
+    <nav className={"fixed flex w-full items-center justify-between bg-black bg-opacity-50 backdrop-blur p-4"}>
       {/*nav route links*/}
       <div>
         <ul className="flex items-center gap-2">

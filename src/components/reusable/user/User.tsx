@@ -7,6 +7,7 @@ type UserProps = {
   user: {
     id: string;
     name: string;
+    image: string
   };
 };
 
@@ -20,7 +21,7 @@ const User = ({ user }: UserProps) => {
         <div className="w-[50px] rounded-full">
           <AspectRatio ratio={1 / 1}>
             <Image
-              src={"https://github.com/shadcn.png"}
+              src={user.image}
               alt="group-image"
               fill
               priority

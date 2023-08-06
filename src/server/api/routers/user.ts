@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -14,30 +15,35 @@ export const userRouter = createTRPCRouter({
         id: ctx.currentUserId,
       },
     });
-    console.log(user)
+    console.log(user);
     //*Otherwise, make a new user in our database.
-    if (!user) {
-      const newUser = await ctx.prisma.user.create({
-        data: { id: ctx.currentUserId, name: "user" },
-      });
-      return newUser;
+    if (user) return user;
+    const clerkUser = await clerkClient.users.getUser(ctx.currentUserId);
+    if (clerkUser) {
+      if (!clerkUser.username) {
+        const newUser = await ctx.prisma.user.create({
+          data: {
+            id: ctx.currentUserId,
+            name: `${clerkUser.lastName}${clerkUser.firstName}`,
+            image: clerkUser.imageUrl,
+          },
+        });
+        return newUser;
+      } else {
+        const newUser = await ctx.prisma.user.create({
+          data: {
+            id: ctx.currentUserId,
+            name: clerkUser.username,
+            image: clerkUser.imageUrl,
+          },
+        });
+        return newUser;
+      }
     }
-    return user;
   }),
 
-  createUser: publicProcedure
-    .input(z.object({ id: z.string(), name: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      const newUser = await ctx.prisma.user.create({
-        data: { id: input.id, name: input.name },
-      });
-
-      return newUser;
-    }),
-    
   getAllUsers: publicProcedure.query(async ({ ctx }) => {
     const allUsers = await ctx.prisma.user.findMany();
-    return allUsers
+    return allUsers;
   }),
-
 });

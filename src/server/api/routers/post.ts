@@ -16,11 +16,14 @@ export const postRouter = createTRPCRouter({
     }),
 
   getPost: privatedProcedure
-    .input(z.object({ postId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.post.findFirst({
         where: {
-          id: input.postId,
+          id: input.id,
+        },
+        include:{
+          likes: true
         },
       });
     }),
@@ -32,19 +35,23 @@ export const postRouter = createTRPCRouter({
         where: {
           groupId: input.groupId,
         },
+        include:{
+          likes: true
+        },
         orderBy: [{ createdAt: "desc" }],
       });
     }),
-  getPostLikes: privatedProcedure
-    .input(z.object({ postId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.post.findUnique({
-        where: {
-          id: input.postId,
-        },
-        select:{
-          likes: true
-        }
-      });
-    }),
+
+  // getSpecificPostLikes: privatedProcedure
+  //   .input(z.object({ id: z.string() }))
+  //   .query(async ({ ctx, input }) => {
+  //     return await ctx.prisma.post.findUnique({
+  //       where: {
+  //         id: input.id,
+  //       },
+  //       select:{
+  //         likes: true
+  //       }
+  //     });
+  //   }),
 });

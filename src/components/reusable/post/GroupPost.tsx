@@ -1,4 +1,3 @@
-import type { Post } from "@prisma/client";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -13,23 +12,23 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
+import type { PostWithLikes } from "type";
+
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type GroupPostProps = {
-  post: Post;
+  post: PostWithLikes;
 };
+
 const GroupPost = ({ post }: GroupPostProps) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
   const ctx = api.useContext();
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
-  const postLikes = api.post.getPostLikes.useQuery({
-    postId: post.id,
-  });
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: post.id,
   });
@@ -125,7 +124,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
                   : "transition duration-100"
               }
             />
-            <span>{postLikes.data?.likes.length}</span>
+            <span>{post.likes.length}</span>
           </button>
         </div>
       </div>

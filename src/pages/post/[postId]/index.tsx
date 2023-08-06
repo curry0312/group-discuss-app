@@ -1,31 +1,37 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
 import CommentIcon from "~/styles/icons/CommentIcon";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { api } from "~/utils/api";
 import HeartIcon from "~/styles/icons/HeartIcon";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
+
+import Image from "next/image";
+import Link from "next/link";
+import { api } from "~/utils/api";
+import generateSSGHelper from "~/utils/generateSSGHelper";
+import type {
+  GetServerSidePropsContext,
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from "next";
+
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import Line from "~/components/reusable/seperate-item/Line";
 
-const PostPage = () => {
+const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
-  const router = useRouter();
+  const { postId, trpcState } = props;
 
   const ctx = api.useContext();
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
-  
+
   const { data, isLoading } = api.post.getPost.useQuery({
-    postId: String(router.query.postId),
-  });
-  const postLikes = api.post.getPostLikes.useQuery({
-    postId: String(router.query.postId),
+    id: postId,
   });
   const isUserLikePost = api.like.isUserLikePost.useQuery({
-    postId: String(router.query.postId),
+    postId: postId,
   });
 
   function handleCommentToggle() {}
@@ -33,24 +39,24 @@ const PostPage = () => {
     if (isUserLikePost.data) {
       postUnLikeGenerator.mutate(
         {
-          postId: String(router.query.postId),
+          postId: postId,
         },
         {
           onSuccess: () => {
             ctx.like.invalidate();
-            ctx.post.invalidate()
+            ctx.post.invalidate();
           },
         }
       );
     } else {
       postLikeGenerator.mutate(
         {
-          postId: String(router.query.postId),
+          postId: postId,
         },
         {
           onSuccess: () => {
             ctx.like.invalidate();
-            ctx.post.invalidate()
+            ctx.post.invalidate();
           },
         }
       );
@@ -91,6 +97,7 @@ const PostPage = () => {
             alt="post-image"
             width={200}
             height={200}
+            priority
           />
         </div>
 
@@ -100,7 +107,7 @@ const PostPage = () => {
             <p>Comments</p>
           </div>
           <div className="flex items-center gap-2">
-            <span>{postLikes.data?.likes.length}</span>
+            <span>{data?.likes.length}</span>
             <p>likes</p>
           </div>
         </div>
@@ -132,3 +139,30 @@ const PostPage = () => {
 };
 
 export default PostPage;
+
+export async function getStaticProps(
+  context: GetServerSidePropsContext<{ postId: string }>
+) {
+  const helpers = generateSSGHelper();
+  const postId = context.params?.postId as string;
+  if (typeof postId !== "string") throw new Error("no post");
+  // prefetch `post.getPosts`
+  await helpers.post.getPost.prefetch({ id: postId });
+    // prefetch `like.isUserLikePost`
+  await helpers.like.isUserLikePost.prefetch({ postId: postId });
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+      postId,
+    },
+    revalidate: 1,
+  };
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking
+    fallback: "blocking",
+  };
+};

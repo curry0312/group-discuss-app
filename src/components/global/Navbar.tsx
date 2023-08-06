@@ -1,4 +1,3 @@
-"use client"
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

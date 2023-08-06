@@ -5,13 +5,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-import RenderingGroupPosts from "~/components/Home/RenderingGroupPosts";
+import RenderingGroupPosts from "~/pages/post/[postId]/RenderingGroupPosts";
 
 const formSchema = z.object({
   content: z.string().min(1, "You can't post empty content!"),
 });
-
 type FormSchemaType = z.infer<typeof formSchema>;
+
 
 const GroupPage = () => {
   const { register, handleSubmit, reset } = useForm<FormSchemaType>({
@@ -33,7 +33,7 @@ const GroupPage = () => {
         onSuccess: () => {
           reset();
         },
-      }
+      },
     );
   };
 

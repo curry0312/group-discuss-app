@@ -1,13 +1,18 @@
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import GroupPost from "../reusable/post/GroupPost";
-import GroupPost_skeleton from "../reusable/post/GroupPost_skeleton";
+import GroupPost from "../../../components/reusable/post/GroupPost";
+import GroupPost_skeleton from "../../../components/reusable/post/GroupPost_skeleton";
 
 const RenderingGroupPosts = () => {
   const router = useRouter();
   const { data, isLoading } = api.post.getAllGroupPosts.useQuery({
     groupId: String(router.query.groupId),
-  });
+  },
+  {
+    enabled: !!router.query.groupId,
+    refetchInterval: 3000
+  }
+  );
   if(isLoading) return (
     <div>
       {Array.from(Array(8))?.map((_,i) => (

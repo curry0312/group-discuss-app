@@ -6,7 +6,7 @@ import Head from "next/head";
 
 import GroupUserIcon from "~/styles/icons/GroupUserIcon";
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
-import RenderingGroups from "~/components/Home/RenderingGroups";
+import RenderingGroups from "~/pages/group/[groupId]/RenderingGroups";
 import { Input } from "~/components/ui/input";
 import Create_group_card_page from "~/components/reusable/group/Create_group_card_page";
 import { useCreateGroupStore } from "~/store/useCreateGroupStore";

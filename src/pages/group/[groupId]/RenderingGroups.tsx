@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
-import Group from "../reusable/group/Group";
-import Group_skeleton from "../reusable/group/Group_skeleton";
+import Group from "../../../components/reusable/group/Group";
+import Group_skeleton from "../../../components/reusable/group/Group_skeleton";
 
 const RenderingGroups = () => {
   const { data, isLoading } = api.group.getAllUserGroups.useQuery();

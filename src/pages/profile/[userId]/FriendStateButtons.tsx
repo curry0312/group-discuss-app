@@ -15,7 +15,7 @@ type FriendStateButtonsPropsType = {
 const FriendStateButtons = ({
   profileUserInfo,
 }: FriendStateButtonsPropsType) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const ctx = api.useContext();
 
   const isInUncheckedRelationship = api.user.isInUncheckedRelationship.useQuery(
@@ -107,7 +107,7 @@ const FriendStateButtons = ({
       </Button>
     );
   }
-  if (profileUserInfo.id === user?.id) {
+  if (!!isLoaded && profileUserInfo.id === user?.id) {
     return (
       <Button
         onClick={() => handleSendFriendRequest()}

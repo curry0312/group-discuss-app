@@ -22,7 +22,7 @@ const Navbar = () => {
   const { user, isLoaded, isSignedIn } = useUser();
   const a = usePathname();
   const [pathname, setPathname] = useState("/");
-  const { setIsNotificationOpen } = useOpenNotification();
+  const { isNotificationOpen, setIsNotificationOpen } = useOpenNotification();
   useEffect(() => {
     setPathname(a);
   }, [a]);
@@ -88,7 +88,7 @@ const Navbar = () => {
         <Avatar>
           <AvatarImage src={user?.imageUrl} />
         </Avatar>
-        <div onClick={() => setIsNotificationOpen()}>
+        <div onClick={() => setIsNotificationOpen(!isNotificationOpen)}>
           <NotificationIcon />
         </div>
         <SignOutButton>

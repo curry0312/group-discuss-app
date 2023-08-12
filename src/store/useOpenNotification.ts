@@ -3,7 +3,7 @@ import { devtools, persist } from "zustand/middleware";
 
 interface OpenNotification {
   isNotificationOpen: boolean;
-  setIsNotificationOpen: () => void;
+  setIsNotificationOpen: (by: boolean) => void;
 }
 
 export const useOpenNotification = create<OpenNotification>()(
@@ -11,10 +11,9 @@ export const useOpenNotification = create<OpenNotification>()(
     persist(
       (set) => ({
         isNotificationOpen: false,
-        setIsNotificationOpen: () =>
+        setIsNotificationOpen: (by) =>
           set((state) => ({
-            isNotificationOpen: (state.isNotificationOpen =
-              !state.isNotificationOpen),
+            isNotificationOpen: (state.isNotificationOpen = by),
           })),
       }),
       {

@@ -14,37 +14,17 @@ import type {
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
-import { Button } from "~/components/ui/button";
-import { useUser } from "@clerk/nextjs";
+import FriendStateButtons from "./FriendStateButtons";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
-  const { userId } = props;
-  const userInfo = useUser();
+
 
   const { data, isLoading } = api.user.getUser.useQuery({
-    id: userId,
+    id: props.userId,
   });
 
-  const addUnCheckedFriend = api.user.addUnCheckedFriend.useMutation();
-
-  function handleAddUnCheckedFriend() {
-    addUnCheckedFriend.mutate(
-      {
-        id: userId,
-      },
-      {
-        onSuccess: (e) => {
-          console.log(`sent friend invitation to ${data?.name}`);
-          console.log(
-            `${data?.name} have an unChecked friend name's ${userInfo.user?.lastName}`
-          );
-        },
-      }
-    );
-  }
-
-  if (isLoading && !userInfo.isLoaded) return <LoadingPage />;
+  if (isLoading) return <LoadingPage />;
   if (!data) return <div>404 data not found</div>;
   return (
     <main className="min-h-screen bg-gray-950 p-3 pt-24 text-white">
@@ -62,22 +42,12 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               width={100}
               height={100}
               className="rounded-full object-cover"
+              priority
             />
           </Link>
-          {userId === userInfo.user?.id ? (
-            <>
-              <Button variant={"outline"} className="bg-gray-800">Edit profile</Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant={"secondary"}
-                onClick={() => handleAddUnCheckedFriend()}
-              >
-                Add friend
-              </Button>
-            </>
-          )}
+          <FriendStateButtons
+            profileUserInfo={data}
+          />
         </div>
         <div className="flex items-center justify-center">
           <h1 className="text-2xl font-bold">{data.name}</h1>

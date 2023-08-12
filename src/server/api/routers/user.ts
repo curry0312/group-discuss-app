@@ -60,6 +60,17 @@ export const userRouter = createTRPCRouter({
     return allUsers;
   }),
 
+  getAllFriends: privatedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.user.findMany({
+      where: {
+        id: ctx.currentUserId,
+      },
+      select: {
+        friends: true,
+      },
+    });
+  }),
+
   getAllUnCheckedFriends: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.user.findMany({
       where: {
@@ -71,16 +82,74 @@ export const userRouter = createTRPCRouter({
     });
   }),
 
-  getAllFriends: privatedProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.user.findMany({
+  isInUncheckedRelationship: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const unCheckedFriend = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.currentUserId,
+          unCheckedFriends: {
+            some: {
+              id: input.id,
+            },
+          },
+        },
+      });
+      const unCheckedFriendOf = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.currentUserId,
+          unCheckedFriendsOf: {
+            some: {
+              id: input.id,
+            },
+          },
+        },
+      });
+      if (unCheckedFriend || unCheckedFriendOf) return true;
+      return false;
+    }),
+
+  isCurrentUserUncheckedFriend: privatedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const isCurrentUserUncheckedFriendOf = await ctx.prisma.user.findFirst({
       where: {
         id: ctx.currentUserId,
-      },
-      select: {
-        friends: true,
+        unCheckedFriends: {
+          some: {
+            id: input.id,
+          },
+        },
       },
     });
+    if(!isCurrentUserUncheckedFriendOf) return true;
+    return false;
   }),
+
+  isInFriendRelationship: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const friend = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.currentUserId,
+          friends: {
+            some: {
+              id: input.id,
+            },
+          },
+        },
+      });
+      const friendOf = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.currentUserId,
+          friendsOf: {
+            some: {
+              id: input.id,
+            },
+          },
+        },
+      });
+      if (friend || friendOf) return true;
+      return false;
+    }),
 
   addUnCheckedFriend: privatedProcedure
     .input(z.object({ id: z.string() }))
@@ -103,12 +172,12 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.user.update({
         where: {
-          id: input.id,
+          id: ctx.currentUserId,
         },
         data: {
           unCheckedFriends: {
             disconnect: {
-              id: ctx.currentUserId,
+              id: input.id,
             },
           },
         },

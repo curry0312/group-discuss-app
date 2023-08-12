@@ -7,7 +7,7 @@ import LoadingSpinner from "../reusable/loading/LoadingSpinner";
 const Notification = () => {
   const { data, isLoading } = api.user.getAllUnCheckedFriends.useQuery();
   console.log("allUnCheckedFriends", data);
-  const { isNotificationOpen } = useOpenNotification();
+  const { isNotificationOpen, setIsNotificationOpen } = useOpenNotification();
   if (isLoading)
     return (
       <div className="fixed inset-0 z-[999] flex items-center justify-center bg-white">
@@ -31,6 +31,7 @@ const Notification = () => {
               key={unCheckedFriend.id}
               href={`/profile/${unCheckedFriend.id}`}
               className="flex items-start gap-3 p-4 hover:bg-blue-100"
+              onClick={() => setIsNotificationOpen(!isNotificationOpen)}
             >
               <div>
                 <Image

@@ -14,7 +14,7 @@ import type {
 import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
-import FriendStateButtons from "./FriendStateButtons";
+import FriendStateButtons from "~/components/reusable/profile/FriendStateButtons";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
@@ -45,9 +45,9 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               priority
             />
           </Link>
-          {/* <FriendStateButtons
+          <FriendStateButtons
             profileUserInfo={data}
-          /> */}
+          />
         </div>
         <div className="flex items-center justify-center">
           <h1 className="text-2xl font-bold">{data.name}</h1>

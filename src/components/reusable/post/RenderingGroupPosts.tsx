@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
-import GroupPost from "../../../components/reusable/post/GroupPost";
-import GroupPost_skeleton from "../../../components/reusable/post/GroupPost_skeleton";
+import GroupPost from "./GroupPost";
+import GroupPost_skeleton from "./GroupPost_skeleton";
 
 type RenderingGroupPostsPropsType = {
   groupId: string;

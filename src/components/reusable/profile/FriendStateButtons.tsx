@@ -1,7 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/router";
 import { Button } from "~/components/ui/button";
 import AddFriendsToGroupIcon from "~/styles/icons/AddUserIcon";
 import CheckedIcon from "~/styles/icons/CheckedIcon";

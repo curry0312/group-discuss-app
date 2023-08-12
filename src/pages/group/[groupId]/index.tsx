@@ -4,8 +4,7 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import RenderingGroupPosts from "~/pages/post/[postId]/RenderingGroupPosts";
+import RenderingGroupPosts from "~/components/reusable/post/RenderingGroupPosts";
 import { Input } from "~/components/ui/input";
 import AddFriendsToGroupIcon from "~/styles/icons/AddUserIcon";
 import {

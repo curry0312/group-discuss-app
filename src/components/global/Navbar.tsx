@@ -17,85 +17,93 @@ import { Button } from "../ui/button";
 import LoadingPage from "../reusable/loading/LoadingPage";
 import NotificationIcon from "~/styles/icons/NotificationIcon";
 import { useOpenNotification } from "~/store/useOpenNotification";
+import Notification from "./Notification";
 
 const Navbar = () => {
   const { user, isLoaded, isSignedIn } = useUser();
-  const a = usePathname();
+  const currentPath = usePathname();
   const [pathname, setPathname] = useState("/");
   const { isNotificationOpen, setIsNotificationOpen } = useOpenNotification();
   useEffect(() => {
-    setPathname(a);
-  }, [a]);
-  console.log("currentPath", a);
+    setPathname(currentPath);
+  }, [currentPath]);
+  console.log(pathname);
   if (!isLoaded) return <LoadingPage />;
   return (
-    <nav
-      className={
-        "fixed flex w-full items-center justify-between bg-black bg-opacity-50 p-4 backdrop-blur"
-      }
-    >
-      {/*nav route links*/}
-      <div>
-        <ul className="flex items-center gap-2">
-          <li className={pathname === "/" ? "border-b-2 border-white" : ""}>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link href="/">
-                    <HomeIcon />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Home</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </li>
-          <li
-            className={pathname === "/users" ? "border-b-2 border-white" : ""}
-          >
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link href="/users">
-                    <PersonIcon />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Friends</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </li>
-          <li className={pathname === "/chat" ? "border-b-2 border-white" : ""}>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link href="/chat">
-                    <ChatIcon />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Groups</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </li>
-        </ul>
-      </div>
-      {/*user profile button*/}
-      <div className="flex flex-row-reverse items-center gap-2">
-        <Avatar>
-          <AvatarImage src={user?.imageUrl} />
-        </Avatar>
-        <div onClick={() => setIsNotificationOpen(!isNotificationOpen)}>
-          <NotificationIcon />
+    <>
+      <nav
+        className={
+          pathname !== "/auth" && !pathname.includes("/sign-in")
+            ? "fixed flex w-full items-center justify-between bg-black bg-opacity-50 p-4 backdrop-blur"
+            : "hidden"
+        }
+      >
+        {/*nav route links*/}
+        <div>
+          <ul className="flex items-center gap-2">
+            <li className={pathname === "/" ? "border-b-2 border-white" : ""}>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link href="/">
+                      <HomeIcon />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Home</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+            <li
+              className={pathname === "/users" ? "border-b-2 border-white" : ""}
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link href="/users">
+                      <PersonIcon />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Friends</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+            <li
+              className={pathname === "/chat" ? "border-b-2 border-white" : ""}
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link href="/chat">
+                      <ChatIcon />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Groups</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+          </ul>
         </div>
-        <SignOutButton>
-          <Button>Sign out</Button>
-        </SignOutButton>
-      </div>
-    </nav>
+        {/*user profile button*/}
+        <div className="flex flex-row-reverse items-center gap-2">
+          <Avatar>
+            <AvatarImage src={user?.imageUrl} />
+          </Avatar>
+          <div onClick={() => setIsNotificationOpen(!isNotificationOpen)}>
+            <NotificationIcon />
+          </div>
+          <SignOutButton>
+            <Button>Sign out</Button>
+          </SignOutButton>
+        </div>
+      </nav>
+      {isSignedIn == true && <Notification />}
+    </>
   );
 };
 

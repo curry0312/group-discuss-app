@@ -10,7 +10,13 @@ const Notification = () => {
   const { isNotificationOpen, setIsNotificationOpen } = useOpenNotification();
   if (isLoading)
     return (
-      <div className="fixed inset-0 z-[999] flex items-center justify-center bg-white">
+      <div
+        className={
+          isNotificationOpen == true
+            ? "absolute inset-0  top-[86px] z-[999] h-screen bg-white  duration-200 ease-in-out"
+            : "absolute inset-0  top-[86px] z-[999] h-0 overflow-hidden bg-white  duration-200 ease-in-out"
+        }
+      >
         <LoadingSpinner />
       </div>
     );

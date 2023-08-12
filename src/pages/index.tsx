@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import { useUser } from "@clerk/nextjs";
+import { RedirectToSignIn, SignedOut, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import Head from "next/head";

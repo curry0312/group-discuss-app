@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/nextjs";
+import { User } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "~/components/ui/button";
@@ -9,7 +10,7 @@ import MinusUser from "~/styles/icons/MinusUserIcon";
 import { api } from "~/utils/api";
 
 type FriendStateButtonsPropsType = {
-  profileUserInfo: any;
+  profileUserInfo: User;
 };
 const FriendStateButtons = ({
   profileUserInfo,
@@ -63,13 +64,14 @@ const FriendStateButtons = ({
       });
   }
 
-  if (isInUncheckedRelationship.isLoading || isInFriendRelationship.isLoading)
+  if (isInUncheckedRelationship.isLoading || isInFriendRelationship.isLoading) {
     return (
       <Button disabled>
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         Please wait
       </Button>
     );
+  }
   if (isInUncheckedRelationship.data) {
     if (!isCurrentUserUncheckedFriend.data) {
       return (
@@ -82,16 +84,17 @@ const FriendStateButtons = ({
           <span>Confirm</span>
         </Button>
       );
+    } else {
+      return (
+        <Button
+          onClick={() => handleConfirmFriendRequest()}
+          className="flex items-center gap-1 bg-gray-800"
+        >
+          <MinusUser />
+          <span>Cancel Ruquest</span>
+        </Button>
+      );
     }
-    return (
-      <Button
-        onClick={() => handleConfirmFriendRequest()}
-        className="flex items-center gap-1 bg-gray-800"
-      >
-        <MinusUser />
-        <span>Cancel Ruquest</span>
-      </Button>
-    );
   }
   if (isInFriendRelationship.data) {
     return (

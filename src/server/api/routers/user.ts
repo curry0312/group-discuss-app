@@ -49,9 +49,6 @@ export const userRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        include: {
-          unCheckedFriends: true,
-        },
       });
     }),
 

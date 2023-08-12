@@ -45,9 +45,9 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               priority
             />
           </Link>
-          <FriendStateButtons
+          {/* <FriendStateButtons
             profileUserInfo={data}
-          />
+          /> */}
         </div>
         <div className="flex items-center justify-center">
           <h1 className="text-2xl font-bold">{data.name}</h1>

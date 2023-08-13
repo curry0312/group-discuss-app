@@ -5,8 +5,9 @@
 @tailwind utilities;
 
 body {
-  overscroll-behavior: none;
+  /* overscroll-behavior: none; */
   overflow-x: hidden;
+  @apply bg-gray-950
 }
 
 @layer base {

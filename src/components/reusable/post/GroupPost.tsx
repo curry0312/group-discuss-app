@@ -78,7 +78,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex items-center gap-2">
           <h1 className="font-bold">Curry0312</h1>
-          <span>{dayjs(post.createdAt).fromNow()}</span>
+          <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto mr-2">
               <MoreIcon />
@@ -122,8 +122,8 @@ const GroupPost = ({ post }: GroupPostProps) => {
             <HeartIcon
               className={
                 isUserLikePost.data
-                  ? "text-red-500 transition duration-100"
-                  : "transition duration-100"
+                  ? "text-red-500 transition duration-200"
+                  : "transition duration-200"
               }
             />
             <span>{post.likes.length}</span>

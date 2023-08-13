@@ -13,6 +13,12 @@ import {
   InferGetStaticPropsType,
 } from "next";
 import generateSSGHelper from "~/utils/generateSSGHelper";
+import { PlusIcon } from "lucide-react";
+import { useState } from "react";
+import CloseIcon from "~/styles/icons/CloseIcon";
+import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import { useUser } from "@clerk/nextjs";
+import PictureIcon from "~/styles/icons/PictureIcon";
 
 const formSchema = z.object({
   content: z.string().min(1, "You can't post empty content!"),
@@ -20,10 +26,13 @@ const formSchema = z.object({
 type FormSchemaType = z.infer<typeof formSchema>;
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { user } = useUser();
 
   const { register, handleSubmit, reset } = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
   });
+
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 
   const postCreateGenerator = api.post.createPost.useMutation();
 
@@ -43,34 +52,77 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-[86px] text-white">
-      <div className="flex">
-        <button
-          className="flex flex-1 items-center justify-center gap-2 text-white hover:bg-gray-800"
-          onClick={() => {}}
-        >
-          <AddFriendsToGroupIcon />
-          <span className="font-Rubik">Invite</span>
-        </button>
-        <div className="flex flex-1 items-center justify-center">
-          <Input
-            type="email"
-            placeholder="Search..."
-            className="h-[90%] bg-slate-900 text-white"
-          />
+    <>
+      <div className={"min-h-screen bg-gray-950 pt-[86px] text-white"}>
+        <div className="flex">
+          <button
+            className="flex flex-1 items-center justify-center gap-2 text-white hover:bg-gray-800"
+            onClick={() => {}}
+          >
+            <AddFriendsToGroupIcon />
+            <span className="font-Rubik">Invite</span>
+          </button>
+          <div className="flex flex-1 items-center justify-center">
+            <Input
+              type="email"
+              placeholder="Search..."
+              className="h-[90%] bg-slate-900 text-white"
+            />
+          </div>
         </div>
+        <RenderingGroupPosts groupId={props.groupId} />
+        <button
+          onClick={() => setIsCreatePostOpen(true)}
+          className="fixed bottom-5 right-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 hover:scale-110"
+        >
+          <PlusIcon className="h-8 w-8 text-white" />
+        </button>
       </div>
-      <RenderingGroupPosts groupId={props.groupId}/>
-      <div className="fixed bottom-0 w-full bg-black bg-opacity-60 backdrop-blur">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2">
-          <Textarea
-            {...register("content")}
-            placeholder="Type your post content here."
-          />
-          <Button type="submit">Post</Button>
+
+      <div
+        className={
+          isCreatePostOpen === true
+            ? "fixed inset-0 bg-black bg-opacity-60 backdrop-blur"
+            : "fixed bg-black bg-opacity-60 backdrop-blur"
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="">
+          <div className="flex items-center justify-between px-4 py-4">
+            <button
+              onClick={() => setIsCreatePostOpen(false)}
+              className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-500"
+            >
+              <CloseIcon />
+            </button>
+            <Button variant={"outline"} type="submit">
+              Post
+            </Button>
+          </div>
+          <div>
+            <div className="pl-4">
+              <Avatar>
+                <AvatarImage src={user?.imageUrl} />
+              </Avatar>
+            </div>
+            <div className="p-2">
+              <Textarea
+                {...register("content")}
+                rows={6}
+                placeholder="What you like to say now?"
+                className="mt-2 resize-none border-none text-white outline-none ring-0 focus:outline-none"
+              />
+            </div>
+            {/*post image feature*/}
+            {/* <div className="flex items-center justify-around">
+              <input type="file" id="picture" className="hidden"/>
+              <label htmlFor="picture">
+                <PictureIcon />
+              </label>
+            </div> */}
+          </div>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 

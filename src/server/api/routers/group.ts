@@ -21,10 +21,28 @@ export const groupRouter = createTRPCRouter({
       });
       return newGroup;
     }),
-  getAllUserGroups: privatedProcedure.query(async ({ ctx }) => {
+  getAllUserOwnerGroups: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.group.findMany({
-      where: { ownerId: ctx.currentUserId },
-      take: 10,
+      where: { 
+        ownerId: ctx.currentUserId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      }
+    });
+  }),
+  getAllUserMemberGroups: privatedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.group.findMany({
+      where: { 
+        members: {
+          some: {
+            id: ctx.currentUserId,
+          },
+        }
+      },
+      orderBy: {
+        createdAt: "desc",
+      }
     });
   }),
 

@@ -4,7 +4,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
-import { FC } from "react";
+import { useUser } from "@clerk/nextjs";
 
 type GroupTypesProps = {
   group: Group;
@@ -12,6 +12,7 @@ type GroupTypesProps = {
 
 const Group = ({ group }: GroupTypesProps) => {
   dayjs.extend(relativeTime);
+  const {user} = useUser()
   return (
     <Link
       href={`/group/${group.id}`}
@@ -37,6 +38,7 @@ const Group = ({ group }: GroupTypesProps) => {
       <div className="flex basis-3/4 flex-col justify-center">
         <p className="text-xl">{group.name}</p>
         <p>created {dayjs(group.createdAt).fromNow()}</p>
+        <p className="text-xs text-amber-400">{group.ownerId == user?.id && "Owner"}</p>
       </div>
     </Link>
   );

@@ -3,8 +3,10 @@ import Group from "./Group";
 import Group_skeleton from "./Group_skeleton";
 
 const RenderingGroups = () => {
-  const { data, isLoading } = api.group.getAllUserGroups.useQuery();
-  if (isLoading)
+  const ownerGroup = api.group.getAllUserOwnerGroups.useQuery();
+  const memberGroup = api.group.getAllUserMemberGroups.useQuery();
+  console.log(ownerGroup.data)
+  if (ownerGroup.isLoading || memberGroup.isLoading)
     return (
       <div className="flex flex-col gap-3 px-4 py-2">
         {Array.from({ length: 5 }).map((_, i) => (
@@ -14,7 +16,10 @@ const RenderingGroups = () => {
     );
   return (
     <div className="flex flex-col">
-      {data?.map((group) => {
+      {ownerGroup.data?.map((group) => {
+        return <Group key={group.id} group={group} />;
+      })}
+      {memberGroup.data?.map((group) => {
         return <Group key={group.id} group={group} />;
       })}
     </div>

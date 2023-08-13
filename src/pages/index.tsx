@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Head from "next/head";
 
 import GroupUserIcon from "~/styles/icons/GroupUserIcon";
-import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import RenderingGroups from "~/components/reusable/group/RenderingGroups";
 import { Input } from "~/components/ui/input";
 import Create_group_card_page from "~/components/reusable/group/Create_group_card_page";
@@ -23,7 +22,6 @@ export default function Home() {
     router.push("/auth");
     return null;
   }
-  // if (!isLoaded) return <LoadingPage />;
   return (
     <>
       <Head>

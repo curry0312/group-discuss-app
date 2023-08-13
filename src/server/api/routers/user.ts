@@ -58,14 +58,34 @@ export const userRouter = createTRPCRouter({
   }),
 
   getAllFriends: privatedProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.user.findMany({
+    const friends =  await ctx.prisma.user.findMany({
       where: {
         id: ctx.currentUserId,
       },
       select: {
         friends: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      }
     });
+
+    return friends;
+  }),
+
+  getAllFriendsOf: privatedProcedure.query(async ({ ctx }) => {
+    const friendsOf =  await ctx.prisma.user.findMany({
+      where: {
+        id: ctx.currentUserId,
+      },
+      select: {
+        friendsOf: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      }
+    });
+    return friendsOf;
   }),
 
   getAllUnCheckedFriends: privatedProcedure.query(async ({ ctx }) => {

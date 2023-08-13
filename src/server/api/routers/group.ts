@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { createTRPCRouter, privatedProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  privatedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const groupRouter = createTRPCRouter({
   createGroup: privatedProcedure
     .input(
-      z.object({ name: z.string(), public: z.boolean(), image:z.string() })
+      z.object({ name: z.string(), public: z.boolean(), image: z.string() })
     )
     .mutation(async ({ ctx, input }) => {
       const newGroup = await ctx.prisma.group.create({
@@ -12,15 +16,32 @@ export const groupRouter = createTRPCRouter({
           name: input.name,
           ownerId: ctx.currentUserId,
           public: input.public,
-          image: input.image
+          image: input.image,
         },
       });
       return newGroup;
     }),
-    getAllUserGroups: privatedProcedure.query(async ({ ctx }) => {
-      return await ctx.prisma.group.findMany({
-        where:{ownerId: ctx.currentUserId},
-        take: 10
+  getAllUserGroups: privatedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.group.findMany({
+      where: { ownerId: ctx.currentUserId },
+      take: 10,
+    });
+  }),
+
+  inviteFriendToGroup: privatedProcedure
+    .input(z.object({ id: z.string(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.group.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          members: {
+            connect: {
+              id: input.userId,
+            }
+          }
+        },
       });
-    })
+    }),
 });

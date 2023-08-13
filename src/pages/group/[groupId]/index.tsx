@@ -1,4 +1,3 @@
-import { z } from "zod";
 import RenderingGroupPosts from "~/components/reusable/post/RenderingGroupPosts";
 import { Input } from "~/components/ui/input";
 import AddFriendsToGroupIcon from "~/styles/icons/AddUserIcon";
@@ -11,10 +10,12 @@ import generateSSGHelper from "~/utils/generateSSGHelper";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import CreateGroupPost from "~/components/reusable/post/CreateGroupPost";
+import InViteFriendToGroup from "~/components/reusable/group/InviteFriendToGroup";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  const [isInviteFriendToGroupOpen, setIsInviteFriendToGroupOpen] = useState(false);
 
   return (
     <>
@@ -22,7 +23,7 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <div className="flex">
           <button
             className="flex flex-1 items-center justify-center gap-2 text-white hover:bg-gray-800"
-            onClick={() => {}}
+            onClick={() => {setIsInviteFriendToGroupOpen(true)}}
           >
             <AddFriendsToGroupIcon />
             <span className="font-Rubik">Invite</span>
@@ -44,6 +45,8 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </button>
       </div>
 
+      {/* InViteFriendToGroup */}
+      <InViteFriendToGroup isInviteFriendToGroupOpen={isInviteFriendToGroupOpen} setIsInviteFriendToGroupOpen={setIsInviteFriendToGroupOpen} groupId={props.groupId}/>
       {/* CreateGroupPost */}
       <CreateGroupPost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} groupId={props.groupId}/>
     </>

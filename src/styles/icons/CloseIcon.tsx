@@ -1,12 +1,16 @@
-import React from "react";
+import { twMerge } from 'tailwind-merge'
 
-const CloseIcon = () => {
+type CloseIconPropsType = {
+  className?: string
+}
+
+const CloseIcon = ({className=""}: CloseIconPropsType) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="h-6 w-6 text-white"
+      className={twMerge(`h-6 w-6 cursor-pointer`,className)}
     >
       <path
         fillRule="evenodd"

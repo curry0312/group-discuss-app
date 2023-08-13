@@ -13,8 +13,8 @@ const Notification = () => {
       <div
         className={
           isNotificationOpen == true
-            ? "absolute inset-0  top-[86px] z-[999] h-screen bg-white  duration-200 ease-in-out"
-            : "absolute inset-0  top-[86px] z-[999] h-0 overflow-hidden bg-white  duration-200 ease-in-out"
+            ? "absolute inset-0  top-[86px] z-[999] flex justify-center items-center h-screen bg-white  duration-200 ease-in-out"
+            : "absolute inset-0  top-[86px] z-[999] flex justify-center items-center h-0 overflow-hidden bg-white  duration-200 ease-in-out"
         }
       >
         <LoadingSpinner />

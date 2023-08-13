@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import { RedirectToSignIn, SignedOut, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import Head from "next/head";
@@ -23,7 +23,7 @@ export default function Home() {
     router.push("/auth");
     return null;
   }
-  if (!isLoaded) return <LoadingPage />;
+  // if (!isLoaded) return <LoadingPage />;
   return (
     <>
       <Head>

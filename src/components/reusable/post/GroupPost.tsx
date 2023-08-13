@@ -3,7 +3,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,7 +81,6 @@ const GroupPost = ({ post }: GroupPostProps) => {
           <span>{dayjs(post.createdAt).fromNow()}</span>
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto mr-2">
-              {" "}
               <MoreIcon />
             </DropdownMenuTrigger>
             <DropdownMenuContent>

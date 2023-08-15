@@ -13,21 +13,13 @@ import CreateGroupPost from "~/components/reusable/post/CreateGroupPost";
 import InViteFriendToGroup from "~/components/reusable/group/InviteFriendToGroup";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-  const [isInviteFriendToGroupOpen, setIsInviteFriendToGroupOpen] = useState(false);
 
   return (
     <>
       <div className={"min-h-screen bg-gray-950 pt-[86px] text-white"}>
         <div className="flex">
-          <button
-            className="flex flex-1 items-center justify-center gap-2 text-white hover:bg-gray-800"
-            onClick={() => {setIsInviteFriendToGroupOpen(true)}}
-          >
-            <AddFriendsToGroupIcon />
-            <span className="font-Rubik">Invite</span>
-          </button>
+          <InViteFriendToGroup groupId={props.groupId} />
           <div className="flex flex-1 items-center justify-center">
             <Input
               type="email"
@@ -37,18 +29,19 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
         <RenderingGroupPosts groupId={props.groupId} />
-        <button
-          onClick={() => setIsCreatePostOpen(true)}
-          className="fixed bottom-5 right-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 hover:scale-110"
-        >
-          <PlusIcon className="h-8 w-8 text-white" />
-        </button>
       </div>
+      <button
+        onClick={() => setIsCreatePostOpen(true)}
+        className="fixed bottom-5 right-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 hover:scale-110"
+      >
+        <PlusIcon className="h-8 w-8 text-white" />
+      </button>
 
-      {/* InViteFriendToGroup */}
-      <InViteFriendToGroup isInviteFriendToGroupOpen={isInviteFriendToGroupOpen} setIsInviteFriendToGroupOpen={setIsInviteFriendToGroupOpen} groupId={props.groupId}/>
-      {/* CreateGroupPost */}
-      <CreateGroupPost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} groupId={props.groupId}/>
+      <CreateGroupPost
+        isCreatePostOpen={isCreatePostOpen}
+        setIsCreatePostOpen={setIsCreatePostOpen}
+        groupId={props.groupId}
+      />
     </>
   );
 };

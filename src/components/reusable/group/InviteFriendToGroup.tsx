@@ -1,62 +1,103 @@
-import { group } from "console";
-import CloseIcon from "~/styles/icons/CloseIcon";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandList,
+} from "~/components/ui/command";
+
 import { api } from "~/utils/api";
-import LoadingSpinner from "../loading/LoadingSpinner";
 import InviteEachFriend from "./InviteEachFriend";
+import { useState } from "react";
+import { User } from "@prisma/client";
 
 type InViteFriendToGroupPropsType = {
-  isInviteFriendToGroupOpen: boolean;
-  setIsInviteFriendToGroupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   groupId: string;
 };
 
-const InViteFriendToGroup = ({
-  isInviteFriendToGroupOpen,
-  setIsInviteFriendToGroupOpen,
-  groupId
-}: InViteFriendToGroupPropsType) => {
+const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
+  const [selectFriends, setSelectFriends] = useState<User[]>([])
   const friends = api.user.getAllFriends.useQuery();
   const friendsOf = api.user.getAllFriendsOf.useQuery();
-  if (friends.isLoading || friendsOf.isLoading)
-    return (
-      <div
-        className={
-          isInviteFriendToGroupOpen == true
-            ? "fixed inset-10 z-[999] rounded-xl bg-white  duration-200 ease-in-out"
-            : "fixed z-[999] hidden overflow-hidden bg-white  duration-200 ease-in-out"
-        }
-      >
-        <LoadingSpinner />
-      </div>
-    );
+  const ctx = api.useContext();
+  const inviteFriendToGroup = api.group.inviteFriendToGroup.useMutation();
+  async function handleInviteFriendToGroup() {
+    try {
+      await inviteFriendToGroup.mutateAsync({
+        id: groupId,
+        userIds: selectFriends.map((friend) => friend.id),  
+      });
+      ctx.group.invalidate();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  if (friends.isLoading || friendsOf.isLoading) return <></>;
   if (!friends.data || !friendsOf.data) return <div>404 data not found</div>;
   return (
-    <div
-      className={
-        isInviteFriendToGroupOpen == true
-          ? "fixed inset-10 z-[999] rounded-xl bg-white  duration-200 ease-in-out"
-          : "fixed z-[999] hidden overflow-hidden bg-white  duration-200 ease-in-out"
-      }
-    >
-      <div className="flex items-center justify-between px-4">
-        <h1 className="p-4 font-Rubik text-2xl font-bold">Invite friends</h1>
-        <button onClick={() => setIsInviteFriendToGroupOpen(false)}>
-          <CloseIcon className="text-black" />
-        </button>
-      </div>
-      <div className="flex flex-col">
-        {friends.data[0]?.friends.map((friend) => {
-          return (
-            <InviteEachFriend key={friend.id} friend={friend} setIsInviteFriendToGroupOpen={setIsInviteFriendToGroupOpen} groupId={groupId}/>
-          );
-        })}
-        {friendsOf.data[0]?.friendsOf.map((friend) => {
-          return (
-            <InviteEachFriend key={friend.id} friend={friend} setIsInviteFriendToGroupOpen={setIsInviteFriendToGroupOpen} groupId={groupId}/>
-          );
-        })}
-      </div>
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="bg-gray-900">
+          Invite friend
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Select friends</DialogTitle>
+          <DialogDescription>
+            Invite a user to this thread. This will create a new group message.
+          </DialogDescription>
+        </DialogHeader>
+        <Command>
+          <CommandInput placeholder="Type a command or search..." />
+          <CommandList>
+            <CommandEmpty>No friends found.</CommandEmpty>
+            <CommandGroup>
+              {friends.data[0]?.friends.map((friend) => {
+                return (
+                  <InviteEachFriend
+                    key={friend.id}
+                    friend={friend}
+                    groupId={groupId}
+                    selectFriends={selectFriends}
+                    setSelectFriends={setSelectFriends}
+                  />
+                );
+              })}
+              {friendsOf.data[0]?.friendsOf.map((friend) => {
+                return (
+                  <InviteEachFriend
+                    key={friend.id}
+                    friend={friend}
+                    groupId={groupId}
+                    selectFriends={selectFriends}
+                    setSelectFriends={setSelectFriends}
+                  />
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+        <div className="flex justify-between">
+          <DialogTrigger asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogTrigger>
+          <DialogTrigger asChild onClick={() => handleInviteFriendToGroup()}>
+            <Button variant="outline">Invite</Button>
+          </DialogTrigger>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

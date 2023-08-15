@@ -73,7 +73,7 @@ const Create_group_card: FC = () => {
           toast({
             description: "Group created successfully!",
           });
-          ctx.group.getAllUserGroups.invalidate(); //refresh the rendering post section
+          ctx.group.getAllUserOwnerGroups.invalidate(); //refresh the rendering post section
           onClose();
         },
       }

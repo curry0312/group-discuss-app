@@ -1,65 +1,56 @@
 import { User } from "@prisma/client";
+import { CheckIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
-import { Button } from "~/components/ui/button";
+import { CommandItem } from "~/components/ui/command";
 import { api } from "~/utils/api";
 
 type InviteEachFriendPropsType = {
   friend: User;
-  setIsInviteFriendToGroupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   groupId: string;
+  selectFriends: User[];
+  setSelectFriends: React.Dispatch<React.SetStateAction<User[]>>;
 };
 
 const InviteEachFriend = ({
   friend,
-  setIsInviteFriendToGroupOpen,
   groupId,
+  selectFriends,
+  setSelectFriends,
 }: InviteEachFriendPropsType) => {
-  const ctx = api.useContext();
-  const inviteFriendToGroup = api.group.inviteFriendToGroup.useMutation();
-  async function handleInviteFriendToGroup() {
-    try {
-      await inviteFriendToGroup.mutateAsync({
-        id: groupId,
-        userId: friend.id,
-      });
-      ctx.group.invalidate();
-      setIsInviteFriendToGroupOpen(false);
-    } catch (error) {
-      console.log(error);
+
+  function handleSelectFriend(){
+    if(selectFriends.find((selectFriend) => selectFriend.id === friend.id)){
+      setSelectFriends(selectFriends.filter((selectFriend) => selectFriend.id !== friend.id))
+    }else{
+      setSelectFriends([...selectFriends, friend])
     }
+
   }
   return (
-    <div key={friend.id} className="flex items-center hover:bg-gray-100">
-      <Link
-        href={`/profile/${friend.id}`}
-        className="flex flex-1 items-center gap-3 p-4"
-        onClick={() => setIsInviteFriendToGroupOpen(false)}
-      >
-        <div>
-          <Image
-            src={friend.image}
-            alt={`${friend.name}-image`}
-            width={50}
-            height={50}
-            priority
-            className="rounded-full object-cover"
-          />
-        </div>
-        <div className="flex gap-3">
-          <p className="font-bold">{friend.name}</p>
-        </div>
-      </Link>
-      <div className="px-4">
-        <Button
-          variant={"outline"}
-          className="bg-gray-900 text-white"
-          onClick={() => handleInviteFriendToGroup()}
-        >
-          Invite
-        </Button>
+    <div
+      key={friend.id}
+      className="flex items-center justify-between gap-4 rounded-md p-2 hover:bg-slate-100"
+      onClick={() => handleSelectFriend()}
+    >
+      <div className="flex items-center gap-2">
+        <Image
+          src={friend.image}
+          alt={`${friend.name}-image`}
+          width={40}
+          height={40}
+          priority
+          className="rounded-full object-cover"
+        />
+        <CommandItem>{friend.name}</CommandItem>
       </div>
+      {selectFriends.find((selectFriend) => selectFriend.id === friend.id) ? (
+        <div>
+          <CheckIcon />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

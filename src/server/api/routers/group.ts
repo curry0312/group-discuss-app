@@ -47,7 +47,7 @@ export const groupRouter = createTRPCRouter({
   }),
 
   inviteFriendToGroup: privatedProcedure
-    .input(z.object({ id: z.string(), userId: z.string() }))
+    .input(z.object({ id: z.string(), userIds: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.group.update({
         where: {
@@ -55,9 +55,9 @@ export const groupRouter = createTRPCRouter({
         },
         data: {
           members: {
-            connect: {
-              id: input.userId,
-            }
+            connect: input.userIds.map((userId) => ({
+              id: userId,
+            })),
           }
         },
       });

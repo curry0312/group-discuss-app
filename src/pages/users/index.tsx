@@ -5,7 +5,6 @@ import { useSearchUsersText } from "~/store/useSearchUsersText";
 
 const Friends = () => {
   const { data, isLoading } = api.user.getAllUsers.useQuery();
-  // const [filteredText, setFilteredText] = useState<string>("");
   const { searchUsersText, setSearchUsersText } = useSearchUsersText();
 
   const filteredUsers = data?.filter((user) => {

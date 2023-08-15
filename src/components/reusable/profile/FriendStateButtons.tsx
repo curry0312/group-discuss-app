@@ -109,7 +109,6 @@ const FriendStateButtons = ({
   if (!!isLoaded && profileUserInfo.id === user?.id) {
     return (
       <Button
-        onClick={() => handleSendFriendRequest()}
         variant={"outline"}
         className="flex items-center gap-1 bg-gray-800"
       >

@@ -29,6 +29,7 @@ import { Skeleton } from "../ui/skeleton";
 import ProfileIcon from "~/styles/icons/ProfileIcon";
 import SettingIcon from "~/styles/icons/SettingIcon";
 import SignOutIcon from "~/styles/icons/SignOutIcon";
+import { userInfo } from "os";
 
 const Navbar = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -38,7 +39,6 @@ const Navbar = () => {
   useEffect(() => {
     setPathname(currentPath);
   }, [currentPath]);
-  console.log(pathname);
   return (
     <>
       <nav
@@ -82,12 +82,12 @@ const Navbar = () => {
               </TooltipProvider>
             </li>
             <li
-              className={pathname === "/chat" ? "border-b-2 border-white" : ""}
+              className={pathname === "/group" ? "border-b-2 border-white" : ""}
             >
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href="/chat">
+                    <Link href="/group">
                       <ChatIcon />
                     </Link>
                   </TooltipTrigger>
@@ -113,11 +113,11 @@ const Navbar = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem className="flex items-center gap-1">
                   <ProfileIcon />
-                  profile
+                  <Link href={`/profile/${user?.id}`}>profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex items-center gap-1">
                   <SettingIcon />
-                  setting
+                  <Link href={"/setting/userId"}>setting</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex items-center gap-1">
                   <SignOutIcon />

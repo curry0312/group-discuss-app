@@ -44,16 +44,18 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  // getSpecificPostLikes: privatedProcedure
-  //   .input(z.object({ id: z.string() }))
-  //   .query(async ({ ctx, input }) => {
-  //     return await ctx.prisma.post.findUnique({
-  //       where: {
-  //         id: input.id,
-  //       },
-  //       select:{
-  //         likes: true
-  //       }
-  //     });
-  //   }),
+  getAllUserPosts: privatedProcedure
+    .input(z.object({ authorId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.post.findMany({
+        where: {
+          authorId: input.authorId,
+        },
+        include: {
+          author: true,
+          likes: true,
+        },
+        orderBy: [{ createdAt: "desc" }],
+      });
+    }),
 });

@@ -15,13 +15,17 @@ import LoadingPage from "~/components/reusable/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
 import FriendStateButtons from "~/components/reusable/profile/FriendStateButtons";
+import LoadingSpinner from "~/components/reusable/loading/LoadingSpinner";
+import GroupPost from "~/components/reusable/post/GroupPost";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
 
-
   const { data, isLoading } = api.user.getUser.useQuery({
     id: props.userId,
+  });
+  const allUserPosts = api.post.getAllUserPosts.useQuery({
+    authorId: props.userId,
   });
 
   if (isLoading) return <LoadingPage />;
@@ -45,9 +49,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               priority
             />
           </Link>
-          <FriendStateButtons
-            profileUserInfo={data}
-          />
+          <FriendStateButtons profileUserInfo={data} />
         </div>
         <div className="flex items-center justify-center">
           <h1 className="text-2xl font-bold">{data.name}</h1>
@@ -77,6 +79,17 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           <button className="flex-1 py-2 hover:bg-gray-400" onClick={() => {}}>
             Posts
           </button>
+        </div>
+        <div>
+          {allUserPosts.isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              {allUserPosts.data?.map((post) => (
+                <GroupPost post={post} />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </main>

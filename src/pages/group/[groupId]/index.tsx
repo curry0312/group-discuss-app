@@ -1,6 +1,4 @@
 import RenderingGroupPosts from "~/components/reusable/post/RenderingGroupPosts";
-import { Input } from "~/components/ui/input";
-import AddFriendsToGroupIcon from "~/styles/icons/AddUserIcon";
 import {
   GetServerSidePropsContext,
   GetStaticPaths,
@@ -10,24 +8,14 @@ import generateSSGHelper from "~/utils/generateSSGHelper";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import CreateGroupPost from "~/components/reusable/post/CreateGroupPost";
-import InViteFriendToGroup from "~/components/reusable/group/InviteFriendToGroup";
+import GroupHeader from "~/components/reusable/group/GroupHeader";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-
   return (
     <>
       <div className={"min-h-screen bg-gray-950 pt-[86px] text-white"}>
-        <div className="flex">
-          <InViteFriendToGroup groupId={props.groupId} />
-          <div className="flex flex-1 items-center justify-center">
-            <Input
-              type="email"
-              placeholder="Search..."
-              className="h-[90%] bg-slate-900 text-white"
-            />
-          </div>
-        </div>
+        <GroupHeader groupId={props.groupId}/>
         <RenderingGroupPosts groupId={props.groupId} />
       </div>
       <button
@@ -37,6 +25,7 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <PlusIcon className="h-8 w-8 text-white" />
       </button>
 
+      {/*Toggle component*/}
       <CreateGroupPost
         isCreatePostOpen={isCreatePostOpen}
         setIsCreatePostOpen={setIsCreatePostOpen}

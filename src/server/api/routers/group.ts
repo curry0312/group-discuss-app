@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  privatedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, privatedProcedure } from "~/server/api/trpc";
 
 export const groupRouter = createTRPCRouter({
   createGroup: privatedProcedure
@@ -21,28 +17,41 @@ export const groupRouter = createTRPCRouter({
       });
       return newGroup;
     }),
+  getGroup: privatedProcedure
+    .input(z.object({ groupId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.group.findUnique({
+        where: {
+          id: input.groupId,
+        },
+        include: {
+          members: true,
+        }
+      });
+    }),
+
   getAllUserOwnerGroups: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.group.findMany({
-      where: { 
+      where: {
         ownerId: ctx.currentUserId,
       },
       orderBy: {
         createdAt: "desc",
-      }
+      },
     });
   }),
   getAllUserMemberGroups: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.group.findMany({
-      where: { 
+      where: {
         members: {
           some: {
             id: ctx.currentUserId,
           },
-        }
+        },
       },
       orderBy: {
         createdAt: "desc",
-      }
+      },
     });
   }),
 
@@ -58,7 +67,7 @@ export const groupRouter = createTRPCRouter({
             connect: input.userIds.map((userId) => ({
               id: userId,
             })),
-          }
+          },
         },
       });
     }),

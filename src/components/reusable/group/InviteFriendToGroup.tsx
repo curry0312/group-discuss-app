@@ -47,7 +47,7 @@ const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-gray-900">
+        <Button variant="outline" className="bg-gray-900 text-white">
           Invite friend
         </Button>
       </DialogTrigger>

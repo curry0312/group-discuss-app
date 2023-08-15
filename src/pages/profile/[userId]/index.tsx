@@ -67,7 +67,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </div>
         <div className="flex items-center gap-3  py-4 text-xl">
           <div className="flex items-center gap-2">
-            <span>0</span>
+            <span>{0}</span>
             <p>Friends</p>
           </div>
         </div>
@@ -82,11 +82,13 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </div>
         <div>
           {allUserPosts.isLoading ? (
-            <LoadingSpinner />
+            <div className="flex items-center justify-center h-36">
+              <LoadingSpinner />
+            </div>
           ) : (
             <>
               {allUserPosts.data?.map((post) => (
-                <GroupPost post={post} />
+                <GroupPost key={post.id} post={post} />
               ))}
             </>
           )}

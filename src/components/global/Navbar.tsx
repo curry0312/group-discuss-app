@@ -21,7 +21,6 @@ import { Avatar, AvatarImage } from "src/components/ui/avatar";
 import ChatIcon from "~/styles/icons/ChatIcon";
 import HomeIcon from "~/styles/icons/HomeIcon";
 import PersonIcon from "~/styles/icons/PersonIcon";
-import { Button } from "../ui/button";
 import NotificationIcon from "~/styles/icons/NotificationIcon";
 import { useOpenNotification } from "~/store/useOpenNotification";
 import Notification from "./Notification";
@@ -29,7 +28,6 @@ import { Skeleton } from "../ui/skeleton";
 import ProfileIcon from "~/styles/icons/ProfileIcon";
 import SettingIcon from "~/styles/icons/SettingIcon";
 import SignOutIcon from "~/styles/icons/SignOutIcon";
-import { userInfo } from "os";
 
 const Navbar = () => {
   const { user, isLoaded, isSignedIn } = useUser();

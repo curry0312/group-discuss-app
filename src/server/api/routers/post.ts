@@ -1,6 +1,7 @@
 import { privatedProcedure } from "./../trpc";
 import { z } from "zod";
 import { createTRPCRouter } from "~/server/api/trpc";
+import { notEqual } from "assert";
 
 export const postRouter = createTRPCRouter({
   createPost: privatedProcedure
@@ -58,4 +59,25 @@ export const postRouter = createTRPCRouter({
         orderBy: [{ createdAt: "desc" }],
       });
     }),
+  getAllUserRelativePosts: privatedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.post.findMany({
+      where: {
+        authorId:{
+          not: ctx.currentUserId
+        },
+        group:{
+          members: {
+            some: {
+              id: ctx.currentUserId,
+            },
+          },
+        }
+      },
+      include: {
+        author: true,
+        likes: true,
+      },
+      orderBy: [{ createdAt: "desc" }],
+    });
+  })
 });

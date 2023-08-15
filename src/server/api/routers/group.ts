@@ -13,6 +13,11 @@ export const groupRouter = createTRPCRouter({
           ownerId: ctx.currentUserId,
           public: input.public,
           image: input.image,
+          members: {
+            connect: {
+              id: ctx.currentUserId,
+            },
+          }
         },
       });
       return newGroup;

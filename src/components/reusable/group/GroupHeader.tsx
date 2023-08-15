@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { type } from "os";
 import React from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
@@ -16,26 +15,25 @@ const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
   });
   if(isLoading){
     return (
-        <div className="flex items-center justify-between bg-white h-[86px] p-4 text-gray-950">
+        <div className="flex items-center justify-between bg-gray-950 h-[86px] p-4 text-white">
       <div className="flex gap-2 items-center">
         <Skeleton className="w-6 h-6 rounded-md"/>
         <Skeleton className="w-16 h-6 rounded-md"/>
       </div>
       <div>
         <Skeleton className="w-16 h-8 rounded-md"/>
-        {/* <BarsIcon /> */}
       </div>
     </div>
     )
   }
   return (
-    <div className="flex items-center justify-between bg-white h-[86px] p-4 text-gray-950">
+    <div className="flex items-center justify-between bg-gray-950 h-[86px] p-4 text-white">
       <div className="flex items-center">
         <Link href={"/group"}>
           <ChevronLeftIcon />
         </Link>
         <h1 className="ml-4 text-lg">{data?.name}</h1>
-        <span className="text-md">({Number(data?.members.length) + 1})</span>
+        <span className="text-md">({Number(data?.members.length)})</span>
       </div>
       <div>
         <InViteFriendToGroup groupId={groupId} />

@@ -95,7 +95,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
           <div>
             <p className="text-md">{post.content}</p>
           </div>
-          <div>
+          {/* <div>
             <Image
               src={"https://github.com/shadcn.png"}
               alt="post-image"
@@ -103,7 +103,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
               height={200}
               priority
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex items-center gap-3">
           <div>

@@ -77,7 +77,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
 
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex items-center gap-2">
-          <h1 className="font-bold">Curry0312</h1>
+          <h1 className="font-bold">{post.author.name}</h1>
           <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto mr-2">

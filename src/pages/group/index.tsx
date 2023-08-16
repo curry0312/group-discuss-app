@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Head from "next/head";
 
 import GroupUserIcon from "~/styles/icons/GroupUserIcon";
-import RenderingGroups from "~/components/reusable/group/RenderingGroups";
+import RenderingGroups from "~/components/group/page/RenderingGroups";
 import { Input } from "~/components/ui/input";
-import Create_group_card_page from "~/components/reusable/group/Create_group_card_page";
+import Create_group_card_page from "~/components/group/page/Create_group_card_page";
 import { useCreateGroupStore } from "~/store/useCreateGroupStore";
 
 export default function Home() {

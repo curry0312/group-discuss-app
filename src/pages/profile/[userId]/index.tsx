@@ -11,12 +11,12 @@ import type {
   InferGetStaticPropsType,
 } from "next";
 
-import LoadingPage from "~/components/reusable/loading/LoadingPage";
+import LoadingPage from "~/components/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
-import FriendStateButtons from "~/components/reusable/profile/FriendStateButtons";
-import LoadingSpinner from "~/components/reusable/loading/LoadingSpinner";
-import GroupPost from "~/components/reusable/post/GroupPost";
+import FriendStateButtons from "~/components/profile/page/FriendStateButtons";
+import LoadingSpinner from "~/components/loading/LoadingSpinner";
+import GroupPost from "~/components/post/reuse/GroupPost";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);

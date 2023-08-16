@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import Head from "next/head";
-import GroupPost from "~/components/reusable/post/GroupPost";
+import GroupPost from "~/components/post/reuse/GroupPost";
 
 export default function Home() {
   const { isLoaded, isSignedIn } = useUser();

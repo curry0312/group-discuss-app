@@ -1,4 +1,4 @@
-import RenderingGroupPosts from "~/components/reusable/post/RenderingGroupPosts";
+import RenderingGroupPosts from "~/components/post/page/RenderingGroupPosts";
 import {
   GetServerSidePropsContext,
   GetStaticPaths,
@@ -7,8 +7,8 @@ import {
 import generateSSGHelper from "~/utils/generateSSGHelper";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import CreateGroupPost from "~/components/reusable/post/CreateGroupPost";
-import GroupHeader from "~/components/reusable/group/GroupHeader";
+import CreateGroupPost from "~/components/post/page/CreateGroupPost";
+import GroupHeader from "~/components/group/page/GroupHeader";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);

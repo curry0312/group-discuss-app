@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useOpenNotification } from "~/store/useOpenNotification";
 import { api } from "~/utils/api";
-import LoadingSpinner from "../reusable/loading/LoadingSpinner";
+import LoadingSpinner from "../loading/LoadingSpinner";
 
 const Notification = () => {
   const { data, isLoading } = api.user.getAllUnCheckedFriends.useQuery();

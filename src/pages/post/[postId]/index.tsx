@@ -16,7 +16,7 @@ import type {
   InferGetStaticPropsType,
 } from "next";
 
-import LoadingPage from "~/components/reusable/loading/LoadingPage";
+import LoadingPage from "~/components/loading/LoadingPage";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);

@@ -37,7 +37,7 @@ const Group = ({ group }: GroupTypesProps) => {
       </div>
       <div className="flex basis-3/4 flex-col justify-center">
         <p className="text-xl">{group.name}</p>
-        <p>created {dayjs(group.createdAt).fromNow()}</p>
+        <p className="text-sm">created {dayjs(group.createdAt).fromNow()}</p>
         <p className="text-xs text-amber-400">{group.ownerId == user?.id && "Owner"}</p>
       </div>
     </Link>

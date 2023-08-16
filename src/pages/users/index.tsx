@@ -1,4 +1,4 @@
-import User from "~/components/reusable/user/User";
+import User from "~/components/user/reuse/User";
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 import { useSearchUsersText } from "~/store/useSearchUsersText";

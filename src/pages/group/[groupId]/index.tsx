@@ -10,10 +10,11 @@ import { useState } from "react";
 import CreateGroupPost from "~/components/post/page/CreateGroupPost";
 import GroupHeader from "~/components/group/page/GroupHeader";
 import { api } from "~/utils/api";
+import LoadingPage from "~/components/loading/LoadingPage";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-  const { data, isLoading } = api.post.getAllGroupPosts.useQuery({
+  const { data, isLoading, status } = api.post.getAllGroupPosts.useQuery({
     groupId: props.groupId,
   },
   {
@@ -22,6 +23,9 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   }
   );
 
+  if(status !== "success"){
+    return <LoadingPage />
+  }
   return (
     <>
       <div className={"min-h-screen bg-gray-950 pt-[86px] text-white"}>

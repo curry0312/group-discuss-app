@@ -39,7 +39,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
       </div>
       <div className="flex flex-col items-start gap-3 py-2">
         <div className="flex w-full items-end justify-between">
-          <Link href={"/profile/userId"}>
+          <Link href={`/profile/${data.id}`}>
             <Image
               src={data.image}
               alt="user-image"

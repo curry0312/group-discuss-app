@@ -29,44 +29,47 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
 
   const ctx = api.useContext();
 
-  const isUserLikePost = api.like.isUserLikePost.useQuery({
-    postId: comment.id,
+  const isUserLikeComment = api.like.isUserLikeComment.useQuery({
+    commentId: comment.id,
   });
 
-  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
-  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
-  const deletePostGenerator = api.post.deletePost.useMutation();
+  const commentLikeGenerator = api.like.handleLikeAddToggle.useMutation();
+  const commentUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
+  const deleteCommentGenerator = api.comment.deleteComment.useMutation();
 
   function handleLikeToggle() {
-    if (isUserLikePost.data) {
-      postUnLikeGenerator.mutate(
+    if (isUserLikeComment.data) {
+      commentUnLikeGenerator.mutate(
         {
-          postId: comment.postId,
+          id: comment.likes.find((like) => like.userId === user?.id)!.id,
+          postId: null,
+          commentId: comment.id,
         },
         {
           onSuccess: () => {
             ctx.like.invalidate();
-            ctx.post.invalidate();
+            ctx.comment.invalidate();
           },
         }
       );
     } else {
-      postLikeGenerator.mutate(
+      commentLikeGenerator.mutate(
         {
-          postId: comment.postId,
+          postId: null,
+          commentId: comment.id,
         },
         {
           onSuccess: () => {
             ctx.like.invalidate();
-            ctx.post.invalidate();
+            ctx.comment.invalidate();
           },
         }
       );
     }
   }
   function handleDeleteComment() {
-    deletePostGenerator.mutate(
-      { id: comment.id, },
+    deleteCommentGenerator.mutate(
+      { id: comment.id },
       {
         onSuccess: () => {
           ctx.comment.invalidate();
@@ -76,7 +79,7 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
   }
 
   return (
-    <div className="flex cursor-pointer gap-3 p-2 border-y border-gray-700">
+    <div className="flex cursor-pointer gap-3 border-y border-gray-700 p-2">
       <div>
         <Link href={"/"}>
           <Image
@@ -128,10 +131,7 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
         </div>
         <div className="flex items-center gap-3">
           <div>
-            <button
-              className="flex items-center gap-1"
-              onClick={() =>{}}
-            >
+            <button className="flex items-center gap-1" onClick={() => {}}>
               <CommentIcon className="" />
               <span>0</span>
             </button>
@@ -142,7 +142,7 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
           >
             <HeartIcon
               className={
-                isUserLikePost.data
+                isUserLikeComment.data
                   ? "text-red-500 transition duration-200"
                   : "transition duration-200"
               }

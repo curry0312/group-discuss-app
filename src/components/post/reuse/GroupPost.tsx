@@ -42,7 +42,9 @@ const GroupPost = ({ post }: GroupPostProps) => {
     if (isUserLikePost.data) {
       postUnLikeGenerator.mutate(
         {
+          id: post.likes.find((like) => like.userId === user?.id)!.id,
           postId: post.id,
+          commentId: null,
         },
         {
           onSuccess: () => {
@@ -55,6 +57,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
       postLikeGenerator.mutate(
         {
           postId: post.id,
+          commentId: null,
         },
         {
           onSuccess: () => {
@@ -77,7 +80,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
   }
 
   return (
-    <div className="flex cursor-pointer gap-3 p-2 rounded-md bg-gray-800">
+    <div className="flex cursor-pointer gap-3 rounded-md bg-gray-800 p-2">
       <div>
         <Link href={"/"}>
           <Image

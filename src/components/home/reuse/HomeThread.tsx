@@ -8,12 +8,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
 import type { PostWithLikesAndAuthor } from "type";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Skeleton } from "~/components/ui/skeleton";
 
 import CommentIcon from "~/styles/icons/CommentIcon";
@@ -45,7 +44,9 @@ const HomeThread = ({ post }: HomeThreadProps) => {
     if (isUserLikePost.data) {
       postUnLikeGenerator.mutate(
         {
+          id: post.likes.find((like) => like.userId === user?.id)!.id,
           postId: post.id,
+          commentId: null,
         },
         {
           onSuccess: () => {
@@ -58,6 +59,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
       postLikeGenerator.mutate(
         {
           postId: post.id,
+          commentId: null,
         },
         {
           onSuccess: () => {
@@ -156,16 +158,23 @@ const HomeThread = ({ post }: HomeThreadProps) => {
 
           <div className="ml-auto flex items-center gap-2">
             {group.isLoading ? (
-              <Skeleton className="h-8 w-16 rounded-md bg-slate-800" />
+              <div className="flex items-center gap-1">
+                <Skeleton className="h-8 w-8 rounded-full bg-slate-500" />
+                <Skeleton className="h-8 w-16 rounded-md bg-slate-500" />
+              </div>
             ) : (
-              <Image
-                src={group.data?.image || ""}
-                alt="user-image"
-                width={30}
-                height={30}
-                className="rounded-full object-cover"
-                priority
-              />
+              <div className="w-[30px] rounded-full">
+                <AspectRatio ratio={1 / 1}>
+                  <Image
+                    src={group.data?.image || "https://github.com/shadcn.png"}
+                    alt="group-image"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="rounded-full object-cover"
+                  />
+                </AspectRatio>
+              </div>
             )}
             <span>{group.data?.name}</span>
           </div>

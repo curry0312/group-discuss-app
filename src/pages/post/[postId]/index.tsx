@@ -21,9 +21,12 @@ import CreateComment from "~/components/post/page/CreateComment";
 import { useState } from "react";
 import GroupPost from "~/components/post/reuse/GroupPost";
 import GroupPostComment from "~/components/post/reuse/GroupPostComment";
+import { useUser } from "@clerk/nextjs";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
+
+  const {user} = useUser()
 
   const [isCreateCommentOpen, setIsCreateCommentOpen] = useState(false);
 
@@ -45,7 +48,9 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     if (isUserLikePost.data) {
       postUnLikeGenerator.mutate(
         {
-          postId: props.postId,
+          id: post?.data?.likes.find((like) => like.userId === user?.id)!.id!,
+          postId: post?.data?.id!,
+          commentId: null,
         },
         {
           onSuccess: () => {
@@ -57,7 +62,8 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     } else {
       postLikeGenerator.mutate(
         {
-          postId: props.postId,
+          postId: post?.data?.id!,
+          commentId: null,
         },
         {
           onSuccess: () => {
@@ -81,7 +87,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </div>
         <div className="flex gap-3 p-3">
           <div>
-            <Link href={"/profile/userId"}>
+            <Link href={`/profile/${post.data?.author.id}`}>
               {!post.data ? (
                 <Skeleton className="h-12 w-12 rounded-full" />
               ) : (

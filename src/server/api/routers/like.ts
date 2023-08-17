@@ -3,41 +3,78 @@ import { z } from "zod";
 import { createTRPCRouter } from "~/server/api/trpc";
 
 export const likeRouter = createTRPCRouter({
-
   handleLikeAddToggle: privatedProcedure
-    .input(z.object({ postId: z.string() }))
+    .input(
+      z.object({
+        postId: z.string().nullable(),
+        commentId: z.string().nullable(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.like.create({
-        data: {
+      if (input.postId != null) {
+        return await ctx.prisma.like.create({
+          data: {
+            postId: input.postId,
+            userId: ctx.currentUserId,
+          },
+        });
+      }
+      if (input.commentId != null) {
+        return await ctx.prisma.like.create({
+          data: {
+            commentId: input.commentId,
+            userId: ctx.currentUserId,
+          },
+        });
+      }
+    }),
+  handleLikeDeleteToggle: privatedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        postId: z.string().nullable(),
+        commentId: z.string().nullable(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (input.postId != null) {
+        return await ctx.prisma.like.delete({
+          where: {
+            id: input.id,
+          },
+        });
+      }
+      if (input.commentId != null) {
+        return await ctx.prisma.like.delete({
+          where: {
+           id:  input.id,
+          },
+        });
+      }
+    }),
+    
+  isUserLikePost: privatedProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const like = await ctx.prisma.like.findFirst({
+        where: {
           postId: input.postId,
           userId: ctx.currentUserId,
         },
       });
+      if (!like) return false;
+      return true;
     }),
-  handleLikeDeleteToggle: privatedProcedure
-    .input(z.object({ postId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.like.delete({
+  isUserLikeComment: privatedProcedure
+    .input(z.object({ commentId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const like = await ctx.prisma.like.findFirst({
         where: {
-          userId_postId: {
-            userId: ctx.currentUserId,
-            postId: input.postId,
-          },
-        }
-      });
-    }),
-  isUserLikePost: privatedProcedure.input(z.object({ postId: z.string() })).query(
-    async ({ ctx, input }) => {
-      const like = await ctx.prisma.like.findUnique({
-        where: {
-          userId_postId: {
-            userId: ctx.currentUserId,
-            postId: input.postId,
-          },
+          commentId: input.commentId,
+          userId: ctx.currentUserId,
         },
       });
-      if(!like) return false
-      return true
-    }
-  )
+      if (!like) return false;
+      return true;
+    }),
 });

@@ -22,7 +22,7 @@ const RenderingGroupPosts = ({groupId}:RenderingGroupPostsPropsType) => {
     </div>       
   )
   return (
-    <div>
+    <div className="flex flex-col gap-3 p-4">
       {data?.map((post) => (
         <GroupPost key={post.id} post={post} />
       ))}

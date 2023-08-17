@@ -16,6 +16,16 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
+  deletePost: privatedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.post.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+
   getPost: privatedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -62,16 +72,16 @@ export const postRouter = createTRPCRouter({
   getAllUserRelativePosts: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.post.findMany({
       where: {
-        authorId:{
-          not: ctx.currentUserId
+        authorId: {
+          not: ctx.currentUserId,
         },
-        group:{
+        group: {
           members: {
             some: {
               id: ctx.currentUserId,
             },
           },
-        }
+        },
       },
       include: {
         author: true,
@@ -79,5 +89,5 @@ export const postRouter = createTRPCRouter({
       },
       orderBy: [{ createdAt: "desc" }],
     });
-  })
+  }),
 });

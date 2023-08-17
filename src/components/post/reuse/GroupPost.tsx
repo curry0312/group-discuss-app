@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -7,8 +8,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
@@ -27,11 +26,15 @@ const GroupPost = ({ post }: GroupPostProps) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
   const ctx = api.useContext();
-  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
-  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: post.id,
   });
+  const { user } = useUser();
+
+  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
+  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
+  const deletePostGenerator = api.post.deletePost.useMutation();
+
   function handleCommentToggle() {}
   function handleLikeToggle() {
     if (isUserLikePost.data) {
@@ -60,8 +63,19 @@ const GroupPost = ({ post }: GroupPostProps) => {
       );
     }
   }
+  function handleDeletePost() {
+    deletePostGenerator.mutate(
+      { id: post.id },
+      {
+        onSuccess: () => {
+          ctx.post.invalidate();
+        },
+      }
+    );
+  }
+
   return (
-    <div className="flex cursor-pointer gap-3 p-2">
+    <div className="flex cursor-pointer gap-3 p-2 rounded-md bg-gray-800">
       <div>
         <Link href={"/"}>
           <Image
@@ -84,10 +98,16 @@ const GroupPost = ({ post }: GroupPostProps) => {
               <MoreIcon />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>Delete post</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+              {user?.id === post.author.id ? (
+                <>
+                  <DropdownMenuItem onClick={() => handleDeletePost()}>
+                    Delete post
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Edit post</DropdownMenuItem>
+                </>
+              ) : (
+                <DropdownMenuItem>Reqort</DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

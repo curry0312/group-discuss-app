@@ -86,11 +86,11 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               <LoadingSpinner />
             </div>
           ) : (
-            <>
+            <div className="flex flex-col gap-3 p-2">
               {allUserPosts.data?.map((post) => (
                 <GroupPost key={post.id} post={post} />
               ))}
-            </>
+            </div>
           )}
         </div>
       </div>

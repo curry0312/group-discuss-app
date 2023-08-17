@@ -13,11 +13,11 @@ const RenderingHomeThread = () => {
       </div>
     );
   return (
-    <>
+    <div className="flex flex-col gap-3 p-4">
       {data?.map((post) => (
         <HomeThread key={post.id} post={post} />
       ))}
-    </>
+    </div>
   );
 };
 

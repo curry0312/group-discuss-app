@@ -66,7 +66,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
   }
 
   return (
-    <div className="flex cursor-pointer gap-3 p-2">
+    <div className="flex cursor-pointer gap-3 p-2 rounded-md bg-gray-800">
       <div>
         <Link href={"/"}>
           <Image

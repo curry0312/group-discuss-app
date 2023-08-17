@@ -2,8 +2,6 @@ import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
-import Head from "next/head";
-
 import GroupUserIcon from "~/styles/icons/GroupUserIcon";
 import RenderingGroups from "~/components/group/page/RenderingGroups";
 import { Input } from "~/components/ui/input";

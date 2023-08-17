@@ -80,9 +80,10 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             Posts
           </button>
         </div>
+
         <div>
           {allUserPosts.isLoading ? (
-            <div className="flex items-center justify-center h-36">
+            <div className="flex h-36 items-center justify-center">
               <LoadingSpinner />
             </div>
           ) : (
@@ -108,6 +109,7 @@ export async function getStaticProps(
   if (typeof userId !== "string") throw new Error("no userId");
   // prefetch `user.getUser`
   await helpers.user.getUser.prefetch({ id: userId });
+  await helpers.post.getAllUserPosts.prefetch({ authorId: userId });
   return {
     props: {
       trpcState: helpers.dehydrate(),

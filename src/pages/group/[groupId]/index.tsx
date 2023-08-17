@@ -9,14 +9,24 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import CreateGroupPost from "~/components/post/page/CreateGroupPost";
 import GroupHeader from "~/components/group/page/GroupHeader";
+import { api } from "~/utils/api";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  const { data, isLoading } = api.post.getAllGroupPosts.useQuery({
+    groupId: props.groupId,
+  },
+  {
+    enabled: !!props.groupId,
+    refetchInterval: 2000
+  }
+  );
+
   return (
     <>
       <div className={"min-h-screen bg-gray-950 pt-[86px] text-white"}>
         <GroupHeader groupId={props.groupId}/>
-        <RenderingGroupPosts groupId={props.groupId} />
+        <RenderingGroupPosts posts={data} isLoading={isLoading}/>
       </div>
 
       {/*create post button*/}
@@ -44,7 +54,7 @@ export async function getStaticProps(
 ) {
   const helpers = generateSSGHelper();
   const groupId = context.params?.groupId as string;
-  if (typeof groupId !== "string") throw new Error("no userId");
+  if (typeof groupId !== "string") throw new Error("no groupId");
   // prefetch `post.getAllGroupPosts`
   await helpers.post.getAllGroupPosts.prefetch({ groupId });
   return {

@@ -24,7 +24,6 @@ const CreateGroupPost = ({
   setIsCreatePostOpen,
   groupId,
 }: CreateGroupPostPropsType) => {
-  
   const { user } = useUser();
 
   const { register, handleSubmit, reset } = useForm<FormSchemaType>({
@@ -61,7 +60,7 @@ const CreateGroupPost = ({
             onClick={() => setIsCreatePostOpen(false)}
             className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-500"
           >
-            <CloseIcon className="text-white"/>
+            <CloseIcon className="text-white" />
           </button>
           <Button variant={"outline"} type="submit">
             Post

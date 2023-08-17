@@ -22,7 +22,6 @@ const Friends = () => {
             className="w-[90%] bg-slate-900 text-white"
             onChange={setSearchUsersText}
             value={searchUsersText}
-            // defaultValue={searchUsersText || ""}
           />
         </div>
         <div className="flex flex-col">

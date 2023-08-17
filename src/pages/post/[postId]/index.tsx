@@ -19,14 +19,13 @@ import LoadingPage from "~/components/loading/LoadingPage";
 import { Skeleton } from "~/components/ui/skeleton";
 import CreateComment from "~/components/post/page/CreateComment";
 import { useState } from "react";
-import GroupPost from "~/components/post/reuse/GroupPost";
 import GroupPostComment from "~/components/post/reuse/GroupPostComment";
 import { useUser } from "@clerk/nextjs";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
 
-  const {user} = useUser()
+  const { user } = useUser();
 
   const [isCreateCommentOpen, setIsCreateCommentOpen] = useState(false);
 

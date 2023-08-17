@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import Head from "next/head";
-import GroupPost from "~/components/post/reuse/GroupPost";
+import RenderingHomeThread from "~/components/home/page/RenderingHomeThread";
 
 export default function Home() {
   const { isLoaded, isSignedIn } = useUser();
@@ -12,7 +12,6 @@ export default function Home() {
   //CHECK IF USER IS NEW OR NOT
   api.user.checkUser.useQuery();
 
-  const {data, isLoading} = api.post.getAllUserRelativePosts.useQuery();
 
   if (isLoaded && !isSignedIn) {
     router.push("/auth");
@@ -26,9 +25,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex min-h-screen w-screen flex-col pt-[86px] text-white bg-gray-950">
-        {data?.map((post) => (
-          <GroupPost key={post.id} post={post} />
-        ))}
+        <RenderingHomeThread />
       </div>
     </>
   );

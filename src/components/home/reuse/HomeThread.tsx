@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -27,6 +28,7 @@ type HomeThreadProps = {
 const HomeThread = ({ post }: HomeThreadProps) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
+  const { user } = useUser();
   const ctx = api.useContext();
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: post.id,
@@ -36,6 +38,8 @@ const HomeThread = ({ post }: HomeThreadProps) => {
   });
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
+
+  const deletePostGenerator = api.post.deletePost.useMutation();
   function handleCommentToggle() {}
   function handleLikeToggle() {
     if (isUserLikePost.data) {
@@ -65,8 +69,19 @@ const HomeThread = ({ post }: HomeThreadProps) => {
     }
   }
 
+  function handleDeletePost() {
+    deletePostGenerator.mutate(
+      { id: post.id },
+      {
+        onSuccess: () => {
+          ctx.post.invalidate();
+        },
+      }
+    );
+  }
+
   return (
-    <div className="flex cursor-pointer gap-3 p-2 rounded-md bg-gray-800">
+    <div className="flex cursor-pointer gap-3 rounded-md bg-gray-800 p-2">
       <div>
         <Link href={"/"}>
           <Image
@@ -89,7 +104,16 @@ const HomeThread = ({ post }: HomeThreadProps) => {
               <MoreIcon />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>Delete post</DropdownMenuItem>
+              {user?.id === post.author.id ? (
+                <>
+                  <DropdownMenuItem onClick={() => handleDeletePost()}>
+                    Delete post
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Edit post</DropdownMenuItem>
+                </>
+              ) : (
+                <DropdownMenuItem>Report</DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -130,10 +154,10 @@ const HomeThread = ({ post }: HomeThreadProps) => {
             <span>{post.likes.length}</span>
           </button>
 
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="ml-auto flex items-center gap-2">
             {group.isLoading ? (
-              <Skeleton className="h-8 w-16 rounded-md bg-slate-800"/>
-            ):(
+              <Skeleton className="h-8 w-16 rounded-md bg-slate-800" />
+            ) : (
               <Image
                 src={group.data?.image || ""}
                 alt="user-image"

@@ -25,11 +25,13 @@ type GroupPostProps = {
 const GroupPost = ({ post }: GroupPostProps) => {
   dayjs.extend(relativeTime);
   const { push } = useRouter();
+  const { user } = useUser();
+
   const ctx = api.useContext();
+
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: post.id,
   });
-  const { user } = useUser();
 
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
@@ -106,7 +108,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
                   <DropdownMenuItem>Edit post</DropdownMenuItem>
                 </>
               ) : (
-                <DropdownMenuItem>Reqort</DropdownMenuItem>
+                <DropdownMenuItem>Report</DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>

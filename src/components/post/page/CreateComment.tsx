@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { contextProps } from "@trpc/react-query/shared";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
@@ -11,38 +12,43 @@ import { api } from "~/utils/api";
 const formSchema = z.object({
   content: z.string().min(1, "You can't post empty content!"),
 });
+
 type FormSchemaType = z.infer<typeof formSchema>;
 
-type CreateGroupPostPropsType = {
-  isCreatePostOpen: boolean;
-  setIsCreatePostOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  groupId: string;
+type CreateCommentProps = {
+  isCreateCommentOpen: boolean;
+  setIsCreateCommentOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  postId: string;
 };
 
-const CreateGroupPost = ({
-  isCreatePostOpen,
-  setIsCreatePostOpen,
-  groupId,
-}: CreateGroupPostPropsType) => {
-  
+const CreateComment = ({
+  isCreateCommentOpen,
+  setIsCreateCommentOpen,
+  postId,
+}: CreateCommentProps) => {
+
   const { user } = useUser();
 
   const { register, handleSubmit, reset } = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
   });
+
   const ctx = api.useContext();
-  const postCreateGenerator = api.post.createPost.useMutation();
+
+  const commentCreateGenerator = api.comment.createComment.useMutation();
+
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
-    postCreateGenerator.mutate(
+    commentCreateGenerator.mutate(
       {
         content: data.content,
-        groupId: groupId,
+        postId: postId,
       },
       {
         onSuccess: () => {
-          ctx.post.invalidate();
+          ctx.comment.invalidate()
           reset();
+      
         },
       }
     );
@@ -50,21 +56,21 @@ const CreateGroupPost = ({
   return (
     <div
       className={
-        isCreatePostOpen === true
-          ? "fixed inset-0 bg-black bg-opacity-60 backdrop-blur"
-          : "fixed bg-black bg-opacity-60 backdrop-blur"
+        isCreateCommentOpen === true
+          ? "fixed right-0 left-0 h-[40%] bottom-0 bg-white"
+          : "fixed hidden bg-white"
       }
     >
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <div className="flex items-center justify-between px-4 py-4">
-          <button
-            onClick={() => setIsCreatePostOpen(false)}
-            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-500"
+          <Button
+            onClick={() => setIsCreateCommentOpen(false)}
+            variant={"destructive"}
           >
-            <CloseIcon className="text-white"/>
-          </button>
-          <Button variant={"outline"} type="submit">
-            Post
+            Cancel
+          </Button>
+          <Button variant={"default"} type="submit">
+            Comment
           </Button>
         </div>
         <div>
@@ -76,9 +82,9 @@ const CreateGroupPost = ({
           <div className="p-2">
             <Textarea
               {...register("content")}
-              rows={6}
+              rows={7}
               placeholder="What you like to say now?"
-              className="mt-2 resize-none border-none text-white outline-none ring-0 focus:outline-none"
+              className="mt-2 resize-none border-none text-gray-950 outline-none ring-0 focus:outline-none"
             />
           </div>
           {/*post image feature*/}
@@ -94,4 +100,4 @@ const CreateGroupPost = ({
   );
 };
 
-export default CreateGroupPost;
+export default CreateComment;

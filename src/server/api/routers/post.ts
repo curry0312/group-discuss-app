@@ -1,7 +1,6 @@
 import { privatedProcedure } from "./../trpc";
 import { z } from "zod";
 import { createTRPCRouter } from "~/server/api/trpc";
-import { notEqual } from "assert";
 
 export const postRouter = createTRPCRouter({
   createPost: privatedProcedure

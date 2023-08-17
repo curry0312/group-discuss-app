@@ -18,6 +18,8 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <GroupHeader groupId={props.groupId}/>
         <RenderingGroupPosts groupId={props.groupId} />
       </div>
+
+      {/*create post button*/}
       <button
         onClick={() => setIsCreatePostOpen(true)}
         className="fixed bottom-5 right-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 hover:scale-110"

@@ -13,21 +13,18 @@ const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
   const { data, isLoading } = api.group.getGroup.useQuery({
     groupId: groupId,
   });
-  if(isLoading){
+  if (isLoading) {
     return (
-        <div className="flex items-center justify-between bg-gray-950 h-[86px] p-4 text-white">
-      <div className="flex gap-2 items-center">
-        <Skeleton className="w-6 h-6 rounded-md"/>
-        <Skeleton className="w-16 h-6 rounded-md"/>
+      <div className="flex h-[86px] items-center justify-between bg-gray-950 p-4 text-white">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-6 w-12 rounded-md bg-gray-900" />
+          <Skeleton className="h-6 w-16 rounded-md bg-gray-900" />
+        </div>
       </div>
-      <div>
-        <Skeleton className="w-16 h-8 rounded-md"/>
-      </div>
-    </div>
-    )
+    );
   }
   return (
-    <div className="flex items-center justify-between bg-gray-950 h-[86px] p-4 text-white">
+    <div className="flex h-[86px] items-center justify-between bg-gray-950 p-4 text-white">
       <div className="flex items-center">
         <Link href={"/group"}>
           <ChevronLeftIcon />
@@ -37,7 +34,6 @@ const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
       </div>
       <div>
         <InViteFriendToGroup groupId={groupId} />
-        {/* <BarsIcon /> */}
       </div>
     </div>
   );

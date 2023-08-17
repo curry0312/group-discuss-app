@@ -20,13 +20,14 @@ import { api } from "~/utils/api";
 import InviteEachFriend from "./InviteEachFriend";
 import { useState } from "react";
 import { User } from "@prisma/client";
+import { Skeleton } from "~/components/ui/skeleton";
 
 type InViteFriendToGroupPropsType = {
   groupId: string;
 };
 
 const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
-  const [selectFriends, setSelectFriends] = useState<User[]>([])
+  const [selectFriends, setSelectFriends] = useState<User[]>([]);
   const friends = api.user.getAllFriends.useQuery();
   const friendsOf = api.user.getAllFriendsOf.useQuery();
   const ctx = api.useContext();
@@ -35,14 +36,19 @@ const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
     try {
       await inviteFriendToGroup.mutateAsync({
         id: groupId,
-        userIds: selectFriends.map((friend) => friend.id),  
+        userIds: selectFriends.map((friend) => friend.id),
       });
       ctx.group.invalidate();
     } catch (error) {
       console.log(error);
     }
   }
-  if (friends.isLoading || friendsOf.isLoading) return <></>;
+  if (friends.isLoading || friendsOf.isLoading)
+    return (
+      <>
+        <Skeleton className="h-10 w-28 rounded-md bg-gray-900" />
+      </>
+    );
   if (!friends.data || !friendsOf.data) return <div>404 data not found</div>;
   return (
     <Dialog>

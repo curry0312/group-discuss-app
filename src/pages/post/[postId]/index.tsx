@@ -120,7 +120,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
           <div className="flex items-center gap-3 border-b border-gray-800 p-4 text-xl">
             <div className="flex items-center gap-2">
-              <span>0</span>
+              <span>{post.data?.comments.length}</span>
               <p>Comments</p>
             </div>
             <div className="flex items-center gap-2">

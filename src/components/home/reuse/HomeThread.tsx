@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
-import type { PostWithLikesAndAuthor } from "type";
+import type { PostWithLikesAndAuthorAndComments } from "type";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Skeleton } from "~/components/ui/skeleton";
 
@@ -21,7 +21,7 @@ import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type HomeThreadProps = {
-  post: PostWithLikesAndAuthor;
+  post: PostWithLikesAndAuthorAndComments;
 };
 
 const HomeThread = ({ post }: HomeThreadProps) => {
@@ -139,7 +139,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
             onClick={() => handleCommentToggle()}
           >
             <CommentIcon className="" />
-            <span>0</span>
+            <span>{post.comments.length}</span>
           </button>
 
           <button

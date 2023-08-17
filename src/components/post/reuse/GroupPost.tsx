@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
-import type { PostWithLikesAndAuthor } from "type";
+import type { PostWithLikesAndAuthorAndComments } from "type";
 
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
@@ -19,7 +19,7 @@ import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type GroupPostProps = {
-  post: PostWithLikesAndAuthor;
+  post: PostWithLikesAndAuthorAndComments;
 };
 
 const GroupPost = ({ post }: GroupPostProps) => {
@@ -37,7 +37,6 @@ const GroupPost = ({ post }: GroupPostProps) => {
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
   const deletePostGenerator = api.post.deletePost.useMutation();
 
-  function handleCommentToggle() {}
   function handleLikeToggle() {
     if (isUserLikePost.data) {
       postUnLikeGenerator.mutate(
@@ -134,10 +133,9 @@ const GroupPost = ({ post }: GroupPostProps) => {
           <div>
             <button
               className="flex items-center gap-1"
-              onClick={() => handleCommentToggle()}
             >
               <CommentIcon className="" />
-              <span>0</span>
+              <span>{post.comments.length}</span>
             </button>
           </div>
           <button

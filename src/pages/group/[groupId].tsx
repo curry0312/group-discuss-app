@@ -8,7 +8,7 @@ import generateSSGHelper from "~/utils/generateSSGHelper";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import CreateGroupPost from "~/components/post/page/CreateGroupPost";
-import GroupHeader from "~/components/group/page/GroupHeader";
+import GroupHeader from "~/components/post/page/RenderingGroupPostsHeader";
 import { api } from "~/utils/api";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { appRouter } from "~/server/api/root";

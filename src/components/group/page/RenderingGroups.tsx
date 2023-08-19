@@ -1,14 +1,19 @@
-import { GetStaticPaths } from "next";
 import { api } from "~/utils/api";
-import generateSSGHelper from "~/utils/generateSSGHelper";
 import Group from "../reuse/Group";
 import Group_skeleton from "../reuse/Group_skeleton";
 
-const RenderingGroups = () => {
-  const ownerGroup = api.group.getAllUserOwnerGroups.useQuery();
+type RenderingGroupsProps = {
+  filterSearchGroupText: string;
+}
+
+const RenderingGroups = ({filterSearchGroupText}: RenderingGroupsProps) => {
   const memberGroup = api.group.getAllUserMemberGroups.useQuery();
 
-  if (ownerGroup.isLoading || memberGroup.isLoading)
+  const filteredMemberGroup = memberGroup.data?.filter((group) => {
+    return group.name.toLowerCase().includes(filterSearchGroupText.toLowerCase());
+  })
+
+  if (memberGroup.isLoading)
     return (
       <div className="flex flex-col gap-3 px-4 py-2">
         {Array.from({ length: 5 }).map((_, i) => (
@@ -18,7 +23,7 @@ const RenderingGroups = () => {
     );
   return (
     <div className="flex flex-col">
-      {memberGroup.data?.map((group) => {
+      {filteredMemberGroup?.map((group) => {
         return <Group key={group.id} group={group} />;
       })}
     </div>
@@ -26,25 +31,3 @@ const RenderingGroups = () => {
 };
 
 export default RenderingGroups;
-
-// export async function getStaticProps() {
-//   const helpers = generateSSGHelper();
-
-//   // prefetch `groups`
-//   await helpers.group.getAllUserMemberGroups.prefetch();
-//   await helpers.group.getAllUserOwnerGroups.prefetch();
-//   return {
-//     props: {
-//       trpcState: helpers.dehydrate(),
-//     },
-//     revalidate: 1,
-//   };
-// }
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   return {
-//     paths: [],
-//     // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking
-//     fallback: "blocking",
-//   };
-// };

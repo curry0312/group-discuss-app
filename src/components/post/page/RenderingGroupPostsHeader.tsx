@@ -3,17 +3,18 @@ import React from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
 import { api } from "~/utils/api";
-import InViteFriendToGroup from "./InviteFriendToGroup";
+import InViteFriendToGroup from "../../group/page/InviteFriendToGroup";
 
 type GroupHeaderPropsType = {
   groupId: string;
 };
 
-const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
+const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
   const router = useRouter();
   const { data, isLoading } = api.group.getGroup.useQuery({
     groupId: groupId,
   });
+  
   if (isLoading) {
     return (
       <div className="flex h-[86px] items-center justify-between bg-gray-950 p-4 text-white">
@@ -40,4 +41,4 @@ const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
   );
 };
 
-export default GroupHeader;
+export default RenderingGroupPostsHeader;

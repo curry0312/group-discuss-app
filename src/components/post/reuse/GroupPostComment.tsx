@@ -129,12 +129,12 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
           </div> */}
         </div>
         <div className="flex items-center gap-3">
-          <div>
+          {/* <div>
             <button className="flex items-center gap-1" onClick={() => {}}>
               <CommentIcon className="" />
               <span>0</span>
             </button>
-          </div>
+          </div> */}
           <button
             className="flex items-center gap-1"
             onClick={() => handleLikeToggle()}

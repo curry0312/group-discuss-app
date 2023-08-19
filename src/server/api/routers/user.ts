@@ -49,6 +49,10 @@ export const userRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        include: {
+          friends: true,
+          friendsOf: true,
+        }
       });
     }),
 

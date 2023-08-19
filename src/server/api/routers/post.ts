@@ -51,6 +51,7 @@ export const postRouter = createTRPCRouter({
           author: true,
           likes: true,
           comments: true,
+          group: true,
         },
         orderBy: [{ createdAt: "desc" }],
       });
@@ -89,6 +90,7 @@ export const postRouter = createTRPCRouter({
         author: true,
         likes: true,
         comments: true,
+        group: true,
       },
       orderBy: [{ createdAt: "desc" }],
     });

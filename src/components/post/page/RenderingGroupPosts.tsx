@@ -1,9 +1,9 @@
-import { PostWithLikesAndAuthorAndComments } from "type";
+import { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
 import GroupPost from "../reuse/GroupPost";
 import GroupPost_skeleton from "../reuse/GroupPost_skeleton";
 
 type RenderingGroupPostsPropsType = {
-  posts: PostWithLikesAndAuthorAndComments[] | undefined;
+  posts: PostWithLikesAndAuthorAndCommentsAndGroup[] | undefined;
   isLoading: boolean;
 };
 const RenderingGroupPosts = ({

@@ -21,9 +21,12 @@ import CreateComment from "~/components/post/page/CreateComment";
 import { useState } from "react";
 import GroupPostComment from "~/components/post/reuse/GroupPostComment";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
+
+  const router = useRouter();
 
   const { user } = useUser();
 
@@ -36,10 +39,10 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const post = api.post.getPost.useQuery({
     id: props.postId,
   });
-  const allPostComments = api.comment.getAllPostComments.useQuery({
+  const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: props.postId,
   });
-  const isUserLikePost = api.like.isUserLikePost.useQuery({
+  const allPostComments = api.comment.getAllPostComments.useQuery({
     postId: props.postId,
   });
 
@@ -79,9 +82,9 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     <>
       <main className="min-h-screen bg-gray-950 pt-24 text-white">
         <div className="flex items-center space-x-5 p-3">
-          <Link href={`/group/${post.data?.groupId}`}>
+          <button onClick={() => router.back()}>
             <ArrowLeftIcon />
-          </Link>
+          </button>
           <span className="text-xl font-bold">Post</span>
         </div>
         <div className="flex gap-3 p-3">

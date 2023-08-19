@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,23 +21,23 @@ type GroupPostCommentProps = {
   comment: CommentWithLikesAndAuthor;
 };
 
+dayjs.extend(relativeTime);
+
 const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
-  dayjs.extend(relativeTime);
-  const { push } = useRouter();
   const { user } = useUser();
 
   const ctx = api.useContext();
 
-  const isUserLikeComment = api.like.isUserLikeComment.useQuery({
-    commentId: comment.id,
-  });
+  const isUserLikeComment = comment.likes.find(
+    (like) => like.userId === user?.id
+  );
 
   const commentLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const commentUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
   const deleteCommentGenerator = api.comment.deleteComment.useMutation();
 
   function handleLikeToggle() {
-    if (isUserLikeComment.data) {
+    if (!!isUserLikeComment) {
       commentUnLikeGenerator.mutate(
         {
           id: comment.likes.find((like) => like.userId === user?.id)!.id,
@@ -142,7 +141,7 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
           >
             <HeartIcon
               className={
-                isUserLikeComment.data
+                !!isUserLikeComment
                   ? "text-red-500 transition duration-200"
                   : "transition duration-200"
               }

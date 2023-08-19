@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
@@ -10,6 +10,7 @@ type GroupHeaderPropsType = {
 };
 
 const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
+  const router = useRouter();
   const { data, isLoading } = api.group.getGroup.useQuery({
     groupId: groupId,
   });
@@ -26,9 +27,9 @@ const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
   return (
     <div className="flex h-[86px] items-center justify-between bg-gray-950 p-4 text-white">
       <div className="flex items-center">
-        <Link href={"/group"}>
+        <button onClick={() => router.back()}>
           <ChevronLeftIcon />
-        </Link>
+        </button>
         <h1 className="ml-4 text-lg">{data?.name}</h1>
         <span className="text-md">({Number(data?.members.length)})</span>
       </div>

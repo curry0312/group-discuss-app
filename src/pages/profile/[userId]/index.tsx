@@ -67,16 +67,16 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </div>
         <div className="flex items-center gap-3  py-4 text-xl">
           <div className="flex items-center gap-2">
-            <span>{0}</span>
+            <span>{Number(data.friends.length) + Number(data.friendsOf.length)}</span>
             <p>Friends</p>
           </div>
         </div>
 
         <div className="flex items-center justify-evenly">
-          <button className="flex-1 py-2 hover:bg-gray-400" onClick={() => {}}>
+          <button className="flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950" onClick={() => {}}>
             Groups
           </button>
-          <button className="flex-1 py-2 hover:bg-gray-400" onClick={() => {}}>
+          <button className="flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950" onClick={() => {}}>
             Posts
           </button>
         </div>

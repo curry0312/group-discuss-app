@@ -11,27 +11,23 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
-import type { PostWithLikesAndAuthorAndComments } from "type";
+import type { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
 
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type GroupPostProps = {
-  post: PostWithLikesAndAuthorAndComments;
+  post: PostWithLikesAndAuthorAndCommentsAndGroup;
 };
 
 dayjs.extend(relativeTime);
 const GroupPost = ({ post }: GroupPostProps) => {
   const { push } = useRouter();
   const { user } = useUser();
-
   const ctx = api.useContext();
-
-  const isUserLikePost = api.like.isUserLikePost.useQuery({
-    postId: post.id,
-  })
-
   const deletePostGenerator = api.post.deletePost.useMutation();
+
+  const isUserLikePost = post.likes.find((like) => like.userId === user?.id);
 
   function handleDeletePost() {
     deletePostGenerator.mutate(
@@ -98,7 +94,13 @@ const GroupPost = ({ post }: GroupPostProps) => {
             <span>{post.comments.length}</span>
             <span>comments</span>
           </div>
-          <div className={isUserLikePost.data === true ? "flex items-center gap-2 text-red-400" : "flex items-center gap-2"}>
+          <div
+            className={
+              !!isUserLikePost === true
+                ? "flex items-center gap-2 text-red-400"
+                : "flex items-center gap-2"
+            }
+          >
             <span>{post.likes.length}</span>
             <span>likes</span>
           </div>

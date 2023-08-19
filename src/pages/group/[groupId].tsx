@@ -1,7 +1,6 @@
 import RenderingGroupPosts from "~/components/post/page/RenderingGroupPosts";
 import {
   GetStaticPaths,
-  GetServerSidePropsContext,
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
@@ -26,7 +25,8 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     refetchInterval: 2000
   }
   );
-  console.log(props)
+
+  
   if(isLoading){
     console.log("Loading...")
   }

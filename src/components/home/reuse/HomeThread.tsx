@@ -11,32 +11,25 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
-import type { PostWithLikesAndAuthorAndComments } from "type";
+import type { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
-import { Skeleton } from "~/components/ui/skeleton";
+import { Avatar } from "~/components/ui/avatar";
 
-import CommentIcon from "~/styles/icons/CommentIcon";
-import HeartIcon from "~/styles/icons/HeartIcon";
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
 type HomeThreadProps = {
-  post: PostWithLikesAndAuthorAndComments;
+  post: PostWithLikesAndAuthorAndCommentsAndGroup;
 };
 
+dayjs.extend(relativeTime);
 const HomeThread = ({ post }: HomeThreadProps) => {
-  dayjs.extend(relativeTime);
   const { push } = useRouter();
   const { user } = useUser();
   const ctx = api.useContext();
-  const isUserLikePost = api.like.isUserLikePost.useQuery({
-    postId: post.id,
-  });
-  const group = api.group.getGroup.useQuery({
-    groupId: post.groupId,
-  });
-  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
-  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
+
+  const isUserLikePost = post.likes.find((like) => like.userId === user?.id);
+  console.log(isUserLikePost);
 
   const deletePostGenerator = api.post.deletePost.useMutation();
 
@@ -66,7 +59,10 @@ const HomeThread = ({ post }: HomeThreadProps) => {
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2" onClick={() => push(`/post/${post.id}`)}>
+      <div
+        className="flex flex-1 flex-col gap-2"
+        onClick={() => push(`/post/${post.id}`)}
+      >
         <div className="flex items-center gap-2">
           <h1 className="font-bold">{post.author.name}</h1>
           <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
@@ -109,7 +105,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
           </div>
           <div
             className={
-              isUserLikePost.data === true
+              !!isUserLikePost
                 ? "flex items-center gap-2 text-red-400"
                 : "flex items-center gap-2"
             }
@@ -119,26 +115,19 @@ const HomeThread = ({ post }: HomeThreadProps) => {
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            {group.isLoading ? (
-              <div className="flex items-center gap-1">
-                <Skeleton className="h-8 w-8 rounded-full bg-slate-500" />
-                <Skeleton className="h-8 w-16 rounded-md bg-slate-500" />
-              </div>
-            ) : (
-              <div className="w-[30px] rounded-full">
-                <AspectRatio ratio={1 / 1}>
-                  <Image
-                    src={group.data?.image || "https://github.com/shadcn.png"}
-                    alt="group-image"
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="rounded-full object-cover"
-                  />
-                </AspectRatio>
-              </div>
-            )}
-            <span>{group.data?.name}</span>
+            <div className="w-[30px] h-[30px]">
+              <AspectRatio ratio={1 / 1}>
+                <Image
+                  src={post.group.image}
+                  alt="group-image"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="rounded-full object-cover"
+                />
+              </AspectRatio>
+            </div>
+            <span>{post.group.name}</span>
           </div>
         </div>
       </div>

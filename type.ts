@@ -1,9 +1,10 @@
-import { Comment, Like, Post, User } from "@prisma/client";
+import { Comment, Group, Like, Post, User } from "@prisma/client";
 
-export type PostWithLikesAndAuthorAndComments = Post & {
+export type PostWithLikesAndAuthorAndCommentsAndGroup = Post & {
     likes: Like[];
     author: User;
     comments: Comment[];
+    group: Group
 }
 
 export type CommentWithLikesAndAuthor = Comment & {

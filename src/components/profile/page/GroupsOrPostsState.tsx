@@ -4,12 +4,12 @@ import LoadingSpinner from "~/components/loading/LoadingSpinner";
 import GroupPost from "~/components/post/reuse/GroupPost";
 import { api } from "~/utils/api";
 
-type GroupsOrPostsStateButtonsProps = {
+type GroupsOrPostsStateProps = {
   userId: string;
 };
-const GroupsOrPostsStateButtons = ({
+const GroupsOrPostsState = ({
   userId,
-}: GroupsOrPostsStateButtonsProps) => {
+}: GroupsOrPostsStateProps) => {
   const [GroupsOrPosts, setGroupsOrPosts] = useState<"groups" | "posts">(
     "groups"
   );
@@ -22,13 +22,13 @@ const GroupsOrPostsStateButtons = ({
     <>
       <div className="flex items-center justify-evenly">
         <button
-          className="flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950"
+          className={GroupsOrPosts === "groups" ? "flex-1 py-2 transition duration-200 ease-in-out bg-white text-gray-950 hover:bg-white hover:text-gray-950" :"flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950"}
           onClick={() => setGroupsOrPosts("groups")}
         >
           Groups
         </button>
         <button
-          className="flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950"
+          className={GroupsOrPosts === "posts" ? "flex-1 py-2 transition duration-200 ease-in-out bg-white text-gray-950 hover:bg-white hover:text-gray-950" :"flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950"}
           onClick={() => setGroupsOrPosts("posts")}
         >
           Posts
@@ -68,4 +68,4 @@ const GroupsOrPostsStateButtons = ({
   );
 };
 
-export default GroupsOrPostsStateButtons;
+export default GroupsOrPostsState;

@@ -15,7 +15,7 @@ import LoadingPage from "~/components/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
 import FriendStateButtons from "~/components/profile/page/FriendStateButtons";
-import GroupsOrPostsStateButtons from "~/components/profile/page/GroupsOrPostsStateButtons";
+import GroupsOrPostsState from "~/components/profile/page/GroupsOrPostsState";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
@@ -68,7 +68,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
 
-        <GroupsOrPostsStateButtons userId={props.userId} />
+        <GroupsOrPostsState userId={props.userId} />
       </div>
     </main>
   );

@@ -52,7 +52,7 @@ export const userRouter = createTRPCRouter({
         include: {
           friends: true,
           friendsOf: true,
-        }
+        },
       });
     }),
 
@@ -62,7 +62,7 @@ export const userRouter = createTRPCRouter({
   }),
 
   getAllFriends: privatedProcedure.query(async ({ ctx }) => {
-    const friends =  await ctx.prisma.user.findMany({
+    const friends = await ctx.prisma.user.findMany({
       where: {
         id: ctx.currentUserId,
       },
@@ -71,14 +71,36 @@ export const userRouter = createTRPCRouter({
       },
       orderBy: {
         createdAt: "desc",
-      }
+      },
     });
 
     return friends;
   }),
+  getAllUnGroupedFriends: privatedProcedure
+    .input(z.object({ groupId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const friends = await ctx.prisma.user.findMany({
+        where: {
+          id: ctx.currentUserId,
+          memberGroups: {
+            none: {
+              id: input.groupId,
+            },
+          },
+        },
+        select: {
+          friends: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return friends;
+    }),
 
   getAllFriendsOf: privatedProcedure.query(async ({ ctx }) => {
-    const friendsOf =  await ctx.prisma.user.findMany({
+    const friendsOf = await ctx.prisma.user.findMany({
       where: {
         id: ctx.currentUserId,
       },
@@ -87,10 +109,31 @@ export const userRouter = createTRPCRouter({
       },
       orderBy: {
         createdAt: "desc",
-      }
+      },
     });
     return friendsOf;
   }),
+  getAllUnGroupedFriendsOf: privatedProcedure
+    .input(z.object({ groupId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const friendsOf = await ctx.prisma.user.findMany({
+        where: {
+          id: ctx.currentUserId,
+          memberGroups: {
+            none: {
+              id: input.groupId,
+            },
+          },
+        },
+        select: {
+          friendsOf: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      return friendsOf;
+    }),
 
   getAllUnCheckedFriends: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.user.findMany({

@@ -28,8 +28,12 @@ type InViteFriendToGroupPropsType = {
 
 const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
   const [selectFriends, setSelectFriends] = useState<User[]>([]);
-  const friends = api.user.getAllFriends.useQuery();
-  const friendsOf = api.user.getAllFriendsOf.useQuery();
+  const friends = api.user.getAllUnGroupedFriends.useQuery({
+    groupId: groupId,
+  });
+  const friendsOf = api.user.getAllUnGroupedFriendsOf.useQuery({
+    groupId: groupId,
+  });
   const ctx = api.useContext();
   const inviteFriendToGroup = api.group.inviteFriendToGroup.useMutation();
   async function handleInviteFriendToGroup() {
@@ -44,11 +48,7 @@ const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
     }
   }
   if (friends.isLoading || friendsOf.isLoading)
-    return (
-      <>
-        <Skeleton className="h-10 w-28 rounded-md bg-gray-900" />
-      </>
-    );
+    return <Skeleton className="h-10 w-28 rounded-md bg-gray-900" />;
   if (!friends.data || !friendsOf.data) return <div>404 data not found</div>;
   return (
     <Dialog>

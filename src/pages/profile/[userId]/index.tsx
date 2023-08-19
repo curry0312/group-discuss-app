@@ -84,7 +84,7 @@ export async function getStaticProps(
   if (typeof userId !== "string") throw new Error("no userId");
   // prefetch `user.getUser`
   await helpers.user.getUser.prefetch({ id: userId });
-  await helpers.post.getAllUserPosts.prefetch({ authorId: userId });
+  await helpers.post.getAllUserInPublicGroupsPosts.prefetch({ authorId: userId });
   return {
     props: {
       trpcState: helpers.dehydrate(),

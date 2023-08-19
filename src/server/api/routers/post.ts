@@ -57,12 +57,15 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  getAllUserPosts: privatedProcedure
+  getAllUserInPublicGroupsPosts: privatedProcedure
     .input(z.object({ authorId: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.post.findMany({
         where: {
           authorId: input.authorId,
+          group: {
+            public: true,
+          }
         },
         include: {
           author: true,
@@ -73,6 +76,7 @@ export const postRouter = createTRPCRouter({
         orderBy: [{ createdAt: "desc" }],
       });
     }),
+  //*Get all the posts from groups which current user have joined, except user itself.
   getAllUserRelativePosts: privatedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.post.findMany({
       where: {

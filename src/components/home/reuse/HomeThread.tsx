@@ -113,22 +113,21 @@ const HomeThread = ({ post }: HomeThreadProps) => {
             <span>{post.likes.length}</span>
             <span>likes</span>
           </div>
-
-          <div className="ml-auto flex items-center gap-2">
-            <div className="w-[30px] h-[30px]">
-              <AspectRatio ratio={1 / 1}>
-                <Image
-                  src={post.group.image}
-                  alt="group-image"
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="rounded-full object-cover"
-                />
-              </AspectRatio>
-            </div>
-            <span>{post.group.name}</span>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="h-[30px] w-[30px]">
+            <AspectRatio ratio={1 / 1}>
+              <Image
+                src={post.group.image}
+                alt="group-image"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="rounded-full object-cover"
+              />
+            </AspectRatio>
           </div>
+          <span>{post.group.name}</span>
         </div>
       </div>
     </div>

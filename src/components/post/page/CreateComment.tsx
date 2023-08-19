@@ -1,12 +1,10 @@
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { contextProps } from "@trpc/react-query/shared";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
-import CloseIcon from "~/styles/icons/CloseIcon";
 import { api } from "~/utils/api";
 
 const formSchema = z.object({

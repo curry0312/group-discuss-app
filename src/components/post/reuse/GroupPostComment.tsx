@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 
-import type { CommentWithLikesAndAuthor, PostWithLikesAndAuthor } from "type";
+import type { CommentWithLikesAndAuthor } from "type";
 
 import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
@@ -105,9 +105,9 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
               {user?.id === comment.author.id ? (
                 <>
                   <DropdownMenuItem onClick={() => handleDeleteComment()}>
-                    Delete post
+                    Delete comment
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Edit post</DropdownMenuItem>
+                  <DropdownMenuItem>Edit comment</DropdownMenuItem>
                 </>
               ) : (
                 <DropdownMenuItem>Report</DropdownMenuItem>

@@ -13,8 +13,6 @@ import {
 
 import type { PostWithLikesAndAuthorAndComments } from "type";
 
-import CommentIcon from "~/styles/icons/CommentIcon";
-import HeartIcon from "~/styles/icons/HeartIcon";
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
 
@@ -22,8 +20,8 @@ type GroupPostProps = {
   post: PostWithLikesAndAuthorAndComments;
 };
 
+dayjs.extend(relativeTime);
 const GroupPost = ({ post }: GroupPostProps) => {
-  dayjs.extend(relativeTime);
   const { push } = useRouter();
   const { user } = useUser();
 
@@ -31,42 +29,10 @@ const GroupPost = ({ post }: GroupPostProps) => {
 
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: post.id,
-  });
+  })
 
-  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
-  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
   const deletePostGenerator = api.post.deletePost.useMutation();
 
-  function handleLikeToggle() {
-    if (isUserLikePost.data) {
-      postUnLikeGenerator.mutate(
-        {
-          id: post.likes.find((like) => like.userId === user?.id)!.id,
-          postId: post.id,
-          commentId: null,
-        },
-        {
-          onSuccess: () => {
-            ctx.like.invalidate();
-            ctx.post.invalidate();
-          },
-        }
-      );
-    } else {
-      postLikeGenerator.mutate(
-        {
-          postId: post.id,
-          commentId: null,
-        },
-        {
-          onSuccess: () => {
-            ctx.like.invalidate();
-            ctx.post.invalidate();
-          },
-        }
-      );
-    }
-  }
   function handleDeletePost() {
     deletePostGenerator.mutate(
       { id: post.id },
@@ -79,7 +45,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
   }
 
   return (
-    <div className="flex cursor-pointer gap-3 rounded-md bg-gray-800 p-2">
+    <div className="flex cursor-pointer gap-3 border-b border-gray-800 p-2">
       <div>
         <Link href={"/"}>
           <Image
@@ -93,10 +59,15 @@ const GroupPost = ({ post }: GroupPostProps) => {
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2">
+      <div
+        className="flex flex-1 flex-col gap-2"
+        onClick={() => push(`/post/${post.id}`)}
+      >
         <div className="flex items-center gap-2">
+          {/*post user's info*/}
           <h1 className="font-bold">{post.author.name}</h1>
           <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
+          {/*post option*/}
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto mr-2">
               <MoreIcon />
@@ -115,42 +86,22 @@ const GroupPost = ({ post }: GroupPostProps) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex flex-col" onClick={() => push(`/post/${post.id}`)}>
+        {/*post content*/}
+        <div className="flex flex-col">
           <div>
             <p className="text-md">{post.content}</p>
           </div>
-          {/* <div>
-            <Image
-              src={"https://github.com/shadcn.png"}
-              alt="post-image"
-              width={200}
-              height={200}
-              priority
-            />
-          </div> */}
         </div>
+        {/*post likes and comments*/}
         <div className="flex items-center gap-3">
-          <div>
-            <button
-              className="flex items-center gap-1"
-            >
-              <CommentIcon className="" />
-              <span>{post.comments.length}</span>
-            </button>
+          <div className="flex items-center gap-2">
+            <span>{post.comments.length}</span>
+            <span>comments</span>
           </div>
-          <button
-            className="flex items-center gap-1"
-            onClick={() => handleLikeToggle()}
-          >
-            <HeartIcon
-              className={
-                isUserLikePost.data
-                  ? "text-red-500 transition duration-200"
-                  : "transition duration-200"
-              }
-            />
+          <div className={isUserLikePost.data === true ? "flex items-center gap-2 text-red-400" : "flex items-center gap-2"}>
             <span>{post.likes.length}</span>
-          </button>
+            <span>likes</span>
+          </div>
         </div>
       </div>
     </div>

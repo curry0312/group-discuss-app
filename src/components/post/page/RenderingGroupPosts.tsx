@@ -19,7 +19,7 @@ const RenderingGroupPosts = ({
       </div>
     );
   return (
-    <div className="flex flex-col gap-3 p-4">
+    <div className="flex flex-col">
       {posts?.map((post) => (
         <GroupPost key={post.id} post={post} />
       ))}

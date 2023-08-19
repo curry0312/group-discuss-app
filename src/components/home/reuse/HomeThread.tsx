@@ -39,37 +39,6 @@ const HomeThread = ({ post }: HomeThreadProps) => {
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
 
   const deletePostGenerator = api.post.deletePost.useMutation();
-  function handleCommentToggle() {}
-  function handleLikeToggle() {
-    if (isUserLikePost.data) {
-      postUnLikeGenerator.mutate(
-        {
-          id: post.likes.find((like) => like.userId === user?.id)!.id,
-          postId: post.id,
-          commentId: null,
-        },
-        {
-          onSuccess: () => {
-            ctx.like.invalidate();
-            ctx.post.invalidate();
-          },
-        }
-      );
-    } else {
-      postLikeGenerator.mutate(
-        {
-          postId: post.id,
-          commentId: null,
-        },
-        {
-          onSuccess: () => {
-            ctx.like.invalidate();
-            ctx.post.invalidate();
-          },
-        }
-      );
-    }
-  }
 
   function handleDeletePost() {
     deletePostGenerator.mutate(
@@ -97,7 +66,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2">
+      <div className="flex flex-1 flex-col gap-2" onClick={() => push(`/post/${post.id}`)}>
         <div className="flex items-center gap-2">
           <h1 className="font-bold">{post.author.name}</h1>
           <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
@@ -119,7 +88,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex flex-col" onClick={() => push(`/post/${post.id}`)}>
+        <div className="flex flex-col">
           <div>
             <p className="text-md">{post.content}</p>
           </div>
@@ -134,27 +103,20 @@ const HomeThread = ({ post }: HomeThreadProps) => {
           </div> */}
         </div>
         <div className="flex items-center gap-3">
-          <button
-            className="flex items-center gap-1"
-            onClick={() => handleCommentToggle()}
-          >
-            <CommentIcon className="" />
+          <div className="flex items-center gap-2">
             <span>{post.comments.length}</span>
-          </button>
-
-          <button
-            className="flex items-center gap-1"
-            onClick={() => handleLikeToggle()}
+            <span>comments</span>
+          </div>
+          <div
+            className={
+              isUserLikePost.data === true
+                ? "flex items-center gap-2 text-red-400"
+                : "flex items-center gap-2"
+            }
           >
-            <HeartIcon
-              className={
-                isUserLikePost.data
-                  ? "text-red-500 transition duration-200"
-                  : "transition duration-200"
-              }
-            />
             <span>{post.likes.length}</span>
-          </button>
+            <span>likes</span>
+          </div>
 
           <div className="ml-auto flex items-center gap-2">
             {group.isLoading ? (

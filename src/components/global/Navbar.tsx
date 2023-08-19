@@ -28,10 +28,12 @@ import { Skeleton } from "../ui/skeleton";
 import ProfileIcon from "~/styles/icons/ProfileIcon";
 import SettingIcon from "~/styles/icons/SettingIcon";
 import SignOutIcon from "~/styles/icons/SignOutIcon";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { user, isLoaded, isSignedIn } = useUser();
   const currentPath = usePathname();
+  const router = useRouter();
   const [pathname, setPathname] = useState("/");
   const { isNotificationOpen, setIsNotificationOpen } = useOpenNotification();
   useEffect(() => {
@@ -109,17 +111,19 @@ const Navbar = () => {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem className="flex items-center gap-1">
+                <DropdownMenuItem className="flex items-center gap-1" onClick={()=>router.push(`/profile/${user?.id}`)}>
                   <ProfileIcon />
                   <Link href={`/profile/${user?.id}`}>profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-1">
+                <DropdownMenuItem className="flex items-center gap-1" onClick={()=>router.push(`/setting/${user?.id}`)}>
                   <SettingIcon />
                   <Link href={"/setting/userId"}>setting</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex items-center gap-1">
                   <SignOutIcon />
-                  <SignOutButton>Sign out</SignOutButton>
+                  <SignOutButton>
+                    Sign out
+                  </SignOutButton>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

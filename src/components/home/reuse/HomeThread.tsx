@@ -13,7 +13,6 @@ import {
 
 import type { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
-import { Avatar } from "~/components/ui/avatar";
 
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";

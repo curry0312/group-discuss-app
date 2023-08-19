@@ -85,7 +85,6 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           <button onClick={() => router.back()}>
             <ArrowLeftIcon />
           </button>
-          <span className="text-xl font-bold">Post</span>
         </div>
         <div className="flex gap-3 p-3">
           <div>

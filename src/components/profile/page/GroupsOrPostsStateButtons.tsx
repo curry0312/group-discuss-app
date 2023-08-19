@@ -13,7 +13,8 @@ const GroupsOrPostsStateButtons = ({
   const [GroupsOrPosts, setGroupsOrPosts] = useState<"groups" | "posts">(
     "groups"
   );
-  const allUserMemberGroups = api.group.getAllUserMemberGroups.useQuery();
+  const allProfileUserMemberGroups =
+    api.group.getAllProfileUserMemberGroups.useQuery({ userId: userId });
   const allUserPosts = api.post.getAllUserPosts.useQuery({
     authorId: userId,
   });
@@ -36,13 +37,13 @@ const GroupsOrPostsStateButtons = ({
 
       {GroupsOrPosts === "groups" ? (
         <div>
-          {allUserMemberGroups.isLoading ? (
+          {allProfileUserMemberGroups.isLoading ? (
             <div className="flex h-36 items-center justify-center">
               <LoadingSpinner />
             </div>
           ) : (
             <div className="flex flex-col gap-3 p-2">
-              {allUserMemberGroups.data?.map((group) => (
+              {allProfileUserMemberGroups.data?.map((group) => (
                 <Group key={group.id} group={group} />
               ))}
             </div>

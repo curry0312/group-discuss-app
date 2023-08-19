@@ -59,6 +59,20 @@ export const groupRouter = createTRPCRouter({
       },
     });
   }),
+  getAllProfileUserMemberGroups: privatedProcedure.input(z.object({ userId: z.string() })).query(async ({ ctx,input }) => {
+    return await ctx.prisma.group.findMany({
+      where: {
+        members: {
+          some: {
+            id: input.userId,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
 
   inviteFriendToGroup: privatedProcedure
     .input(z.object({ id: z.string(), userIds: z.array(z.string()) }))

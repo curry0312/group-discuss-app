@@ -15,17 +15,13 @@ import LoadingPage from "~/components/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
 import FriendStateButtons from "~/components/profile/page/FriendStateButtons";
-import LoadingSpinner from "~/components/loading/LoadingSpinner";
-import GroupPost from "~/components/post/reuse/GroupPost";
+import GroupsOrPostsStateButtons from "~/components/profile/page/GroupsOrPostsStateButtons";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
 
   const { data, isLoading } = api.user.getUser.useQuery({
     id: props.userId,
-  });
-  const allUserPosts = api.post.getAllUserPosts.useQuery({
-    authorId: props.userId,
   });
 
   if (isLoading) return <LoadingPage />;
@@ -72,28 +68,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-evenly">
-          <button className="flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950" onClick={() => {}}>
-            Groups
-          </button>
-          <button className="flex-1 py-2 transition duration-200 ease-in-out hover:bg-white hover:text-gray-950" onClick={() => {}}>
-            Posts
-          </button>
-        </div>
-
-        <div>
-          {allUserPosts.isLoading ? (
-            <div className="flex h-36 items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-3 p-2">
-              {allUserPosts.data?.map((post) => (
-                <GroupPost key={post.id} post={post} />
-              ))}
-            </div>
-          )}
-        </div>
+        <GroupsOrPostsStateButtons userId={props.userId} />
       </div>
     </main>
   );

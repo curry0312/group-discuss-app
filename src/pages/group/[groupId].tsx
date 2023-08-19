@@ -1,7 +1,8 @@
 import RenderingGroupPosts from "~/components/post/page/RenderingGroupPosts";
 import {
-  GetServerSidePropsContext,
   GetStaticPaths,
+  GetServerSidePropsContext,
+  GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
 import generateSSGHelper from "~/utils/generateSSGHelper";
@@ -10,11 +11,14 @@ import { useState } from "react";
 import CreateGroupPost from "~/components/post/page/CreateGroupPost";
 import GroupHeader from "~/components/group/page/GroupHeader";
 import { api } from "~/utils/api";
-import LoadingPage from "~/components/loading/LoadingPage";
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { appRouter } from "~/server/api/root";
+import superjson from 'superjson';
+import { prisma } from "~/server/db";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-  const { data, isLoading, status } = api.post.getAllGroupPosts.useQuery({
+  const { data, isLoading } = api.post.getAllGroupPosts.useQuery({
     groupId: props.groupId,
   },
   {
@@ -22,9 +26,9 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     refetchInterval: 2000
   }
   );
-
-  if(status !== "success"){
-    return <LoadingPage />
+  console.log(props)
+  if(isLoading){
+    console.log("Loading...")
   }
   return (
     <>
@@ -54,19 +58,23 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 export default GroupPage;
 
 export async function getStaticProps(
-  context: GetServerSidePropsContext<{ groupId: string }>
+  context: GetStaticPropsContext<{ groupId: string }>
 ) {
-  const helpers = generateSSGHelper();
+ const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: { prisma, currentUserId: null },
+    transformer: superjson, // optional - adds superjson serialization
+  });
   const groupId = context.params?.groupId as string;
-  if (typeof groupId !== "string") throw new Error("no groupId");
+
   // prefetch `post.getAllGroupPosts`
-  await helpers.post.getAllGroupPosts.prefetch({ groupId });
+  await helpers.post.getAllGroupPosts.prefetch({ groupId: groupId });
   return {
     props: {
       trpcState: helpers.dehydrate(),
       groupId,
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 

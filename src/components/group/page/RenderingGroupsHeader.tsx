@@ -22,10 +22,10 @@ const RenderingGroupHeader = ({
         <div className="hidden absolute bottom-0 w-full h-0.5 text-white bg-white group-hover:block"/>
       </button>
       <div className="flex flex-1 items-center justify-center">
-        <Input
+        <input
           type="email"
-          placeholder="Search..."
-          className="w-[100%] bg-slate-900 text-white"
+          placeholder="Search your group..."
+          className="w-[100%] h-full p-2 bg-transparent bg-slate-900 text-white focus:outline-none"
           onChange={(e) => setFilterSearchGroupText(e.target.value)}
         />
       </div>

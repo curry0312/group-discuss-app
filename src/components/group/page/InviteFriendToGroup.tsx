@@ -47,9 +47,12 @@ const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
       console.log(error);
     }
   }
-  if (friends.isLoading || friendsOf.isLoading)
+  if (friends.isLoading || friendsOf.isLoading) {
     return <Skeleton className="h-10 w-28 rounded-md bg-gray-900" />;
-  if (!friends.data || !friendsOf.data) return <div>404 data not found</div>;
+  }
+  if (!friends.data || !friendsOf.data) {
+    return <div>404 data not found</div>;
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>

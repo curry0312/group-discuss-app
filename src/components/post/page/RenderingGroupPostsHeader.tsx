@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Skeleton } from "~/components/ui/skeleton";
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
 import { api } from "~/utils/api";
@@ -14,7 +16,7 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
   const { data, isLoading } = api.group.getGroup.useQuery({
     groupId: groupId,
   });
-  
+
   if (isLoading) {
     return (
       <div className="flex h-[86px] items-center justify-between bg-gray-950 p-4 text-white">
@@ -27,12 +29,26 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
   }
   return (
     <div className="flex h-[86px] items-center justify-between bg-gray-950 p-4 text-white">
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <button onClick={() => router.back()}>
           <ChevronLeftIcon />
         </button>
-        <h1 className="ml-4 text-lg">{data?.name}</h1>
-        <span className="text-md">({Number(data?.members.length)})</span>
+        <h1 className="text-lg">{data?.name}</h1>
+        <span className="text-md">({Number(data?.members.length)}) </span>
+        <div className="flex items-center">
+          {data?.members.map((member) => (
+            <div className="w-[30px] cursor-pointer" onClick={() => router.push(`/profile/${member.id}`)}>
+              <AspectRatio ratio={1 / 1}>
+                <Image
+                  src={member.image}
+                  alt="Image"
+                  className="rounded-full object-cover"
+                  fill
+                />
+              </AspectRatio>
+            </div>
+          ))}
+        </div>
       </div>
       <div>
         <InViteFriendToGroup groupId={groupId} />

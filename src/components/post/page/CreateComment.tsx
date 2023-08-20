@@ -67,7 +67,7 @@ const CreateComment = ({
           >
             Cancel
           </Button>
-          <Button variant={"default"} type="submit">
+          <Button variant={"default"} type="submit" onClick={()=>setIsCreateCommentOpen(false)}>
             Comment
           </Button>
         </div>

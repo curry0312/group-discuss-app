@@ -39,7 +39,8 @@ export const commentRouter = createTRPCRouter({
                 likes:true,
               }
             }
-        }
+        },
+        orderBy: [{ createdAt: "desc" }],
       });
     }),
 

@@ -33,14 +33,14 @@ export const commentRouter = createTRPCRouter({
           id: input.postId,
         },
         select: {
-            comments:{
-              include:{
-                author:true,
-                likes:true,
-              }
-            }
+          comments: {
+            include: {
+              author: true,
+              likes: true,
+            },
+            orderBy: [{ createdAt: "desc" }],
+          },
         },
-        orderBy: [{ createdAt: "desc" }],
       });
     }),
 

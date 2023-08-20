@@ -24,7 +24,7 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   },
   {
     enabled: !!props.groupId,
-    refetchInterval: 6000
+    refetchInterval: 2000
   }
   );
 

@@ -3,7 +3,12 @@ import { api } from "~/utils/api";
 import HomeThread from "../reuse/HomeThread";
 
 const RenderingHomeThread = () => {
-  const { data, isLoading } = api.post.getAllUserRelativePosts.useQuery();
+  const { data, isLoading } = api.post.getAllUserRelativePosts.useQuery(
+    undefined,
+    {
+      refetchInterval: 3000,
+    }
+  );
   if (isLoading)
     return (
       <div>

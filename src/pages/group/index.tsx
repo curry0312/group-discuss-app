@@ -23,7 +23,7 @@ export default function Home() {
   }
   return (
     <>
-      <div className="flex min-h-screen w-screen flex-col pt-[86px] bg-gray-950">
+      <div className="flex min-h-screen w-screen flex-col pt-[106px] bg-gray-950">
         <RenderingGroupHeader setFilterSearchGroupText={setFilterSearchGroupText}/>
         <RenderingGroups filterSearchGroupText={filterSearchGroupText}/>
       </div>

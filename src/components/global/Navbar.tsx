@@ -55,8 +55,9 @@ const Navbar = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href="/">
+                    <Link href="/" className="flex flex-col items-center sm:flex-row">
                       <HomeIcon />
+                      <span className="text-white">Home</span>
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -71,12 +72,13 @@ const Navbar = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href="/users">
+                    <Link href="/users" className="flex flex-col items-center sm:flex-row">
                       <PersonIcon />
+                      <span className="text-white">Friends</span>
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Friends</p>
+                    <p>Users</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -87,8 +89,9 @@ const Navbar = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href="/group">
+                    <Link href="/group" className="flex flex-col items-center sm:flex-row">
                       <ChatIcon />
+                      <span className="text-white">Groups</span>
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>

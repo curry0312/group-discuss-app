@@ -14,11 +14,12 @@ const RenderingGroupHeader = ({
   return (
     <div className="flex">
       <button
-        className="flex flex-1 items-center justify-center text-white hover:bg-gray-800"
+        className="relative flex flex-1 items-center justify-center text-white group"
         onClick={() => onOpen()}
       >
         <GroupUserIcon />
         <span className="font-Rubik">Create group</span>
+        <div className="hidden absolute bottom-0 w-full h-0.5 text-white bg-white group-hover:block"/>
       </button>
       <div className="flex flex-1 items-center justify-center">
         <Input

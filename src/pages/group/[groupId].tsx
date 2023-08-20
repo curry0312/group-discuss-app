@@ -32,7 +32,7 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   }
   return (
     <>
-      <div className={"min-h-screen bg-gray-950 pt-[86px] text-white"}>
+      <div className={"min-h-screen bg-gray-950 pt-[106px] text-white"}>
         <GroupHeader groupId={props.groupId}/>
         <RenderingGroupPosts posts={data} isLoading={isLoading}/>
       </div>

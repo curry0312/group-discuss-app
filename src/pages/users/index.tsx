@@ -14,7 +14,7 @@ const Friends = () => {
   });
   return (
     <div className="min-h-screen bg-gray-950">
-      <div className="pt-24">
+      <div className="pt-[106px]">
         <div className="flex flex-1 items-center justify-center p-2">
           <Input
             type="email"
@@ -25,15 +25,9 @@ const Friends = () => {
           />
         </div>
         <div className="flex flex-col">
-          {searchUsersText.length > 0 ? (
-            filteredUsers?.map((user) => <User key={user.id} user={user} />)
-          ) : (
-            <div className="mt-5 text-center">
-              <p className="font-Rubik text-gray-400">
-                Try searching for people
-              </p>
-            </div>
-          )}
+          {searchUsersText.length > 0
+            ? filteredUsers?.map((user) => <User key={user.id} user={user} />)
+            : data?.map((user) => <User key={user.id} user={user} />)}
         </div>
       </div>
     </div>

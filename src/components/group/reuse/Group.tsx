@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import GlobalIcon from "~/styles/icons/GlobalIcon";
 
 type GroupTypesProps = {
   group: Group;
@@ -12,7 +13,7 @@ type GroupTypesProps = {
 
 const Group = ({ group }: GroupTypesProps) => {
   dayjs.extend(relativeTime);
-  const {user} = useUser()
+  const { user } = useUser();
   return (
     <Link
       href={`/group/${group.id}`}
@@ -36,9 +37,14 @@ const Group = ({ group }: GroupTypesProps) => {
         </div>
       </div>
       <div className="flex basis-3/4 flex-col justify-center">
-        <p className="text-xl">{group.name}</p>
+        <div className="flex items-center gap-1">
+          <p className="text-xl">{group.name}</p>
+          {group.public === true && <GlobalIcon />}
+        </div>
         <p className="text-xs">created {dayjs(group.createdAt).fromNow()}</p>
-        <p className="text-xs text-amber-400">{group.ownerId == user?.id && "Owner"}</p>
+        <p className="text-xs text-amber-400">
+          {group.ownerId == user?.id && "Owner"}
+        </p>
       </div>
     </Link>
   );

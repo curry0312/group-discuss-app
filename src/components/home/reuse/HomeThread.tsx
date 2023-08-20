@@ -57,31 +57,15 @@ const HomeThread = ({ post }: HomeThreadProps) => {
           />
         </Link>
       </div>
-
       <div
         className="flex flex-1 flex-col gap-2"
         onClick={() => push(`/post/${post.id}`)}
       >
         <div className="flex items-center gap-2">
           <h1 className="font-bold">{post.author.name}</h1>
-          <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="ml-auto mr-2">
-              <MoreIcon />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {user?.id === post.author.id ? (
-                <>
-                  <DropdownMenuItem onClick={() => handleDeletePost()}>
-                    Delete post
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>Edit post</DropdownMenuItem>
-                </>
-              ) : (
-                <DropdownMenuItem>Report</DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <span className="ml-auto text-xs">
+            {dayjs(post.createdAt).fromNow()}
+          </span>
         </div>
         <div className="flex flex-col">
           <div>
@@ -128,6 +112,25 @@ const HomeThread = ({ post }: HomeThreadProps) => {
           </div>
           <span>{post.group.name}</span>
         </div>
+      </div>
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="mr-2">
+            <MoreIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {user?.id === post.author.id ? (
+              <>
+                <DropdownMenuItem onClick={() => handleDeletePost()}>
+                  Delete post
+                </DropdownMenuItem>
+                <DropdownMenuItem>Edit post</DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem>Report</DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

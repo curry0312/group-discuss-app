@@ -18,6 +18,7 @@ import { prisma } from "~/server/db";
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [isCreatingNewPost, setIsCreatingNewPost] = useState(false);
+  const [newPostData, setNewPostData] = useState("");
   const { data, isLoading } = api.post.getAllGroupPosts.useQuery({
     groupId: props.groupId,
   },
@@ -35,7 +36,7 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     <>
       <div className={"min-h-screen bg-gray-950 pt-[106px] text-white"}>
         <GroupHeader groupId={props.groupId}/>
-        <RenderingGroupPosts posts={data} isLoading={isLoading} isCreatingNewPost={isCreatingNewPost}/>
+        <RenderingGroupPosts posts={data} isLoading={isLoading} isCreatingNewPost={isCreatingNewPost} newPostData={newPostData}/>
       </div>
 
       {/*create post button*/}
@@ -51,6 +52,7 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         isCreatePostOpen={isCreatePostOpen}
         setIsCreatePostOpen={setIsCreatePostOpen}
         setIsCreatingNewPost={setIsCreatingNewPost}
+        setNewPostData={setNewPostData}
         groupId={props.groupId}
       />
     </>

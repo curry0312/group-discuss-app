@@ -1,16 +1,19 @@
 import { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
 import GroupPost from "../reuse/GroupPost";
 import GroupPost_skeleton from "../reuse/GroupPost_skeleton";
+import GroupPreSubmitPost_skeleton from "../reuse/GroupPreSubmitPost_skeleton";
 
 type RenderingGroupPostsPropsType = {
   posts: PostWithLikesAndAuthorAndCommentsAndGroup[] | undefined;
   isLoading: boolean;
   isCreatingNewPost: boolean;
+  newPostData: string;
 };
 const RenderingGroupPosts = ({
   posts,
   isLoading,
-  isCreatingNewPost
+  isCreatingNewPost,
+  newPostData,
 }: RenderingGroupPostsPropsType) => {
   if (isLoading)
     return (
@@ -23,7 +26,7 @@ const RenderingGroupPosts = ({
   return (
     <div className="flex flex-col">
       {isCreatingNewPost === true && (
-        <GroupPost_skeleton />
+        <GroupPreSubmitPost_skeleton data={newPostData} />
       )}
       {posts?.map((post) => (
         <GroupPost key={post.id} post={post} />

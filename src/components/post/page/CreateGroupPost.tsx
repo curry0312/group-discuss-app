@@ -17,6 +17,7 @@ type CreateGroupPostPropsType = {
   isCreatePostOpen: boolean;
   setIsCreatePostOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreatingNewPost: React.Dispatch<React.SetStateAction<boolean>>;
+  setNewPostData: React.Dispatch<React.SetStateAction<any>>;
   groupId: string;
 };
 
@@ -24,6 +25,7 @@ const CreateGroupPost = ({
   isCreatePostOpen,
   setIsCreatePostOpen,
   setIsCreatingNewPost,
+  setNewPostData,
   groupId,
 }: CreateGroupPostPropsType) => {
   const { user } = useUser();
@@ -36,9 +38,10 @@ const CreateGroupPost = ({
 
   const postCreateGenerator = api.post.createPost.useMutation();
 
-  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
-    console.log(data);
-    postCreateGenerator.mutate(
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    const { content } = data;
+    setNewPostData(content);
+    await postCreateGenerator.mutateAsync(
       {
         content: data.content,
         groupId: groupId,

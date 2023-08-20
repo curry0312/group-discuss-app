@@ -46,7 +46,7 @@ model Group {
 
 model Post {
     id        String    @id @default(uuid())
-    content   String
+    content   String    @db.VarChar(1000)
     author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId  String
     comments  Comment[]

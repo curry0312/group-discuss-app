@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,6 +20,7 @@ import InviteEachFriend from "./InviteEachFriend";
 import { useState } from "react";
 import { User } from "@prisma/client";
 import { Skeleton } from "~/components/ui/skeleton";
+import AddUserIcon from "~/styles/icons/AddUserIcon";
 
 type InViteFriendToGroupPropsType = {
   groupId: string;
@@ -47,8 +47,9 @@ const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
       console.log(error);
     }
   }
+
   if (friends.isLoading || friendsOf.isLoading) {
-    return <Skeleton className="h-10 w-28 rounded-md bg-gray-900" />;
+    return <Skeleton className="h-6 w-16 rounded-md bg-gray-900" />;
   }
   if (!friends.data || !friendsOf.data) {
     return <div>404 data not found</div>;
@@ -56,8 +57,9 @@ const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-gray-900 text-white">
-          Invite friend
+        <Button className="flex items-center gap-2 w-full h-full p-2 rounded-md">
+          <AddUserIcon />
+          <span>Invite</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -1,10 +1,16 @@
+import { api } from "~/utils/api";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Skeleton } from "~/components/ui/skeleton";
+import BarsIcon from "~/styles/icons/BarsIcon";
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
-import { api } from "~/utils/api";
 import InViteFriendToGroup from "../../group/page/InviteFriendToGroup";
 
 type GroupHeaderPropsType = {
@@ -24,6 +30,9 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
           <Skeleton className="h-6 w-12 rounded-md bg-gray-900" />
           <Skeleton className="h-6 w-16 rounded-md bg-gray-900" />
         </div>
+        <div>
+          <Skeleton className="h-6 w-16 rounded-md bg-gray-900" />
+        </div>
       </div>
     );
   }
@@ -37,7 +46,11 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
         <span className="text-md">({Number(data?.members.length)}) </span>
         <div className="flex items-center">
           {data?.members.map((member) => (
-            <div className="w-[30px] cursor-pointer" onClick={() => router.push(`/profile/${member.id}`)}>
+            <div
+              key={member.id}
+              className="w-[30px] cursor-pointer"
+              onClick={() => router.push(`/profile/${member.id}`)}
+            >
               <AspectRatio ratio={1 / 1}>
                 <Image
                   src={member.image}

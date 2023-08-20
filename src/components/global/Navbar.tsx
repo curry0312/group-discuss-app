@@ -55,7 +55,10 @@ const Navbar = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href="/" className="flex flex-col items-center sm:flex-row">
+                    <Link
+                      href="/"
+                      className="flex flex-col items-center sm:flex-row"
+                    >
                       <HomeIcon />
                       <span className="text-white">Home</span>
                     </Link>
@@ -67,35 +70,41 @@ const Navbar = () => {
               </TooltipProvider>
             </li>
             <li
-              className={pathname === "/users" ? "border-b-2 border-white" : ""}
-            >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Link href="/users" className="flex flex-col items-center sm:flex-row">
-                      <PersonIcon />
-                      <span className="text-white">Friends</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Users</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </li>
-            <li
               className={pathname === "/group" ? "border-b-2 border-white" : ""}
             >
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href="/group" className="flex flex-col items-center sm:flex-row">
+                    <Link
+                      href="/group"
+                      className="flex flex-col items-center sm:flex-row"
+                    >
                       <ChatIcon />
                       <span className="text-white">Groups</span>
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Groups</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+            <li
+              className={pathname === "/users" ? "border-b-2 border-white" : ""}
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link
+                      href="/users"
+                      className="flex flex-col items-center sm:flex-row"
+                    >
+                      <PersonIcon />
+                      <span className="text-white">Users</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Users</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -114,19 +123,23 @@ const Navbar = () => {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem className="flex items-center gap-1" onClick={()=>router.push(`/profile/${user?.id}`)}>
+                <DropdownMenuItem
+                  className="flex items-center gap-1"
+                  onClick={() => router.push(`/profile/${user?.id}`)}
+                >
                   <ProfileIcon />
                   <Link href={`/profile/${user?.id}`}>profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-1" onClick={()=>router.push(`/setting/${user?.id}`)}>
+                <DropdownMenuItem
+                  className="flex items-center gap-1"
+                  onClick={() => router.push(`/setting/${user?.id}`)}
+                >
                   <SettingIcon />
                   <Link href={"/setting/userId"}>setting</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex items-center gap-1">
                   <SignOutIcon />
-                  <SignOutButton>
-                    Sign out
-                  </SignOutButton>
+                  <SignOutButton>Sign out</SignOutButton>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

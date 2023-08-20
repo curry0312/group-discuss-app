@@ -122,14 +122,17 @@ export const userRouter = createTRPCRouter({
       const friendsOf = await ctx.prisma.user.findMany({
         where: {
           id: ctx.currentUserId,
-          memberGroups: {
-            none: {
-              id: input.groupId,
-            },
-          },
         },
         select: {
-          friendsOf: true,
+          friendsOf: {
+            where: {
+              memberGroups: {
+                none: {
+                  id: input.groupId,
+                },
+              }
+            },
+          }
         },
         orderBy: {
           createdAt: "desc",

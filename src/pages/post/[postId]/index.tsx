@@ -41,9 +41,15 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   });
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: props.postId,
+  },{
+    enabled: !!props.postId,
+    refetchInterval: 2000
   });
   const allPostComments = api.comment.getAllPostComments.useQuery({
     postId: props.postId,
+  },{
+    enabled: !!props.postId,
+    refetchInterval: 2000
   });
 
   function handleLikeToggle() {

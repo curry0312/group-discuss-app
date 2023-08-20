@@ -5,10 +5,12 @@ import GroupPost_skeleton from "../reuse/GroupPost_skeleton";
 type RenderingGroupPostsPropsType = {
   posts: PostWithLikesAndAuthorAndCommentsAndGroup[] | undefined;
   isLoading: boolean;
+  isCreatingNewPost: boolean;
 };
 const RenderingGroupPosts = ({
   posts,
   isLoading,
+  isCreatingNewPost
 }: RenderingGroupPostsPropsType) => {
   if (isLoading)
     return (
@@ -20,6 +22,9 @@ const RenderingGroupPosts = ({
     );
   return (
     <div className="flex flex-col">
+      {isCreatingNewPost === true && (
+        <GroupPost_skeleton />
+      )}
       {posts?.map((post) => (
         <GroupPost key={post.id} post={post} />
       ))}

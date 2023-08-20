@@ -21,6 +21,7 @@ type GroupPostProps = {
 };
 
 dayjs.extend(relativeTime);
+
 const GroupPost = ({ post }: GroupPostProps) => {
   const { push } = useRouter();
   const { user } = useUser();
@@ -63,28 +64,10 @@ const GroupPost = ({ post }: GroupPostProps) => {
           {/*post user's info*/}
           <h1 className="font-bold">{post.author.name}</h1>
           <span className="text-xs">{dayjs(post.createdAt).fromNow()}</span>
-          {/*post option*/}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="ml-auto mr-2">
-              <MoreIcon />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {user?.id === post.author.id ? (
-                <>
-                  <DropdownMenuItem onClick={() => handleDeletePost()}>
-                    Delete post
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>Edit post</DropdownMenuItem>
-                </>
-              ) : (
-                <DropdownMenuItem>Report</DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
         {/*post content*/}
         <div className="flex flex-col">
-          <div>
+          <div className="w-full">
             <p className="text-md">{post.content}</p>
           </div>
         </div>
@@ -105,6 +88,26 @@ const GroupPost = ({ post }: GroupPostProps) => {
             <span>likes</span>
           </div>
         </div>
+      </div>
+      <div>
+        {/*post option*/}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="ml-auto mr-2">
+            <MoreIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {user?.id === post.author.id ? (
+              <>
+                <DropdownMenuItem onClick={() => handleDeletePost()}>
+                  Delete post
+                </DropdownMenuItem>
+                <DropdownMenuItem>Edit post</DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem>Report</DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

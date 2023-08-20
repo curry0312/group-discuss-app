@@ -16,12 +16,14 @@ type FormSchemaType = z.infer<typeof formSchema>;
 type CreateGroupPostPropsType = {
   isCreatePostOpen: boolean;
   setIsCreatePostOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCreatingNewPost: React.Dispatch<React.SetStateAction<boolean>>;
   groupId: string;
 };
 
 const CreateGroupPost = ({
   isCreatePostOpen,
   setIsCreatePostOpen,
+  setIsCreatingNewPost,
   groupId,
 }: CreateGroupPostPropsType) => {
   const { user } = useUser();
@@ -29,8 +31,11 @@ const CreateGroupPost = ({
   const { register, handleSubmit, reset } = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
   });
+
   const ctx = api.useContext();
+
   const postCreateGenerator = api.post.createPost.useMutation();
+
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
     postCreateGenerator.mutate(
@@ -40,6 +45,7 @@ const CreateGroupPost = ({
       },
       {
         onSuccess: () => {
+          setIsCreatingNewPost(false);
           ctx.post.invalidate();
           reset();
         },
@@ -62,7 +68,14 @@ const CreateGroupPost = ({
           >
             <CloseIcon className="text-white" />
           </button>
-          <Button variant={"outline"} type="submit">
+          <Button
+            variant={"outline"}
+            type="submit"
+            onClick={() => {
+              setIsCreatingNewPost(true);
+              setIsCreatePostOpen(false);
+            }}
+          >
             Post
           </Button>
         </div>

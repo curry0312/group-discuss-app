@@ -14,7 +14,7 @@ const GroupPost_skeleton = () => {
           <Skeleton className="h-5 w-[100px] bg-slate-800" />
         </div>
         <div>
-          <Skeleton className="h-20 w-[250px] bg-slate-800" />
+          <Skeleton className="h-16 w-full bg-slate-800" />
         </div>
       </div>
     </div>

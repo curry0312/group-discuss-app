@@ -16,6 +16,7 @@ import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
 import FriendStateButtons from "~/components/profile/page/FriendStateButtons";
 import GroupsOrPostsState from "~/components/profile/page/GroupsOrPostsState";
+import { prisma } from "~/server/db";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);

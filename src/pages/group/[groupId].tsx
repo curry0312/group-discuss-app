@@ -83,8 +83,18 @@ export async function getStaticProps(
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const groups = await prisma.group.findMany({
+    select: {
+      id: true,
+    },
+  })
   return {
-    paths: [],
+    paths: groups.map((group) => ({
+      params: {
+        groupId: group.id,
+      },
+    })),
+    // paths: [],
     // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking
     fallback: "blocking",
   };

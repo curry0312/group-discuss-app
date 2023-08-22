@@ -1,4 +1,3 @@
-import { Group } from "@prisma/client";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Image from "next/image";
 import dayjs from "dayjs";
@@ -6,9 +5,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import GlobalIcon from "~/styles/icons/GlobalIcon";
+import type { GroupWithMembers } from "type";
 
 type GroupTypesProps = {
-  group: Group;
+  group: GroupWithMembers
 };
 
 const Group = ({ group }: GroupTypesProps) => {
@@ -39,6 +39,7 @@ const Group = ({ group }: GroupTypesProps) => {
       <div className="flex basis-3/4 flex-col justify-center">
         <div className="flex items-center gap-1">
           <p className="text-xl">{group.name}</p>
+          <p className="text-xl">({group.members.length})</p>
           {group.public === true && <GlobalIcon />}
         </div>
         <p className="text-xs">created {dayjs(group.createdAt).fromNow()}</p>

@@ -26,7 +26,7 @@ const GroupsOrPostsState = ({ userId }: GroupsOrPostsStateProps) => {
           }
           onClick={() => setGroupsOrPosts("groups")}
         >
-          Groups
+          Public groups
         </button>
         <button
           className={

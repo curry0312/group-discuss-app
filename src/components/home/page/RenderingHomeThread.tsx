@@ -26,7 +26,7 @@ const RenderingHomeThread = () => {
         <div className="flex h-[500px] items-center justify-center text-center">
           <div className="flex flex-col gap-3">
             <p>No new posts from friends</p>
-            <p>You can Create a group and add new friends to chat with</p>
+            <p>You can greate a group or add new friends to chat with</p>
             <div>
               <Button
                 variant={"secondary"}

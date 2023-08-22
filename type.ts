@@ -7,6 +7,10 @@ export type PostWithLikesAndAuthorAndCommentsAndGroup = Post & {
     group: Group
 }
 
+export type GroupWithMembers = Group & {
+    members: User[]
+}
+
 export type CommentWithLikesAndAuthor = Comment & {
     likes: Like[];
     author: User;

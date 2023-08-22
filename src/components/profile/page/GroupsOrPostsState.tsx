@@ -36,7 +36,7 @@ const GroupsOrPostsState = ({ userId }: GroupsOrPostsStateProps) => {
           }
           onClick={() => setGroupsOrPosts("posts")}
         >
-          Posts
+          Public posts
         </button>
       </div>
 

@@ -10,33 +10,33 @@ import { useState } from "react";
 import CreateGroupPost from "~/components/post/page/CreateGroupPost";
 import GroupHeader from "~/components/post/page/RenderingGroupPostsHeader";
 import { api } from "~/utils/api";
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import { appRouter } from "~/server/api/root";
-import superjson from 'superjson';
-import { prisma } from "~/server/db";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [isCreatingNewPost, setIsCreatingNewPost] = useState(false);
   const [newPostData, setNewPostData] = useState("");
-  const { data, isLoading } = api.post.getAllGroupPosts.useQuery({
-    groupId: props.groupId,
-  },
-  {
-    enabled: !!props.groupId,
-    refetchInterval: 2000
-  }
+  const { data, isLoading } = api.post.getAllGroupPosts.useQuery(
+    {
+      groupId: props.groupId,
+    },
+    {
+      refetchInterval: 2000,
+    }
   );
 
-  
-  if(isLoading){
-    console.log("Loading...")
+  if (isLoading) {
+    console.log("Loading...");
   }
   return (
     <>
       <div className={"min-h-screen bg-gray-950 pt-[106px] text-white"}>
-        <GroupHeader groupId={props.groupId}/>
-        <RenderingGroupPosts posts={data} isLoading={isLoading} isCreatingNewPost={isCreatingNewPost} newPostData={newPostData}/>
+        <GroupHeader groupId={props.groupId} />
+        <RenderingGroupPosts
+          posts={data}
+          isLoading={isLoading}
+          isCreatingNewPost={isCreatingNewPost}
+          newPostData={newPostData}
+        />
       </div>
 
       {/*create post button*/}
@@ -64,13 +64,8 @@ export default GroupPage;
 export async function getStaticProps(
   context: GetStaticPropsContext<{ groupId: string }>
 ) {
- const helpers = createServerSideHelpers({
-    router: appRouter,
-    ctx: { prisma, currentUserId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const helpers = generateSSGHelper();
   const groupId = context.params?.groupId as string;
-
   // prefetch `post.getAllGroupPosts`
   await helpers.post.getAllGroupPosts.prefetch({ groupId: groupId });
   return {
@@ -83,18 +78,8 @@ export async function getStaticProps(
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const groups = await prisma.group.findMany({
-    select: {
-      id: true,
-    },
-  })
   return {
-    paths: groups.map((group) => ({
-      params: {
-        groupId: group.id,
-      },
-    })),
-    // paths: [],
+    paths: [],
     // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking
     fallback: "blocking",
   };

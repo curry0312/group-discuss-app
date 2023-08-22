@@ -12,6 +12,7 @@ import generateSSGHelper from "~/utils/generateSSGHelper";
 import type {
   GetServerSidePropsContext,
   GetStaticPaths,
+  GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
 
@@ -42,13 +43,11 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const isUserLikePost = api.like.isUserLikePost.useQuery({
     postId: props.postId,
   },{
-    enabled: !!props.postId,
     refetchInterval: 2000
   });
   const allPostComments = api.comment.getAllPostComments.useQuery({
     postId: props.postId,
   },{
-    enabled: !!props.postId,
     refetchInterval: 2000
   });
 
@@ -83,7 +82,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     }
   }
 
-  if (post.isLoading) return <LoadingPage />;
+  // if (post.isLoading) return <LoadingPage />;
   return (
     <>
       <main className="min-h-screen bg-gray-950 pt-24 text-white">
@@ -178,7 +177,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 export default PostPage;
 
 export async function getStaticProps(
-  context: GetServerSidePropsContext<{ postId: string }>
+  context: GetStaticPropsContext<{ postId: string }>
 ) {
   const helpers = generateSSGHelper();
   const postId = context.params?.postId as string;

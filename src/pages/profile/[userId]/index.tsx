@@ -8,6 +8,7 @@ import generateSSGHelper from "~/utils/generateSSGHelper";
 import type {
   GetServerSidePropsContext,
   GetStaticPaths,
+  GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
 
@@ -78,7 +79,7 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 export default ProfilePage;
 
 export async function getStaticProps(
-  context: GetServerSidePropsContext<{ userId: string }>
+  context: GetStaticPropsContext<{ userId: string }>
 ) {
   const helpers = generateSSGHelper();
   const userId = context.params?.userId as string;

@@ -78,7 +78,7 @@ export async function getStaticProps(
       trpcState: helpers.dehydrate(),
       groupId,
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }
 

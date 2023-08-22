@@ -192,7 +192,7 @@ export async function getStaticProps(
       trpcState: helpers.dehydrate(),
       postId,
     },
-    revalidate: 1,
+    revalidate: 10,
   };
 }
 

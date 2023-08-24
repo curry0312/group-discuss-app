@@ -85,7 +85,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   // if (post.isLoading) return <LoadingPage />;
   return (
     <>
-      <main className="min-h-screen bg-gray-950 pt-24 text-white">
+      <main className="min-h-screen bg-gray-950 text-white">
         <div className="flex items-center space-x-5 p-3">
           <button onClick={() => router.back()}>
             <ArrowLeftIcon />

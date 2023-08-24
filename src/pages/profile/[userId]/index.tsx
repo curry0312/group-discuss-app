@@ -18,6 +18,7 @@ import CalenderIcon from "~/styles/icons/CalenderIcon";
 import FriendStateButtons from "~/components/profile/page/FriendStateButtons";
 import GroupsOrPostsState from "~/components/profile/page/GroupsOrPostsState";
 import { prisma } from "~/server/db";
+import Navbar from "~/components/global/Navbar";
 
 const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
@@ -29,50 +30,53 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (isLoading) return <LoadingPage />;
   if (!data) return <div>404 data not found</div>;
   return (
-    <main className="min-h-screen bg-gray-950 p-3 pt-24 text-white">
-      <div className="flex items-center space-x-5 p-2">
-        <Link href={"/users"}>
-          <ArrowLeftIcon />
-        </Link>
-      </div>
-      <div className="flex flex-col items-start gap-3 py-2">
-        <div className="flex w-full items-end justify-between">
-          <Link href={`/profile/${data.id}`}>
-            <Image
-              src={data.image}
-              alt="user-image"
-              width={100}
-              height={100}
-              className="rounded-full object-cover"
-              priority
-            />
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-gray-950 p-3 pt-24 text-white">
+        <div className="flex items-center space-x-5 p-2">
+          <Link href={"/users"}>
+            <ArrowLeftIcon />
           </Link>
-          <FriendStateButtons profileUserInfo={data} />
         </div>
-        <div className="flex items-center justify-center">
-          <h1 className="text-2xl font-bold">{data.name}</h1>
-        </div>
-      </div>
-
-      <div className="flex flex-col">
-        <div className="pb-4">
-          <p className="text-xl">description here</p>
-        </div>
-        <div className="flex items-center gap-3 pb-4">
-          <CalenderIcon />
-          <p className="text-xl">Joined</p>
-          <p className="text-xl">{dayjs(data.createdAt).fromNow()}</p>
-        </div>
-        <div className="flex items-center gap-3  py-4 text-xl">
-          <div className="flex items-center gap-2">
-            <span>{Number(data.friends.length) + Number(data.friendsOf.length)}</span>
-            <p>Friends</p>
+        <div className="flex flex-col items-start gap-3 py-2">
+          <div className="flex w-full items-end justify-between">
+            <Link href={`/profile/${data.id}`}>
+              <Image
+                src={data.image}
+                alt="user-image"
+                width={100}
+                height={100}
+                className="rounded-full object-cover"
+                priority
+              />
+            </Link>
+            <FriendStateButtons profileUserInfo={data} />
+          </div>
+          <div className="flex items-center justify-center">
+            <h1 className="text-2xl font-bold">{data.name}</h1>
           </div>
         </div>
 
-        <GroupsOrPostsState userId={props.userId} />
-      </div>
-    </main>
+        <div className="flex flex-col">
+          <div className="pb-4">
+            <p className="text-xl">description here</p>
+          </div>
+          <div className="flex items-center gap-3 pb-4">
+            <CalenderIcon />
+            <p className="text-xl">Joined</p>
+            <p className="text-xl">{dayjs(data.createdAt).fromNow()}</p>
+          </div>
+          <div className="flex items-center gap-3  py-4 text-xl">
+            <div className="flex items-center gap-2">
+              <span>{Number(data.friends.length) + Number(data.friendsOf.length)}</span>
+              <p>Friends</p>
+            </div>
+          </div>
+
+          <GroupsOrPostsState userId={props.userId} />
+        </div>
+      </main>
+    </>
   );
 };
 

@@ -9,7 +9,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider {...pageProps}>
       <Toaster />
-      <Navbar />
+      {/* <Navbar /> */}
       <Component {...pageProps} />
     </ClerkProvider>
   );

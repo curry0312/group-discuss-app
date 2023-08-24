@@ -4,14 +4,16 @@ import Group_skeleton from "../reuse/Group_skeleton";
 
 type RenderingGroupsProps = {
   filterSearchGroupText: string;
-}
+};
 
-const RenderingGroups = ({filterSearchGroupText}: RenderingGroupsProps) => {
+const RenderingGroups = ({ filterSearchGroupText }: RenderingGroupsProps) => {
   const memberGroup = api.group.getAllUserMemberGroups.useQuery();
 
   const filteredMemberGroup = memberGroup.data?.filter((group) => {
-    return group.name.toLowerCase().includes(filterSearchGroupText.toLowerCase());
-  })
+    return group.name
+      .toLowerCase()
+      .includes(filterSearchGroupText.toLowerCase());
+  });
 
   if (memberGroup.isLoading)
     return (
@@ -20,7 +22,7 @@ const RenderingGroups = ({filterSearchGroupText}: RenderingGroupsProps) => {
           <Group_skeleton key={i} />
         ))}
       </div>
-    );
+    )
   return (
     <div className="flex flex-col">
       {filteredMemberGroup?.map((group) => {

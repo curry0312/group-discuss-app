@@ -17,11 +17,22 @@ export const groupRouter = createTRPCRouter({
             connect: {
               id: ctx.currentUserId,
             },
-          }
+          },
         },
       });
       return newGroup;
     }),
+
+  deleteGroup: privatedProcedure
+    .input(z.object({ groupId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.group.delete({
+        where: {
+          id: input.groupId,
+        },
+      });
+    }),
+
   getGroup: privatedProcedure
     .input(z.object({ groupId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -31,7 +42,7 @@ export const groupRouter = createTRPCRouter({
         },
         include: {
           members: true,
-        }
+        },
       });
     }),
 
@@ -62,24 +73,26 @@ export const groupRouter = createTRPCRouter({
       },
     });
   }),
-  getAllProfileUserPublicMemberGroups: privatedProcedure.input(z.object({ userId: z.string() })).query(async ({ ctx,input }) => {
-    return await ctx.prisma.group.findMany({
-      where: {
-        members: {
-          some: {
-            id: input.userId,
+  getAllProfileUserPublicMemberGroups: privatedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.group.findMany({
+        where: {
+          members: {
+            some: {
+              id: input.userId,
+            },
           },
+          public: true,
         },
-        public: true
-      },
-      include: {
-        members: true
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }),
+        include: {
+          members: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
 
   inviteFriendToGroup: privatedProcedure
     .input(z.object({ id: z.string(), userIds: z.array(z.string()) }))

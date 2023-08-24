@@ -1,27 +1,38 @@
 import { api } from "~/utils/api";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Skeleton } from "~/components/ui/skeleton";
-import BarsIcon from "~/styles/icons/BarsIcon";
+
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
 import InViteFriendToGroup from "../../group/page/InviteFriendToGroup";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
+import { Button } from "~/components/ui/button";
+import { useUser } from "@clerk/nextjs";
 
 type GroupHeaderPropsType = {
   groupId: string;
 };
 
 const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
+  const { user } = useUser();
   const router = useRouter();
   const { data, isLoading } = api.group.getGroup.useQuery({
     groupId: groupId,
   });
+
+  const deleteGroupGenerator = api.group.deleteGroup.useMutation();
 
   if (isLoading) {
     return (
@@ -31,7 +42,7 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
           <Skeleton className="h-6 w-16 rounded-md bg-gray-900" />
         </div>
         <div>
-          <Skeleton className="h-6 w-16 rounded-md bg-gray-900" />
+          <Skeleton className="h-10 w-20 rounded-md bg-gray-900" />
         </div>
       </div>
     );
@@ -63,8 +74,43 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
           ))}
         </div>
       </div>
-      <div>
+      <div className="flex items-center gap-1">
         <InViteFriendToGroup groupId={groupId} />
+        {data?.ownerId === user?.id && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={"destructive"} className="">
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your group and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    deleteGroupGenerator.mutate(
+                      { groupId: groupId },
+                      {
+                        onSuccess: () => {
+                          router.back();
+                        },
+                      }
+                    );
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
     </div>
   );

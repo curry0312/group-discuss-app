@@ -44,7 +44,7 @@ const Navbar = () => {
       <nav
         className={
           pathname !== "/auth" && !pathname.includes("/sign-in")
-            ? "fixed flex w-full items-center justify-between bg-black bg-opacity-50 p-4 backdrop-blur"
+            ? "fixed z-50 flex w-full items-center justify-between bg-black bg-opacity-50 p-4 backdrop-blur"
             : "hidden"
         }
       >

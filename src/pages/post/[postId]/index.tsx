@@ -82,7 +82,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     }
   }
 
-  // if (post.isLoading) return <LoadingPage />;
+  if (post.isLoading) return <LoadingPage />;
   return (
     <>
       <main className="min-h-screen bg-gray-950 text-white">

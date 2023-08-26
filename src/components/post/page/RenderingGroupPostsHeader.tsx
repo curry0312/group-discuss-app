@@ -7,32 +7,18 @@ import { Skeleton } from "~/components/ui/skeleton";
 
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
 import InViteFriendToGroup from "../../group/page/InviteFriendToGroup";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
-import { Button } from "~/components/ui/button";
 import { useUser } from "@clerk/nextjs";
+import SettingIcon from "~/styles/icons/SettingIcon";
 
 type GroupHeaderPropsType = {
   groupId: string;
 };
 
 const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
-  const { user } = useUser();
   const router = useRouter();
   const { data, isLoading } = api.group.getGroup.useQuery({
-    groupId: groupId,
+    id: groupId,
   });
-
-  const deleteGroupGenerator = api.group.deleteGroup.useMutation();
 
   if (isLoading) {
     return (
@@ -54,46 +40,14 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
           <button onClick={() => router.back()}>
             <ChevronLeftIcon />
           </button>
-          <h1 className="text-lg">{data?.name}</h1>
+          <h1 className="text-xl font-bold">{data?.name}</h1>
           <span className="text-md">({Number(data?.members.length)}) </span>
         </div>
         <div className="flex items-center gap-1">
           <InViteFriendToGroup groupId={groupId} />
-          {data?.ownerId === user?.id && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant={"destructive"} className="">
-                  Delete
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your group and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => {
-                      deleteGroupGenerator.mutate(
-                        { groupId: groupId },
-                        {
-                          onSuccess: () => {
-                            router.back();
-                          },
-                        }
-                      );
-                    }}
-                  >
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
+          <button className="p-4" onClick={()=>router.push(`/setting/${groupId}`)}>
+            <SettingIcon />
+          </button>
         </div>
       </div>
       <div className="flex items-center px-4 py-2">

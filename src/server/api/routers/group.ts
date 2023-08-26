@@ -24,21 +24,36 @@ export const groupRouter = createTRPCRouter({
     }),
 
   deleteGroup: privatedProcedure
-    .input(z.object({ groupId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.group.delete({
         where: {
-          id: input.groupId,
+          id: input.id,
         },
       });
     }),
 
+  updateGroup: privatedProcedure.input(z.object({ id: z.string(),name: z.string(), public: z.boolean(), image: z.string() })).mutation(
+    async ({ ctx, input }) => {
+      return await ctx.prisma.group.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          public: input.public,
+          image: input.image,
+        },
+      });
+    }
+  ),
+
   getGroup: privatedProcedure
-    .input(z.object({ groupId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.group.findUnique({
         where: {
-          id: input.groupId,
+          id: input.id,
         },
         include: {
           members: true,

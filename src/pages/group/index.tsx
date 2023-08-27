@@ -17,7 +17,7 @@ export default function groupPage() {
         <RenderingGroups filterSearchGroupText={filterSearchGroupText}/>
       </div>
 
-      {isCreateGroupOpen == true && <Create_group_card_page />}
+      {isCreateGroupOpen === true && <Create_group_card_page />}
     </>
   );
 }

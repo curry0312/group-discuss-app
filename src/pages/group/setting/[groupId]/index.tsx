@@ -32,11 +32,11 @@ import { Switch } from "src/components/ui/switch";
 import { useToast } from "src/components/ui/use-toast";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 
 // You need to import our styles for the button to look right. Best to import in the root /_app.tsx but this is fine
@@ -62,35 +62,42 @@ type FormSchemaType = z.infer<typeof formSchema>;
 
 const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
+  const ctx = api.useContext();
   const { data } = api.group.getGroup.useQuery({
     id: props.groupId,
   });
+  const groupUpdateGenerator = api.group.updateGroup.useMutation();
+  const deleteGroupGenerator = api.group.deleteGroup.useMutation();
 
-  const [previewImage, setPreviewImage] = useState<any>(data?.image);
+  
+  
+  const { user } = useUser();
+  
+  const router = useRouter();
+  
+  const { toast } = useToast();
+  
+  
+  const [previewImage, setPreviewImage] = useState<string | undefined>("");
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+  });
+
+  useEffect(() => {
+    form.reset({
       name: data?.name,
       public: data?.public,
       image: data?.image,
-    },
-  });
-  const { user } = useUser();
-
-  const router = useRouter();
-
-  const { toast } = useToast();
-
-  const ctx = api.useContext();
-
-  const groupUpdateGenerator = api.group.updateGroup.useMutation();
-  const deleteGroupGenerator = api.group.deleteGroup.useMutation();
+    })
+    setPreviewImage(data?.image)
+    console.log(data)
+  },[data])
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
     groupUpdateGenerator.mutate(
-      { ...data, id: props.groupId, image: previewImage },
+      { ...data, id: props.groupId, image: previewImage! },
       {
         onSuccess: (newGroup) => {
           console.log(newGroup);
@@ -124,7 +131,7 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                     <Input
                       placeholder="Enter the group name..."
                       {...field}
-                      // defaultValue={data?.name}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -143,7 +150,6 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      // defaultChecked={data?.public}
                     />
                   </FormControl>
                   <FormDescription className="text-xs">
@@ -165,7 +171,7 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                       <div className="w-[200px] rounded-full">
                         <AspectRatio ratio={1 / 1}>
                           <Image
-                            src={previewImage || data?.image}
+                            src={ previewImage || field.value || "https://github.com/shadcn.png"}
                             alt="group-image"
                             fill
                             priority

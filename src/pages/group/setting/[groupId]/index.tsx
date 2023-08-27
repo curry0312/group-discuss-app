@@ -50,6 +50,7 @@ import {
 import generateSSGHelper from "~/utils/generateSSGHelper";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
+import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 
 const formSchema = z.object({
   name: z.string().min(1, "Group name is required"),
@@ -60,10 +61,13 @@ const formSchema = z.object({
 type FormSchemaType = z.infer<typeof formSchema>;
 
 const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+
   const { data } = api.group.getGroup.useQuery({
     id: props.groupId,
   });
+
   const [previewImage, setPreviewImage] = useState<any>(data?.image);
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -102,6 +106,9 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Card className="min-h-screen rounded-none">
       <CardHeader>
+        <button onClick={()=>router.back()}>
+          <ArrowLeftIcon />
+        </button>
         <CardTitle className="text-xl font-extrabold">Setting</CardTitle>
       </CardHeader>
       <Form {...form}>

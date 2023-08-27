@@ -28,7 +28,7 @@ const RenderingGroupPosts = ({
       {isCreatingNewPost === true && (
         <GroupPreSubmitPost_skeleton data={newPostData} />
       )}
-      {posts?.map((post) => (
+      {posts?.map((post: any) => (
         <GroupPost key={post.id} post={post} />
       ))}
     </div>

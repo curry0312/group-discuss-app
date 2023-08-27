@@ -6,33 +6,48 @@ import {
 } from "next";
 import generateSSGHelper from "~/utils/generateSSGHelper";
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateGroupPost from "~/components/post/page/CreateGroupPost";
 import GroupHeader from "~/components/post/page/RenderingGroupPostsHeader";
 import { api } from "~/utils/api";
+import { useScrollPosition } from "~/hooks/useScrollPosition";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [isCreatingNewPost, setIsCreatingNewPost] = useState(false);
-  const [newPostData, setNewPostData] = useState("");
-  const { data, isLoading } = api.post.getAllGroupPosts.useQuery(
-    {
-      groupId: props.groupId,
-    },
-    {
-      refetchInterval: 2000,
-    }
-  );
 
-  if (isLoading) {
-    console.log("Loading...");
-  }
+  const [newPostData, setNewPostData] = useState("");
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
+    api.post.getAllGroupPosts.useInfiniteQuery(
+      {
+        limit: 10,
+        groupId: props.groupId,
+      },
+      {
+        getNextPageParam: (lastPage) => {
+          return lastPage.nextCursor;
+        },
+        refetchInterval: 2000,
+      }
+    );
+
+  const toShow = data?.pages.flatMap((page) => page.posts);
+
+  const scrollHeight = useScrollPosition();
+
+  useEffect(() => {
+    if (scrollHeight > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollHeight, hasNextPage, isFetching]);
+
   return (
     <>
       <div className={"min-h-screen bg-gray-950 text-white"}>
         <GroupHeader groupId={props.groupId} />
         <RenderingGroupPosts
-          posts={data}
+          posts={toShow}
           isLoading={isLoading}
           isCreatingNewPost={isCreatingNewPost}
           newPostData={newPostData}
@@ -67,7 +82,7 @@ export async function getStaticProps(
   const helpers = generateSSGHelper();
   const groupId = context.params?.groupId as string;
   // prefetch `post.getAllGroupPosts`
-  await helpers.post.getAllGroupPosts.prefetch({ groupId: groupId });
+  await helpers.post.getAllGroupPosts.prefetch({ limit: 5, groupId: groupId });
   return {
     props: {
       trpcState: helpers.dehydrate(),

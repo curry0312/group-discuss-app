@@ -11,6 +11,7 @@ import CreateGroupPost from "~/components/post/page/CreateGroupPost";
 import GroupHeader from "~/components/post/page/RenderingGroupPostsHeader";
 import { api } from "~/utils/api";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
+import LoadingSpinner from "~/components/loading/LoadingSpinner";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
@@ -58,6 +59,11 @@ const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           isCreatingNewPost={isCreatingNewPost}
           newPostData={newPostData}
         />
+        {!!hasNextPage && (
+          <div className="flex justify-center p-4">
+            <LoadingSpinner />
+          </div>
+        )}
       </div>
 
       {/*create post button*/}

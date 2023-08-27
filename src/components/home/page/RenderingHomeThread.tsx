@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import LoadingSpinner from "~/components/loading/LoadingSpinner";
 import GroupPost_skeleton from "~/components/post/reuse/GroupPost_skeleton";
 import { Button } from "~/components/ui/button";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
@@ -21,7 +22,7 @@ const RenderingHomeThread = () => {
         refetchInterval: 3000,
       }
     );
-    
+
   const scrollHeight = useScrollPosition();
 
   useEffect(() => {
@@ -58,9 +59,16 @@ const RenderingHomeThread = () => {
           </div>
         </div>
       )}
-      {toShow?.map((post) => (
-        <HomeThread key={post.id} post={post} />
-      ))}
+      <>
+        {toShow?.map((post) => (
+          <HomeThread key={post.id} post={post} />
+        ))}
+        {!!hasNextPage && (
+          <div className="flex justify-center p-4">
+            <LoadingSpinner />
+          </div>
+        )}
+      </>
     </div>
   );
 };

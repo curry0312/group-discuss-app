@@ -23,7 +23,7 @@ const RenderingHomeThread = () => {
   const toShow = data?.pages.flatMap((page) => page.posts);
   const scrollHeight = useScrollPosition();
   useEffect(() => {
-    if (scrollHeight > 90 && hasNextPage && !isFetching) {
+    if (scrollHeight > 70 && hasNextPage && !isFetching) {
       fetchNextPage();
     }
   }, [scrollHeight, hasNextPage, isFetching]);

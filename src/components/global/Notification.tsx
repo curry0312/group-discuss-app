@@ -6,7 +6,7 @@ import LoadingSpinner from "../loading/LoadingSpinner";
 
 const Notification = () => {
   const { data, isLoading } = api.user.getAllUnCheckedFriends.useQuery();
-  console.log("allUnCheckedFriends", data);
+  console.log("allUnCheckedFriends:", data);
   const { isNotificationOpen, setIsNotificationOpen } = useOpenNotification();
   if (isLoading)
     return (

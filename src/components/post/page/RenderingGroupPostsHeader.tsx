@@ -45,7 +45,7 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
         </div>
         <div className="flex items-center gap-1">
           <InViteFriendToGroup groupId={groupId} />
-          <button className="p-4" onClick={()=>router.push(`/setting/${groupId}`)}>
+          <button className="p-4" onClick={()=>router.push(`/group/setting/${groupId}`)}>
             <SettingIcon />
           </button>
         </div>
@@ -63,6 +63,7 @@ const RenderingGroupPostsHeader = ({ groupId }: GroupHeaderPropsType) => {
                 alt="Image"
                 className="rounded-full object-cover"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </AspectRatio>
           </div>

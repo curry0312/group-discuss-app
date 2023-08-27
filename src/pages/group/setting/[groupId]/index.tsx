@@ -117,7 +117,7 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                     <Input
                       placeholder="Enter the group name..."
                       {...field}
-                      defaultValue={data?.name}
+                      // defaultValue={data?.name}
                     />
                   </FormControl>
                   <FormMessage />
@@ -136,7 +136,7 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      defaultChecked={data?.public}
+                      // defaultChecked={data?.public}
                     />
                   </FormControl>
                   <FormDescription className="text-xs">

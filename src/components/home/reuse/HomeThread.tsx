@@ -28,7 +28,6 @@ const HomeThread = ({ post }: HomeThreadProps) => {
   const ctx = api.useContext();
 
   const isUserLikePost = post.likes.find((like) => like.userId === user?.id);
-  console.log(isUserLikePost);
 
   const deletePostGenerator = api.post.deletePost.useMutation();
 

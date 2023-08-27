@@ -8,6 +8,7 @@ import HomeThread from "../reuse/HomeThread";
 
 const RenderingHomeThread = () => {
   const router = useRouter();
+
   const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
     api.post.getAllUserRelativePosts.useInfiniteQuery(
       {
@@ -20,13 +21,16 @@ const RenderingHomeThread = () => {
         refetchInterval: 3000,
       }
     );
-  const toShow = data?.pages.flatMap((page) => page.posts);
+    
   const scrollHeight = useScrollPosition();
+
   useEffect(() => {
     if (scrollHeight > 70 && hasNextPage && !isFetching) {
       fetchNextPage();
     }
   }, [scrollHeight, hasNextPage, isFetching]);
+
+  const toShow = data?.pages.flatMap((page) => page.posts);
 
   if (isLoading)
     return (

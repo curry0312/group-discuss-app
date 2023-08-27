@@ -13,11 +13,17 @@ import { api } from "~/utils/api";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
 
 const GroupPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+
+  {/*Check whether the CreatePostComponent is currently open or not */}
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+
+  {/*Check whether the user is creating a new post */}
   const [isCreatingNewPost, setIsCreatingNewPost] = useState(false);
 
+  {/*Store the new post content to show the post which is currently creating */}
   const [newPostData, setNewPostData] = useState("");
 
+  {/*Fetching data from api*/}
   const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
     api.post.getAllGroupPosts.useInfiniteQuery(
       {

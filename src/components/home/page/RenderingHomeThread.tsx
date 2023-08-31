@@ -13,7 +13,7 @@ const RenderingHomeThread = () => {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
     api.post.getAllUserRelativePosts.useInfiniteQuery(
       {
-        limit: 10,
+        limit: 7,
       },
       {
         getNextPageParam: (lastPage) => {

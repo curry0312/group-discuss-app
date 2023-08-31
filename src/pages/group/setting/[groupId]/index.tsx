@@ -61,23 +61,21 @@ const formSchema = z.object({
 type FormSchemaType = z.infer<typeof formSchema>;
 
 const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-
   const ctx = api.useContext();
   const { data } = api.group.getGroup.useQuery({
     id: props.groupId,
   });
   const groupUpdateGenerator = api.group.updateGroup.useMutation();
   const deleteGroupGenerator = api.group.deleteGroup.useMutation();
+  const removeUserFromGroupGenerator =
+    api.group.removeUserFromGroup.useMutation();
 
-  
-  
   const { user } = useUser();
-  
+
   const router = useRouter();
-  
+
   const { toast } = useToast();
-  
-  
+
   const [previewImage, setPreviewImage] = useState<string | undefined>("");
 
   const form = useForm<FormSchemaType>({
@@ -89,10 +87,10 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
       name: data?.name,
       public: data?.public,
       image: data?.image,
-    })
-    setPreviewImage(data?.image)
-    console.log(data)
-  },[data])
+    });
+    setPreviewImage(data?.image);
+    console.log(data);
+  }, [data]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
@@ -113,7 +111,7 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Card className="min-h-screen rounded-none">
       <CardHeader>
-        <button onClick={()=>router.back()}>
+        <button onClick={() => router.back()}>
           <ArrowLeftIcon />
         </button>
         <CardTitle className="text-xl font-extrabold">Setting</CardTitle>
@@ -171,7 +169,11 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                       <div className="w-[200px] rounded-full">
                         <AspectRatio ratio={1 / 1}>
                           <Image
-                            src={ previewImage || field.value || "https://github.com/shadcn.png"}
+                            src={
+                              previewImage ||
+                              field.value ||
+                              "https://github.com/shadcn.png"
+                            }
                             alt="group-image"
                             fill
                             priority
@@ -232,7 +234,22 @@ const SettingPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         <div>{member.name}</div>
                       </div>
                       <div>
-                        <Button variant="destructive" onClick={() => {}}>
+                        <Button
+                          variant="destructive"
+                          onClick={() => {
+                            removeUserFromGroupGenerator.mutate({
+                              id: props.groupId,
+                              userId: member.id,
+                            },{
+                              onSuccess: () => {
+                                ctx.group.getGroup.invalidate();
+                                toast({
+                                  description: "User has been removed...",
+                                });
+                              }
+                            });
+                          }}
+                        >
                           Remove
                         </Button>
                       </div>

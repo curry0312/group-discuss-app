@@ -109,6 +109,23 @@ export const groupRouter = createTRPCRouter({
       });
     }),
 
+  removeUserFromGroup: privatedProcedure.input(z.object({ id: z.string(), userId: z.string() })).mutation(
+    async ({ ctx, input }) => {
+      return await ctx.prisma.group.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          members: {
+            disconnect: {
+              id: input.userId,
+            },
+          },
+        },
+      });
+    }
+  ),
+
   inviteFriendToGroup: privatedProcedure
     .input(z.object({ id: z.string(), userIds: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {

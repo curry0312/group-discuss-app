@@ -1,6 +1,5 @@
 import { useCreateGroupStore } from "~/store/useCreateGroupStore";
 import GroupUserIcon from "~/styles/icons/GroupUserIcon";
-import { Input } from "~/components/ui/input";
 
 type RenderingGroupHeaderProps = {
   setFilterSearchGroupText: (text: string) => void;

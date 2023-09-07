@@ -10,7 +10,6 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import generateSSGHelper from "~/utils/generateSSGHelper";
 import type {
-  GetServerSidePropsContext,
   GetStaticPaths,
   GetStaticPropsContext,
   InferGetStaticPropsType,
@@ -23,6 +22,8 @@ import { useState } from "react";
 import GroupPostComment from "~/components/post/reuse/GroupPostComment";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import type { PostWithLikesAndAuthorAndCommentsAndGroupAndCount } from "type";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   dayjs.extend(relativeTime);
@@ -33,36 +34,68 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   const [isCreateCommentOpen, setIsCreateCommentOpen] = useState(false);
 
-  const ctx = api.useContext();
-  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
-  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
-
   const post = api.post.getPost.useQuery({
     id: props.postId,
   });
-  const isUserLikePost = api.like.isUserLikePost.useQuery({
-    postId: props.postId,
-  },{
-    refetchInterval: 2000
-  });
-  const allPostComments = api.comment.getAllPostComments.useQuery({
-    postId: props.postId,
-  },{
-    refetchInterval: 2000
+  const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
+  const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
+
+  const ctx = api.useContext();
+  const client = useQueryClient();
+  const hasLike = post.data?.likes.find((like) => {
+    return like.userId === user?.id;
   });
 
+  function updateCache({
+    client,
+    variables,
+    data,
+    action,
+  }: {
+    client: QueryClient;
+    variables: any;
+    data: any;
+    action: "like" | "unlike";
+  }) {
+    client.setQueryData(
+      [
+        ["post", "getPost"],
+        {
+          input: {
+            id: props.postId,
+          },
+          type: "query",
+        },
+      ],
+      (oldData: any) => {
+        console.log(oldData);
+        const tempNewData =
+          oldData as PostWithLikesAndAuthorAndCommentsAndGroupAndCount;
+        const value = action === "like" ? 1 : -1;
+        return {
+          ...tempNewData,
+          likes: action === "like" ? [{ userId: user?.id }] : [],
+          _count: {
+            likes: tempNewData._count.likes + value,
+            comments: tempNewData._count.comments,
+          },
+        };
+      }
+    );
+  }
+
   function handleLikeToggle() {
-    if (isUserLikePost.data) {
+    if (hasLike) {
       postUnLikeGenerator.mutate(
         {
-          id: post?.data?.likes.find((like) => like.userId === user?.id)!.id!,
           postId: post?.data?.id!,
           commentId: null,
         },
         {
-          onSuccess: () => {
-            ctx.like.invalidate();
-            ctx.post.invalidate();
+          onSuccess: (data, variables) => {
+            updateCache({ client, data, variables, action: "unlike" });
+            // ctx.like.invalidate();
+            // ctx.post.invalidate();
           },
         }
       );
@@ -73,9 +106,10 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           commentId: null,
         },
         {
-          onSuccess: () => {
-            ctx.like.invalidate();
-            ctx.post.invalidate();
+          onSuccess: (data, variables) => {
+            updateCache({ client, data, variables, action: "like" });
+            // ctx.like.invalidate();
+            // ctx.post.invalidate();
           },
         }
       );
@@ -126,11 +160,11 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
           <div className="flex items-center gap-3 border-b border-gray-800 p-4 text-xl">
             <div className="flex items-center gap-2">
-              <span>{post.data?.comments.length}</span>
+              <span>{post.data?._count.comments}</span>
               <p>Comments</p>
             </div>
             <div className="flex items-center gap-2">
-              <span>{post.data?.likes.length}</span>
+              <span>{post.data?._count.likes}</span>
               <p>likes</p>
             </div>
           </div>
@@ -148,7 +182,7 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             >
               <HeartIcon
                 className={
-                  isUserLikePost.data
+                  post.data?.likes.length! > 0
                     ? "text-red-500 transition duration-100"
                     : "transition duration-100"
                 }
@@ -157,10 +191,8 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
         </div>
         <div className="flex flex-col">
-          {allPostComments.data?.map((post) => {
-            return post.comments.map((comment) => {
-              return <GroupPostComment key={comment.id} comment={comment} />;
-            });
+          {post.data?.comments.map((comment) => {
+            return <GroupPostComment key={comment.id} comment={comment} />;
           })}
         </div>
       </main>
@@ -184,8 +216,6 @@ export async function getStaticProps(
   if (typeof postId !== "string") throw new Error("no post");
   // prefetch `post.getPosts`
   await helpers.post.getPost.prefetch({ id: postId });
-  // prefetch `like.isUserLikePost`
-  await helpers.like.isUserLikePost.prefetch({ postId: postId });
   return {
     props: {
       trpcState: helpers.dehydrate(),

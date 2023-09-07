@@ -3,14 +3,14 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "src/components/ui/toaster";
-import Navbar from "~/components/global/Navbar";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider {...pageProps}>
       <Toaster />
-      {/* <Navbar /> */}
       <Component {...pageProps} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </ClerkProvider>
   );
 };

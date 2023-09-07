@@ -14,16 +14,32 @@ export const likeRouter = createTRPCRouter({
       if (input.postId != null) {
         return await ctx.prisma.like.create({
           data: {
-            postId: input.postId,
-            userId: ctx.currentUserId,
+            post: {
+              connect: {
+                id: input.postId,
+              },
+            },
+            user: {
+              connect: {
+                id: ctx.currentUserId,
+              },
+            },
           },
         });
       }
       if (input.commentId != null) {
         return await ctx.prisma.like.create({
           data: {
-            commentId: input.commentId,
-            userId: ctx.currentUserId,
+            comment: {
+              connect: {
+                id: input.commentId,
+              },
+            },
+            user: {
+              connect: {
+                id: ctx.currentUserId,
+              },
+            },
           },
         });
       }
@@ -31,7 +47,6 @@ export const likeRouter = createTRPCRouter({
   handleLikeDeleteToggle: privatedProcedure
     .input(
       z.object({
-        id: z.string(),
         postId: z.string().nullable(),
         commentId: z.string().nullable(),
       })
@@ -40,31 +55,38 @@ export const likeRouter = createTRPCRouter({
       if (input.postId != null) {
         return await ctx.prisma.like.delete({
           where: {
-            id: input.id,
+            userId_postId: {
+              userId: ctx.currentUserId,
+              postId: input.postId,
+            },
           },
         });
       }
       if (input.commentId != null) {
         return await ctx.prisma.like.delete({
           where: {
-           id:  input.id,
+            userId_commentId: {
+              userId: ctx.currentUserId,
+              commentId: input.commentId,
+            },
           },
         });
       }
     }),
-    
-  isUserLikePost: privatedProcedure
-    .input(z.object({ postId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const like = await ctx.prisma.like.findFirst({
-        where: {
-          postId: input.postId,
-          userId: ctx.currentUserId,
-        },
-      });
-      if (!like) return false;
-      return true;
-    }),
+
+  // isUserLikePost: privatedProcedure
+  //   .input(z.object({ postId: z.string() }))
+  //   .query(async ({ ctx, input }) => {
+  //     const like = await ctx.prisma.like.findFirst({
+  //       where: {
+  //         postId: input.postId,
+  //         userId: ctx.currentUserId,
+  //       },
+  //     });
+  //     if (!like) return false;
+  //     return true;
+  //   }),
+
   isUserLikeComment: privatedProcedure
     .input(z.object({ commentId: z.string() }))
     .query(async ({ ctx, input }) => {

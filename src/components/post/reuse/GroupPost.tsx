@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/nextjs";
+import type { QueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -40,7 +41,8 @@ const GroupPost = ({ post }: GroupPostProps) => {
       }
     );
   }
-
+    
+  
   return (
     <div className="flex cursor-pointer gap-3 border-b border-gray-800 p-2">
       <div>

@@ -44,9 +44,8 @@ const CreateComment = ({
       },
       {
         onSuccess: () => {
-          ctx.comment.invalidate()
+          ctx.post.invalidate()
           reset();
-      
         },
       }
     );

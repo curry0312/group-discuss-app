@@ -12,7 +12,6 @@ import {
 
 import type { CommentWithLikesAndAuthor } from "type";
 
-import CommentIcon from "~/styles/icons/CommentIcon";
 import HeartIcon from "~/styles/icons/HeartIcon";
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
@@ -40,7 +39,6 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
     if (!!isUserLikeComment) {
       commentUnLikeGenerator.mutate(
         {
-          id: comment.likes.find((like) => like.userId === user?.id)!.id,
           postId: null,
           commentId: comment.id,
         },

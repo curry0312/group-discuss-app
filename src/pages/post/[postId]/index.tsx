@@ -22,7 +22,7 @@ import { useState } from "react";
 import GroupPostComment from "~/components/post/reuse/GroupPostComment";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { type QueryClient, useQueryClient } from "@tanstack/react-query";
 import type { PostWithLikesAndAuthorAndCommentsAndGroupAndCount } from "type";
 
 const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {

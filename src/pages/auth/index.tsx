@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 const Auth = () => {
   const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  console.log(user);
+  console.log("user",user);
   if (isLoaded && isSignedIn) {
     router.push("/");
     return null;

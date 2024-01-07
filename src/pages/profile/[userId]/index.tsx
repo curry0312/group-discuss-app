@@ -4,7 +4,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
-import generateSSGHelper from "~/utils/generateSSGHelper";
+import generateSSRHelper from "~/utils/generateSSRHelper";
 import type {
   GetServerSidePropsContext,
   GetStaticPaths,
@@ -85,7 +85,7 @@ export default ProfilePage;
 export async function getStaticProps(
   context: GetStaticPropsContext<{ userId: string }>
 ) {
-  const helpers = generateSSGHelper();
+  const helpers = generateSSRHelper();
   const userId = context.params?.userId as string;
   if (typeof userId !== "string") throw new Error("no userId");
   // prefetch `user.getUser`
@@ -96,7 +96,6 @@ export async function getStaticProps(
       trpcState: helpers.dehydrate(),
       userId,
     },
-    revalidate: 10,
   };
 }
 

@@ -4,7 +4,7 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import generateSSGHelper from "~/utils/generateSSGHelper";
+import generateSSGHelper from "~/utils/generateSSRHelper";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import CreateGroupPost from "~/components/post/CreateGroupPost";

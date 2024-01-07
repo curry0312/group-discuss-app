@@ -47,7 +47,7 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import generateSSGHelper from "~/utils/generateSSGHelper";
+import generateSSGHelper from "~/utils/generateSSRHelper";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";

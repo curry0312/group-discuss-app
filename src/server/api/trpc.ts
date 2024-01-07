@@ -44,7 +44,7 @@ type CreateContextOptions = Record<string, never>;
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req } = opts;
   const currentUser = getAuth(req);
-  console.log(currentUser);
+  console.log("currentUser",currentUser);
   return {
     prisma,
     currentUserId: currentUser.userId,

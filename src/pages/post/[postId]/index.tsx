@@ -8,11 +8,9 @@ import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
-import generateSSGHelper from "~/utils/generateSSGHelper";
 import type {
-  GetStaticPaths,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
 } from "next";
 
 import LoadingPage from "~/components/loading/LoadingPage";
@@ -24,8 +22,9 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { type QueryClient, useQueryClient } from "@tanstack/react-query";
 import type { PostWithLikesAndAuthorAndCommentsAndGroupAndCount } from "type";
+import generateSSRHelper from "~/utils/generateSSRHelper";
 
-const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const PostPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   dayjs.extend(relativeTime);
 
   const router = useRouter();
@@ -36,11 +35,12 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   const post = api.post.getPost.useQuery({
     id: props.postId,
+  },{
+    refetchInterval: 3000
   });
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
 
-  const ctx = api.useContext();
   const client = useQueryClient();
   const hasLike = post.data?.likes.find((like) => {
     return like.userId === user?.id;
@@ -208,27 +208,19 @@ const PostPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export default PostPage;
 
-export async function getStaticProps(
-  context: GetStaticPropsContext<{ postId: string }>
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<{ postId: string }>
 ) {
-  const helpers = generateSSGHelper();
+  const helpers = generateSSRHelper();
   const postId = context.params?.postId as string;
   if (typeof postId !== "string") throw new Error("no post");
   // prefetch `post.getPosts`
-  await helpers.post.getPost.prefetch({ id: postId });
+  await helpers.post.getPost.prefetch({id: postId});
   return {
     props: {
       trpcState: helpers.dehydrate(),
       postId,
     },
-    revalidate: 10,
   };
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking
-    fallback: "blocking",
-  };
-};

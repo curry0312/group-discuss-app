@@ -15,8 +15,8 @@ import type {
 import LoadingPage from "~/components/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
-import FriendStateButtons from "~/components/profile/page/FriendStateButtons";
-import GroupsOrPostsState from "~/components/profile/page/GroupsOrPostsState";
+import FriendStateButtons from "~/components/profile/FriendStateButtons";
+import GroupsOrPostsState from "~/components/profile/GroupsOrPostsState";
 import { prisma } from "~/server/db";
 import Navbar from "~/components/global/Navbar";
 

@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
-import Group from "../reuse/Group";
-import Group_skeleton from "../reuse/Group_skeleton";
+import Group from "./reuse/Group";
+import Group_skeleton from "./reuse/Group_skeleton";
 
 type RenderingGroupsProps = {
   filterSearchGroupText: string;

@@ -3,9 +3,8 @@ import { CheckIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { CommandItem } from "~/components/ui/command";
-import { api } from "~/utils/api";
 
-type InviteEachFriendPropsType = {
+type InviteEachFriendProps = {
   friend: User;
   groupId: string;
   selectFriends: User[];
@@ -14,10 +13,9 @@ type InviteEachFriendPropsType = {
 
 const InviteEachFriend = ({
   friend,
-  groupId,
   selectFriends,
   setSelectFriends,
-}: InviteEachFriendPropsType) => {
+}: InviteEachFriendProps) => {
 
   function handleSelectFriend(){
     if(selectFriends.find((selectFriend) => selectFriend.id === friend.id)){

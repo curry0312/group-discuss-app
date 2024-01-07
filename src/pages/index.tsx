@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import Head from "next/head";
-import RenderingHomeThread from "~/components/home/page/RenderingHomeThread";
+import RenderingHomeThread from "~/components/home/RenderingHomeThread";
 import Navbar from "~/components/global/Navbar";
 
 export default function Home() {

@@ -1,7 +1,7 @@
-import RenderingGroups from "~/components/group/page/RenderingGroups";
-import Create_group_card_page from "~/components/group/page/Create_group_card_page";
+import RenderingGroups from "~/components/group/RenderingGroups";
+import Create_group_card_page from "~/components/group/Create_group_card_page";
 import { useCreateGroupStore } from "~/store/useCreateGroupStore";
-import RenderingGroupHeader from "~/components/group/page/RenderingGroupsHeader";
+import RenderingGroupHeader from "~/components/group/RenderingGroupsHeader";
 import { useState } from "react";
 import Navbar from "~/components/global/Navbar";
 

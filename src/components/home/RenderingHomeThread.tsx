@@ -5,7 +5,7 @@ import GroupPost_skeleton from "~/components/post/reuse/GroupPost_skeleton";
 import { Button } from "~/components/ui/button";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
 import { api } from "~/utils/api";
-import HomeThread from "../reuse/HomeThread";
+import HomeThread from "./reuse/HomeThread";
 
 const RenderingHomeThread = () => {
   const router = useRouter();

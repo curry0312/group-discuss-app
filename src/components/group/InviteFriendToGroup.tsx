@@ -22,11 +22,11 @@ import { User } from "@prisma/client";
 import { Skeleton } from "~/components/ui/skeleton";
 import AddUserIcon from "~/styles/icons/AddUserIcon";
 
-type InViteFriendToGroupPropsType = {
+type InViteFriendToGroupProps = {
   groupId: string;
 };
 
-const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupPropsType) => {
+const InViteFriendToGroup = ({ groupId }: InViteFriendToGroupProps) => {
   const [selectFriends, setSelectFriends] = useState<User[]>([]);
   const friends = api.user.getAllUnGroupedFriends.useQuery({
     groupId: groupId,

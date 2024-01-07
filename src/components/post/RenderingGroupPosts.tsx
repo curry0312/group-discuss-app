@@ -1,7 +1,7 @@
 import { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
-import GroupPost from "../reuse/GroupPost";
-import GroupPost_skeleton from "../reuse/GroupPost_skeleton";
-import GroupPreSubmitPost_skeleton from "../reuse/GroupPreSubmitPost_skeleton";
+import GroupPost from "./reuse/GroupPost";
+import GroupPost_skeleton from "./reuse/GroupPost_skeleton";
+import GroupPreSubmitPost_skeleton from "./reuse/GroupPreSubmitPost_skeleton";
 
 type RenderingGroupPostsPropsType = {
   posts: PostWithLikesAndAuthorAndCommentsAndGroup[] | undefined;

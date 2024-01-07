@@ -1,4 +1,4 @@
-import RenderingGroupPosts from "~/components/post/page/RenderingGroupPosts";
+import RenderingGroupPosts from "~/components/post/RenderingGroupPosts";
 import {
   GetStaticPaths,
   GetStaticPropsContext,
@@ -7,8 +7,8 @@ import {
 import generateSSGHelper from "~/utils/generateSSGHelper";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import CreateGroupPost from "~/components/post/page/CreateGroupPost";
-import GroupHeader from "~/components/post/page/RenderingGroupPostsHeader";
+import CreateGroupPost from "~/components/post/CreateGroupPost";
+import GroupHeader from "~/components/post/RenderingGroupPostsHeader";
 import { api } from "~/utils/api";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
 import LoadingSpinner from "~/components/loading/LoadingSpinner";

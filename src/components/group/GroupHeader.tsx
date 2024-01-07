@@ -5,13 +5,13 @@ import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
 import { api } from "~/utils/api";
 import InViteFriendToGroup from "./InviteFriendToGroup";
 
-type GroupHeaderPropsType = {
+type GroupHeaderProps = {
   groupId: string;
 };
 
-const GroupHeader = ({ groupId }: GroupHeaderPropsType) => {
+const GroupHeader = ({ groupId }: GroupHeaderProps) => {
   const { data, isLoading } = api.group.getGroup.useQuery({
-    groupId: groupId,
+    id: groupId,
   });
   if (isLoading) {
     return (

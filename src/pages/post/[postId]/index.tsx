@@ -17,7 +17,7 @@ import type {
 
 import LoadingPage from "~/components/loading/LoadingPage";
 import { Skeleton } from "~/components/ui/skeleton";
-import CreateComment from "~/components/post/page/CreateComment";
+import CreateComment from "~/components/post/CreateComment";
 import { useState } from "react";
 import GroupPostComment from "~/components/post/reuse/GroupPostComment";
 import { useUser } from "@clerk/nextjs";

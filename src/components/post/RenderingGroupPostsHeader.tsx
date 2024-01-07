@@ -6,7 +6,7 @@ import { AspectRatio } from "~/components/ui/aspect-ratio";
 import { Skeleton } from "~/components/ui/skeleton";
 
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
-import InViteFriendToGroup from "../../group/page/InviteFriendToGroup";
+import InViteFriendToGroup from "../group/InviteFriendToGroup";
 import SettingIcon from "~/styles/icons/SettingIcon";
 
 type GroupHeaderPropsType = {

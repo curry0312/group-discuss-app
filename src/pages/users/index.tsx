@@ -8,7 +8,7 @@ const Friends = () => {
   const { data, isLoading } = api.user.getAllUsers.useQuery();
   const { searchUsersText, setSearchUsersText } = useSearchUsersText();
 
-  const filteredUsers = data?.filter((user) => {
+  const filteredUsers = data?.filter((user:any) => {
     if (user.name.toLowerCase().includes(searchUsersText?.toLowerCase()))
       return true;
     return false;
@@ -29,8 +29,8 @@ const Friends = () => {
           </div>
           <div className="flex flex-col">
             {searchUsersText.length > 0
-              ? filteredUsers?.map((user) => <User key={user.id} user={user} />)
-              : data?.map((user) => <User key={user.id} user={user} />)}
+              ? filteredUsers?.map((user:any) => <User key={user.id} user={user} />)
+              : data?.map((user:any) => <User key={user.id} user={user} />)}
           </div>
         </div>
       </div>

@@ -7,7 +7,6 @@ import { Skeleton } from "~/components/ui/skeleton";
 
 import ChevronLeftIcon from "~/styles/icons/ChevronLeftIcon";
 import InViteFriendToGroup from "../../group/page/InviteFriendToGroup";
-import { useUser } from "@clerk/nextjs";
 import SettingIcon from "~/styles/icons/SettingIcon";
 
 type GroupHeaderPropsType = {

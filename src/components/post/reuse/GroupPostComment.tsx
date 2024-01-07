@@ -28,7 +28,7 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
   const ctx = api.useContext();
 
   const isUserLikeComment = comment.likes.find(
-    (like) => like.userId === user?.id
+    (like:any) => like.userId === user?.id
   );
 
   const commentLikeGenerator = api.like.handleLikeAddToggle.useMutation();

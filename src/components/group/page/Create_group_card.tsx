@@ -54,7 +54,7 @@ const Create_group_card: FC = () => {
   const { toast } = useToast();
   const groupCreateGenerator = api.group.createGroup.useMutation();
 
-  const [previewImage, setPreviewImage] = useState<any>(
+  const [previewImage, setPreviewImage] = useState(
     "https://github.com/shadcn.png"
   );
 
@@ -164,7 +164,8 @@ const Create_group_card: FC = () => {
                         description: "Image uploaded successfully!",
                       });
                       if (res) {
-                        setPreviewImage(res[0]?.fileUrl);
+                        if(res[0]?.fileUrl)setPreviewImage(res[0]?.fileUrl);
+                        // setPreviewImage("https://github.com/shadcn.png")
                       }
                     }}
                     onUploadError={(error: Error) => {

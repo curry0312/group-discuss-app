@@ -15,6 +15,7 @@ model User {
     id                 String    @id
     name               String
     image              String
+    bio                String
     friends            User[]    @relation("UserFriends")
     friendsOf          User[]    @relation("UserFriends")
     unCheckedFriends   User[]    @relation("UserUnCheckedFriends")

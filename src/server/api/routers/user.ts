@@ -26,6 +26,7 @@ export const userRouter = createTRPCRouter({
             id: ctx.currentUserId,
             name: `${clerkUser.lastName}${clerkUser.firstName}`,
             image: clerkUser.imageUrl,
+            bio: "",
           },
         });
         return newUser;
@@ -35,6 +36,7 @@ export const userRouter = createTRPCRouter({
             id: ctx.currentUserId,
             name: clerkUser.username,
             image: clerkUser.imageUrl,
+            bio: "",
           },
         });
         return newUser;
@@ -64,7 +66,7 @@ export const userRouter = createTRPCRouter({
         },
         data: {
           name: input.username,
-          // bio: input.bio,
+          bio: input.bio,
           image: input.image
         },
       });

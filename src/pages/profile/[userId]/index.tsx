@@ -16,6 +16,7 @@ import CalenderIcon from "~/styles/icons/CalenderIcon";
 import FriendStateButtons from "~/components/profile/PrifileUserAndCurrentUserState";
 import PersonalGroupsAndPostsRenderingSection from "~/components/profile/PersonalGroupsAndPostsRenderingSection";
 import Navbar from "~/components/global/Navbar";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 
 const ProfilePage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -40,18 +41,18 @@ const ProfilePage = (
         <div className="flex flex-col items-start gap-3 py-2">
           <div className="flex w-full items-end justify-between">
             <Link href={`/profile/${userData.id}`}>
-              {!!userData.image ? (
-                <Image
-                  src={userData.image}
-                  alt="user-image"
-                  width={100}
-                  height={100}
-                  className="rounded-full object-cover"
-                  priority
-                />
-              ) : (
-                <div className="h-20 w-20 rounded-full bg-white" />
-              )}
+              <div className="w-[200px] rounded-full">
+                <AspectRatio ratio={1 / 1}>
+                  <Image
+                    src={userData.image}
+                    alt="user-image"
+                    className="rounded-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority
+                  />
+                </AspectRatio>
+              </div>
             </Link>
             <FriendStateButtons profileUserInfo={userData} />
           </div>
@@ -62,7 +63,7 @@ const ProfilePage = (
 
         <div className="flex flex-col">
           <div className="pb-4">
-            <p className="text-xl">description here</p>
+            <p className="text-xl">{userData.bio}</p>
           </div>
           <div className="flex items-center gap-3 pb-4">
             <CalenderIcon />
@@ -72,7 +73,8 @@ const ProfilePage = (
           <div className="flex items-center gap-3  py-4 text-xl">
             <div className="flex items-center gap-2">
               <span>
-                {Number(userData.friends.length) + Number(userData.friendsOf.length)}
+                {Number(userData.friends.length) +
+                  Number(userData.friendsOf.length)}
               </span>
               <p>Friends</p>
             </div>

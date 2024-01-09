@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -31,6 +30,7 @@ import Image from "next/image";
 import { api } from "~/utils/api";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import generateSSRHelper from "~/utils/generateSSRHelper";
+import { useRouter } from "next/router";
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Name is required" }),
@@ -42,29 +42,38 @@ export default function EditProfilePage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const { data: userData } = api.user.getUser.useQuery({ id: props.userId });
-  const [previewImage, setPreviewImage] = useState(
-    userData?.image || "https://github.com/shadcn.png"
-  );
+  const updateUserGenerator = api.user.updateUser.useMutation();
+  const [previewImage, setPreviewImage] = useState(userData?.image);
+  const router = useRouter()
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: userData?.name,
-      bio: "",
+      bio: userData?.bio,
       image: previewImage,
     },
   });
-
-  console.log(previewImage)
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    updateUserGenerator.mutate(
+      { ...values, image: previewImage! },
+      {
+        onSuccess: (updatedUser) => {
+          toast({
+            description: "Profile updated successfully!",
+          });
+          console.log(updatedUser);
+        },
+      }
+    );
   }
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-full rounded-none border-none sm:w-[350px] sm:rounded-md sm:border-gray-200">
+      <Card className="w-full h-screen rounded-none border-none sm:w-[350px] sm:h-fit sm:rounded-md sm:border-gray-200">
         <CardHeader>
           <CardTitle>Edit profile</CardTitle>
           <CardDescription>Once you finish, press save button</CardDescription>
@@ -103,7 +112,7 @@ export default function EditProfilePage(
                 <div className="w-[200px] rounded-full">
                   <AspectRatio ratio={1 / 1}>
                     <Image
-                      src={previewImage}
+                      src={previewImage!}
                       alt="group-image"
                       fill
                       priority
@@ -131,15 +140,15 @@ export default function EditProfilePage(
                 }}
               />
               <FormMessage />
+              <div className="flex justify-between items-center">
+                <Button variant="outline" className="" onClick={() => {router.back()}}>
+                    Cancel
+                </Button>
+                <Button type="submit">Save</Button>
+              </div>
             </form>
           </Form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" className="">
-            Cancel
-          </Button>
-          <Button type="submit">Save</Button>
-        </CardFooter>
       </Card>
     </div>
   );

@@ -43,24 +43,22 @@ const formSchema = z.object({
 type FormSchemaType = z.infer<typeof formSchema>;
 
 const Create_group_card: FC = () => {
+  const { toast } = useToast();
+  const ctx = api.useContext();
+  const groupCreateGenerator = api.group.createGroup.useMutation();
+
+  const [previewImage, setPreviewImage] = useState("");
+  
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       public: false,
-      image: "",
+      image: "https://github.com/shadcn.png",
     },
   });
-  const { toast } = useToast();
-  const groupCreateGenerator = api.group.createGroup.useMutation();
-
-  const [previewImage, setPreviewImage] = useState(
-    "https://github.com/shadcn.png"
-  );
 
   const { onClose } = useCreateGroupStore();
-
-  const ctx = api.useContext();
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
@@ -164,7 +162,7 @@ const Create_group_card: FC = () => {
                         description: "Image uploaded successfully!",
                       });
                       if (res) {
-                        if(res[0]?.fileUrl)setPreviewImage(res[0]?.fileUrl);
+                        if (res[0]?.fileUrl) setPreviewImage(res[0]?.fileUrl);
                         // setPreviewImage("https://github.com/shadcn.png")
                       }
                     }}

@@ -1,4 +1,4 @@
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,11 +12,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
-import { Avatar, AvatarImage } from "src/components/ui/avatar";
 
 import ChatIcon from "~/styles/icons/ChatIcon";
 import HomeIcon from "~/styles/icons/HomeIcon";
@@ -29,9 +26,13 @@ import ProfileIcon from "~/styles/icons/ProfileIcon";
 import SettingIcon from "~/styles/icons/SettingIcon";
 import SignOutIcon from "~/styles/icons/SignOutIcon";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+import { AspectRatio } from "../ui/aspect-ratio";
+import Image from "next/image";
 
 const Navbar = () => {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { data: userData, isLoading } = api.user.getCurrentUser.useQuery();
+  console.log(userData);
   const currentPath = usePathname();
   const router = useRouter();
   const [pathname, setPathname] = useState("/");
@@ -112,27 +113,36 @@ const Navbar = () => {
           </ul>
         </div>
         {/*user profile button*/}
-        {!isLoaded ? (
+        {isLoading && !userData ? (
           <Skeleton className="h-10 w-10 rounded-full bg-gray-800" />
         ) : (
           <div className="flex flex-row-reverse items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger className="ml-auto mr-2">
-                <Avatar>
-                  <AvatarImage src={user?.imageUrl} />
-                </Avatar>
+              <div className="w-[40px] rounded-full">
+                <AspectRatio ratio={1 / 1}>
+                  <Image
+                    src={userData?.image!}
+                    alt="user-image"
+                    className="rounded-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority
+                  />
+                </AspectRatio>
+              </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem
                   className="flex items-center gap-1"
-                  onClick={() => router.push(`/profile/${user?.id}`)}
+                  onClick={() => router.push(`/profile/${userData?.id}`)}
                 >
                   <ProfileIcon />
-                  <Link href={`/profile/${user?.id}`}>profile</Link>
+                  <Link href={`/profile/${userData?.id}`}>profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="flex items-center gap-1"
-                  onClick={() => router.push(`/setting/${user?.id}`)}
+                  onClick={() => router.push(`/setting/${userData?.id}`)}
                 >
                   <SettingIcon />
                   <Link href={"/setting/userId"}>setting</Link>
@@ -149,7 +159,7 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-      {isSignedIn == true && <Notification />}
+      {!isLoading == true && <Notification />}
     </>
   );
 };

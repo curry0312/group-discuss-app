@@ -3,9 +3,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 
 const Auth = () => {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  console.log("user",user);
   if (isLoaded && isSignedIn) {
     router.push("/");
     return null;

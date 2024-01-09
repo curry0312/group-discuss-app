@@ -108,7 +108,7 @@ export const postRouter = createTRPCRouter({
       });
     }),
   //*Get all the posts from groups which current user have joined, except user itself.
-  getAllUserRelativePosts: privatedProcedure.input(z.object({ limit: z.number(), skip: z.number().optional() , cursor: z.string().nullish() })).query(async ({ ctx, input }) => {
+  getCurrentUserAllRelativePosts: privatedProcedure.input(z.object({ limit: z.number(), skip: z.number().optional() , cursor: z.string().nullish() })).query(async ({ ctx, input }) => {
     const posts =  await ctx.prisma.post.findMany({
       take: input.limit + 1,
       skip: input.skip,

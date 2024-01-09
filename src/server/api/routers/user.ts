@@ -44,6 +44,15 @@ export const userRouter = createTRPCRouter({
     }
   }),
 
+  getCurrentUser: privatedProcedure.query(async ({ ctx }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.currentUserId,
+      },
+    });
+    return user;
+  }),
+
   getUser: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {

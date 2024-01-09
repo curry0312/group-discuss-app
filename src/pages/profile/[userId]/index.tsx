@@ -22,12 +22,12 @@ const ProfilePage = (
 ) => {
   dayjs.extend(relativeTime);
 
-  const { data, isLoading } = api.user.getUser.useQuery({
+  const { data: userData, isLoading } = api.user.getUser.useQuery({
     id: props.userId,
   });
 
   if (isLoading) return <LoadingPage />; //Won't be invoked because it's SSR
-  if (!data) return <div>404 data not found</div>;
+  if (!userData) return <div>404 data not found</div>;
   return (
     <>
       <Navbar />
@@ -39,10 +39,10 @@ const ProfilePage = (
         </div>
         <div className="flex flex-col items-start gap-3 py-2">
           <div className="flex w-full items-end justify-between">
-            <Link href={`/profile/${data.id}`}>
-              {!!data.image ? (
+            <Link href={`/profile/${userData.id}`}>
+              {!!userData.image ? (
                 <Image
-                  src={data.image}
+                  src={userData.image}
                   alt="user-image"
                   width={100}
                   height={100}
@@ -53,10 +53,10 @@ const ProfilePage = (
                 <div className="h-20 w-20 rounded-full bg-white" />
               )}
             </Link>
-            <FriendStateButtons profileUserInfo={data} />
+            <FriendStateButtons profileUserInfo={userData} />
           </div>
           <div className="flex items-center justify-center">
-            <h1 className="text-2xl font-bold">{data.name}</h1>
+            <h1 className="text-2xl font-bold">{userData.name}</h1>
           </div>
         </div>
 
@@ -67,12 +67,12 @@ const ProfilePage = (
           <div className="flex items-center gap-3 pb-4">
             <CalenderIcon />
             <p className="text-xl">Joined</p>
-            <p className="text-xl">{dayjs(data.createdAt).fromNow()}</p>
+            <p className="text-xl">{dayjs(userData.createdAt).fromNow()}</p>
           </div>
           <div className="flex items-center gap-3  py-4 text-xl">
             <div className="flex items-center gap-2">
               <span>
-                {Number(data.friends.length) + Number(data.friendsOf.length)}
+                {Number(userData.friends.length) + Number(userData.friendsOf.length)}
               </span>
               <p>Friends</p>
             </div>
@@ -95,9 +95,6 @@ export async function getServerSideProps(
   if (typeof userId !== "string") throw new Error("no userId");
   // prefetch `user.getUser`
   await helpers.user.getUser.prefetch({ id: userId });
-  await helpers.post.getAllUserInPublicGroupsPosts.prefetch({
-    authorId: userId,
-  });
   return {
     props: {
       trpcState: helpers.dehydrate(),

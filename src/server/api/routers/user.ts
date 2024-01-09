@@ -56,6 +56,21 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
+  updateUser: privatedProcedure.input(z.object({ username: z.string(),bio: z.string(),image: z.string() })).mutation(
+    async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          id: ctx.currentUserId,
+        },
+        data: {
+          name: input.username,
+          // bio: input.bio,
+          image: input.image
+        },
+      });
+    }
+  ),
+
   getAllUsers: publicProcedure.query(async ({ ctx }) => {
     const allUsers = await ctx.prisma.user.findMany();
     return allUsers;

@@ -109,7 +109,7 @@ const PrifileUserAndCurrentUserState = ({
     return (
       <Button variant={"outline"} className="bg-gray-800">
         <Link
-          href={`/profile/edit/${profileUserInfo.id}`}
+          href={`/profile/${profileUserInfo.id}/edit`}
           className="flex items-center gap-1"
         >
           <EditIcon />

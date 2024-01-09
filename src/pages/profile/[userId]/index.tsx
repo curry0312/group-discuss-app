@@ -7,27 +7,26 @@ import { api } from "~/utils/api";
 import generateSSRHelper from "~/utils/generateSSRHelper";
 import type {
   GetServerSidePropsContext,
-  GetStaticPaths,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
+  InferGetServerSidePropsType,
 } from "next";
 
 import LoadingPage from "~/components/loading/LoadingPage";
 import ArrowLeftIcon from "~/styles/icons/ArrowLeftIcon";
 import CalenderIcon from "~/styles/icons/CalenderIcon";
-import FriendStateButtons from "~/components/profile/FriendStateButtons";
-import GroupsOrPostsState from "~/components/profile/GroupsOrPostsState";
-import { prisma } from "~/server/db";
+import FriendStateButtons from "~/components/profile/PrifileUserAndCurrentUserState";
+import PersonalGroupsAndPostsRenderingSection from "~/components/profile/PersonalGroupsAndPostsRenderingSection";
 import Navbar from "~/components/global/Navbar";
 
-const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const ProfilePage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   dayjs.extend(relativeTime);
 
   const { data, isLoading } = api.user.getUser.useQuery({
     id: props.userId,
   });
 
-  if (isLoading) return <LoadingPage />;
+  if (isLoading) return <LoadingPage />; //Won't be invoked because it's SSR
   if (!data) return <div>404 data not found</div>;
   return (
     <>
@@ -41,14 +40,18 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <div className="flex flex-col items-start gap-3 py-2">
           <div className="flex w-full items-end justify-between">
             <Link href={`/profile/${data.id}`}>
-              <Image
-                src={data.image}
-                alt="user-image"
-                width={100}
-                height={100}
-                className="rounded-full object-cover"
-                priority
-              />
+              {!!data.image ? (
+                <Image
+                  src={data.image}
+                  alt="user-image"
+                  width={100}
+                  height={100}
+                  className="rounded-full object-cover"
+                  priority
+                />
+              ) : (
+                <div className="h-20 w-20 rounded-full bg-white" />
+              )}
             </Link>
             <FriendStateButtons profileUserInfo={data} />
           </div>
@@ -68,12 +71,14 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           </div>
           <div className="flex items-center gap-3  py-4 text-xl">
             <div className="flex items-center gap-2">
-              <span>{Number(data.friends.length) + Number(data.friendsOf.length)}</span>
+              <span>
+                {Number(data.friends.length) + Number(data.friendsOf.length)}
+              </span>
               <p>Friends</p>
             </div>
           </div>
 
-          <GroupsOrPostsState userId={props.userId} />
+          <PersonalGroupsAndPostsRenderingSection userId={props.userId} />
         </div>
       </main>
     </>
@@ -82,15 +87,17 @@ const ProfilePage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export default ProfilePage;
 
-export async function getStaticProps(
-  context: GetStaticPropsContext<{ userId: string }>
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<{ userId: string }>
 ) {
   const helpers = generateSSRHelper();
   const userId = context.params?.userId as string;
   if (typeof userId !== "string") throw new Error("no userId");
   // prefetch `user.getUser`
   await helpers.user.getUser.prefetch({ id: userId });
-  await helpers.post.getAllUserInPublicGroupsPosts.prefetch({ authorId: userId });
+  await helpers.post.getAllUserInPublicGroupsPosts.prefetch({
+    authorId: userId,
+  });
   return {
     props: {
       trpcState: helpers.dehydrate(),
@@ -98,11 +105,3 @@ export async function getStaticProps(
     },
   };
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    // https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking
-    fallback: "blocking",
-  };
-};

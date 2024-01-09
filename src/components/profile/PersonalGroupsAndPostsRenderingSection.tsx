@@ -4,10 +4,10 @@ import LoadingSpinner from "~/components/loading/LoadingSpinner";
 import GroupPost from "~/components/post/reuse/GroupPost";
 import { api } from "~/utils/api";
 
-type GroupsOrPostsStateProps = {
+type PersonalGroupsAndPostsRenderingSectionProps = {
   userId: string;
 };
-const GroupsOrPostsState = ({ userId }: GroupsOrPostsStateProps) => {
+const PersonalGroupsAndPostsRenderingSection = ({ userId }: PersonalGroupsAndPostsRenderingSectionProps) => {
   const [GroupsOrPosts, setGroupsOrPosts] = useState<"groups" | "posts">(
     "groups"
   );
@@ -73,4 +73,4 @@ const GroupsOrPostsState = ({ userId }: GroupsOrPostsStateProps) => {
   );
 };
 
-export default GroupsOrPostsState;
+export default PersonalGroupsAndPostsRenderingSection;

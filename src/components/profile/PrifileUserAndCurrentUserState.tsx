@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import AddFriendsToGroupIcon from "~/styles/icons/AddUserIcon";
 import CheckedIcon from "~/styles/icons/CheckedIcon";
@@ -8,12 +9,12 @@ import EditIcon from "~/styles/icons/EditIcon";
 import MinusUser from "~/styles/icons/MinusUserIcon";
 import { api } from "~/utils/api";
 
-type FriendStateButtonsPropsType = {
+type PrifileUserAndCurrentUserStateProps = {
   profileUserInfo: User;
 };
-const FriendStateButtons = ({
+const PrifileUserAndCurrentUserState = ({
   profileUserInfo,
-}: FriendStateButtonsPropsType) => {
+}: PrifileUserAndCurrentUserStateProps) => {
   const { user, isLoaded } = useUser();
   const ctx = api.useContext();
 
@@ -22,10 +23,11 @@ const FriendStateButtons = ({
       id: profileUserInfo.id,
     }
   );
-  const isCurrentUserUncheckedFriend =
-    api.user.isCurrentUserUncheckedFriend.useQuery({
+  const isCurrentUserUncheckedFriend = api.user.isCurrentUserUncheckedFriend.useQuery(
+    {
       id: profileUserInfo.id,
-    });
+    }
+  );
 
   const isInFriendRelationship = api.user.isInFriendRelationship.useQuery({
     id: profileUserInfo.id,
@@ -97,10 +99,7 @@ const FriendStateButtons = ({
   }
   if (isInFriendRelationship.data) {
     return (
-      <Button
-        onClick={() => {}}
-        className="flex items-center gap-1 bg-gray-800"
-      >
+      <Button className="flex items-center gap-1 bg-gray-800">
         <CheckedIcon />
         <span>Friend</span>
       </Button>
@@ -108,12 +107,14 @@ const FriendStateButtons = ({
   }
   if (!!isLoaded && profileUserInfo.id === user?.id) {
     return (
-      <Button
-        variant={"outline"}
-        className="flex items-center gap-1 bg-gray-800"
-      >
-        <EditIcon />
-        <span>Edit profile</span>
+      <Button variant={"outline"} className="bg-gray-800">
+        <Link
+          href={`/profile/edit/${profileUserInfo.id}`}
+          className="flex items-center gap-1"
+        >
+          <EditIcon />
+          <span>Edit profile</span>
+        </Link>
       </Button>
     );
   }
@@ -128,4 +129,4 @@ const FriendStateButtons = ({
   );
 };
 
-export default FriendStateButtons;
+export default PrifileUserAndCurrentUserState;

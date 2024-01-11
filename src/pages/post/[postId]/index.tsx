@@ -23,8 +23,11 @@ import { useRouter } from "next/router";
 import { type QueryClient, useQueryClient } from "@tanstack/react-query";
 import type { PostWithLikesAndAuthorAndCommentsAndGroupAndCount } from "type";
 import generateSSRHelper from "~/utils/generateSSRHelper";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 
-const PostPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const PostPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   dayjs.extend(relativeTime);
 
   const router = useRouter();
@@ -33,11 +36,14 @@ const PostPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
 
   const [isCreateCommentOpen, setIsCreateCommentOpen] = useState(false);
 
-  const post = api.post.getPost.useQuery({
-    id: props.postId,
-  },{
-    refetchInterval: 3000
-  });
+  const post = api.post.getPost.useQuery(
+    {
+      id: props.postId,
+    },
+    {
+      refetchInterval: 3000,
+    }
+  );
   const postLikeGenerator = api.like.handleLikeAddToggle.useMutation();
   const postUnLikeGenerator = api.like.handleLikeDeleteToggle.useMutation();
 
@@ -131,13 +137,18 @@ const PostPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
               {!post.data ? (
                 <Skeleton className="h-12 w-12 rounded-full" />
               ) : (
-                <Image
-                  src={post.data?.author.image}
-                  alt="user-image"
-                  width={50}
-                  height={50}
-                  className="rounded-full object-cover"
-                />
+                <div className="w-[60px] rounded-full">
+                  <AspectRatio ratio={1 / 1}>
+                    <Image
+                      src={post.data.author.image}
+                      alt="user-image"
+                      className="rounded-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                    />
+                  </AspectRatio>
+                </div>
               )}
             </Link>
           </div>
@@ -215,7 +226,7 @@ export async function getServerSideProps(
   const postId = context.params?.postId as string;
   if (typeof postId !== "string") throw new Error("no post");
   // prefetch `post.getPosts`
-  await helpers.post.getPost.prefetch({id: postId});
+  await helpers.post.getPost.prefetch({ id: postId });
   return {
     props: {
       trpcState: helpers.dehydrate(),
@@ -223,4 +234,3 @@ export async function getServerSideProps(
     },
   };
 }
-

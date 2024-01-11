@@ -102,7 +102,7 @@ const CreateGroupPost = ({
             <Textarea
               {...register("content")}
               rows={6}
-              placeholder="What you like to say now?"
+              placeholder="What do you like to say now?"
               className="mt-2 resize-none border-none text-white outline-none ring-0 focus:outline-none"
             />
           </div>

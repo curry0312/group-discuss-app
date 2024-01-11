@@ -11,6 +11,7 @@ import {
 } from "src/components/ui/dropdown-menu";
 
 import type { CommentWithLikesAndAuthor } from "type";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 
 import HeartIcon from "~/styles/icons/HeartIcon";
 import MoreIcon from "~/styles/icons/MoreIcon";
@@ -28,7 +29,7 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
   const ctx = api.useContext();
 
   const isUserLikeComment = comment.likes.find(
-    (like:any) => like.userId === user?.id
+    (like: any) => like.userId === user?.id
   );
 
   const commentLikeGenerator = api.like.handleLikeAddToggle.useMutation();
@@ -79,14 +80,18 @@ const GroupPostComment = ({ comment }: GroupPostCommentProps) => {
     <div className="flex cursor-pointer gap-3 border-y border-gray-700 p-2">
       <div>
         <Link href={"/"}>
-          <Image
-            src={comment.author.image}
-            alt="user-image"
-            width={50}
-            height={50}
-            className="rounded-full object-cover"
-            priority
-          />
+          <div className="w-[60px] rounded-full">
+            <AspectRatio ratio={1 / 1}>
+              <Image
+                src={comment.author.image}
+                alt="user-image"
+                className="rounded-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
+              />
+            </AspectRatio>
+          </div>
         </Link>
       </div>
 

@@ -140,13 +140,13 @@ const Navbar = () => {
                   <ProfileIcon />
                   <Link href={`/profile/${userData?.id}`}>profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
+                {/* <DropdownMenuItem
                   className="flex items-center gap-1"
                   onClick={() => router.push(`/setting/${userData?.id}`)}
                 >
                   <SettingIcon />
                   <Link href={"/setting/userId"}>setting</Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuItem className="flex items-center gap-1">
                   <SignOutIcon />
                   <SignOutButton>Sign out</SignOutButton>

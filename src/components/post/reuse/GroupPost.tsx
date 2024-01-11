@@ -107,7 +107,7 @@ const GroupPost = ({ post }: GroupPostProps) => {
                 <DropdownMenuItem onClick={() => handleDeletePost()}>
                   Delete post
                 </DropdownMenuItem>
-                <DropdownMenuItem>Edit post</DropdownMenuItem>
+                {/* <DropdownMenuItem>Edit post</DropdownMenuItem> */}
               </>
             ) : (
               <DropdownMenuItem>Report</DropdownMenuItem>

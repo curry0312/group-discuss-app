@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useOpenNotification } from "~/store/useOpenNotification";
 import { api } from "~/utils/api";
 import LoadingSpinner from "../loading/LoadingSpinner";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 const Notification = () => {
   const { data, isLoading } = api.user.getAllUnCheckedFriends.useQuery();
@@ -13,8 +14,8 @@ const Notification = () => {
       <div
         className={
           isNotificationOpen == true
-            ? "absolute inset-0  top-[86px] z-[999] flex justify-center items-center h-screen bg-white  duration-200 ease-in-out"
-            : "absolute inset-0  top-[86px] z-[999] flex justify-center items-center h-0 overflow-hidden bg-white  duration-200 ease-in-out"
+            ? "absolute inset-0  top-[86px] z-[999] flex h-screen items-center justify-center bg-white  duration-200 ease-in-out"
+            : "absolute inset-0  top-[86px] z-[999] flex h-0 items-center justify-center overflow-hidden bg-white  duration-200 ease-in-out"
         }
       >
         <LoadingSpinner />
@@ -40,14 +41,18 @@ const Notification = () => {
               onClick={() => setIsNotificationOpen(!isNotificationOpen)}
             >
               <div>
-                <Image
-                  src={unCheckedFriend.image}
-                  alt={`${unCheckedFriend.name}-image`}
-                  width={50}
-                  height={50}
-                  priority
-                  className="rounded-full object-cover"
-                />
+                <div className="w-[60px] rounded-full">
+                  <AspectRatio ratio={1 / 1}>
+                    <Image
+                      src={unCheckedFriend.image!}
+                      alt="user-image"
+                      className="rounded-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                    />
+                  </AspectRatio>
+                </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <p className="font-bold">{unCheckedFriend.name}</p>

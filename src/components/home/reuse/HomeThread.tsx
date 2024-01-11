@@ -46,7 +46,7 @@ const HomeThread = ({ post }: HomeThreadProps) => {
     <div>
       {/*Group Info*/}
       <div
-        className="ml-auto flex items-center gap-2 p-2 cursor-pointer"
+        className="ml-auto flex cursor-pointer items-center gap-2 p-2"
         onClick={() => push(`/group/${post.groupId}`)}
       >
         <div className="h-[50px] w-[50px]">
@@ -61,21 +61,25 @@ const HomeThread = ({ post }: HomeThreadProps) => {
             />
           </AspectRatio>
         </div>
-        <span className="text-xl font-Rubik">{post.group.name}</span>
+        <span className="font-Rubik text-xl">{post.group.name}</span>
       </div>
       {/*Post Info*/}
       <div className="pl-10">
-        <div className="flex cursor-pointer gap-3 rounded-md bg-gray-800 hover:bg-gray-700 p-2">
+        <div className="flex cursor-pointer gap-3 rounded-md bg-gray-800 p-2 hover:bg-gray-700">
           <div>
             <Link href={"/"}>
-              <Image
-                src={post.author.image}
-                alt="user-image"
-                width={50}
-                height={50}
-                className="rounded-full object-cover"
-                priority
-              />
+              <div className="w-[60px] rounded-full">
+                <AspectRatio ratio={1 / 1}>
+                  <Image
+                    src={post.author.image!}
+                    alt="user-image"
+                    className="rounded-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority
+                  />
+                </AspectRatio>
+              </div>
             </Link>
           </div>
           <div

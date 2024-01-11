@@ -13,6 +13,7 @@ import {
 } from "src/components/ui/dropdown-menu";
 
 import type { PostWithLikesAndAuthorAndCommentsAndGroup } from "type";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 
 import MoreIcon from "~/styles/icons/MoreIcon";
 import { api } from "~/utils/api";
@@ -41,20 +42,23 @@ const GroupPost = ({ post }: GroupPostProps) => {
       }
     );
   }
-    
-  
+
   return (
     <div className="flex cursor-pointer gap-3 border-b border-gray-800 p-2">
       <div>
         <Link href={"/"}>
-          <Image
-            src={post.author.image}
-            alt="user-image"
-            width={50}
-            height={50}
-            className="rounded-full object-cover"
-            priority
-          />
+          <div className="w-[60px] rounded-full">
+            <AspectRatio ratio={1 / 1}>
+              <Image
+                src={post.author.image!}
+                alt="user-image"
+                className="rounded-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
+              />
+            </AspectRatio>
+          </div>
         </Link>
       </div>
 

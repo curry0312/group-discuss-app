@@ -7,6 +7,8 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import CloseIcon from "~/styles/icons/CloseIcon";
 import { api } from "~/utils/api";
+import { AspectRatio } from "../ui/aspect-ratio";
+import Image from "next/image";
 
 const formSchema = z.object({
   content: z.string().min(1, "You can't post empty content!"),
@@ -28,14 +30,13 @@ const CreateGroupPost = ({
   setNewPostData,
   groupId,
 }: CreateGroupPostPropsType) => {
-  const { user } = useUser();
-
   const { register, handleSubmit, reset } = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
   });
 
   const ctx = api.useContext();
 
+  const { data: userData } = api.user.getCurrentUser.useQuery();
   const postCreateGenerator = api.post.createPost.useMutation();
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
@@ -84,9 +85,18 @@ const CreateGroupPost = ({
         </div>
         <div>
           <div className="pl-4">
-            <Avatar>
-              <AvatarImage src={user?.imageUrl} />
-            </Avatar>
+          <div className="w-[80px] rounded-full">
+                <AspectRatio ratio={1 / 1}>
+                  <Image
+                    src={userData?.image!}
+                    alt="user-image"
+                    className="rounded-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority
+                  />
+                </AspectRatio>
+              </div>
           </div>
           <div className="p-2">
             <Textarea
